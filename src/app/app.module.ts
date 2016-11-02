@@ -8,9 +8,13 @@ import { MaterialModule } from '@angular/material';
 import { AppComponent } from './app.component';
 import { AppRouting } from "./app.routing";
 
-
+import { ApiService } from "./services/api.service"
 import { AuthService } from "./services/auth.service"
 import { EventService } from "./services/event.service"
+
+import { HomeModule }    from "./pages/home/home.module";
+import { SampleModule } from "./pages/sample/sample.module";
+import { ProfileModule } from "./pages/profile/profile.module";
 
 @NgModule({
   declarations: [
@@ -18,11 +22,12 @@ import { EventService } from "./services/event.service"
   ],
   imports: [
     BrowserModule, FormsModule, HttpModule,
+    HomeModule, ProfileModule, SampleModule, // the pages
     MaterialModule.forRoot(),
     AppRouting
   ],
   providers: [
-    EventService, AuthService,
+    EventService, AuthService, ApiService,
     provideAuth({
         globalHeaders: [{"Content-type": "application/json"}],
         //newJwtError: true,

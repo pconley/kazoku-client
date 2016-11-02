@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
+import { Router } from '@angular/router';
 
 import { AuthService } from './services/auth.service';
 import { CanActivateViaAuthGuard } from './services/auth.guard';
@@ -14,16 +15,13 @@ export class AppComponent implements OnInit {
 
   isDarkTheme: boolean = false;
 
-  foods: any[] = [
-    {name: 'Pizza', rating: 'Excellent'},
-    {name: 'Burritos', rating: 'Great'},
-    {name: 'French fries', rating: 'Pretty good'},
-  ];
-
-  progress: number = 0;
-
-  constructor( private auth: AuthService, ) {
+  constructor( private auth: AuthService, private router: Router ) {
     console.log("AppComponent#constructor");
+  }
+
+  goto(route){
+    console.log("*** AppComponent#goto route="+route);
+    this.router.navigate([route]);
   }
 
   ngOnInit(){ 
@@ -32,9 +30,6 @@ export class AppComponent implements OnInit {
     // set up a global watcher of the authentication actions
     this.auth.login_observable.subscribe( x => { console.log(">>> watcher#login "+x); } );
 
-    // continuously update the value for the progress-bar on an interval.
-    setInterval(() => {
-      this.progress = (this.progress + Math.floor(Math.random() * 4) + 1) % 100;
-    }, 200);
+ 
   }
 }

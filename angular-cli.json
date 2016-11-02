@@ -19,7 +19,7 @@
       "mobile": false,
       "styles": [
         "styles.css",
-        "material-stuff.scss"
+        "material-theme.scss"
       ],
       "scripts": [],
       "environments": {
