@@ -12,7 +12,13 @@
     Material One
 
     <span class="app-toolbar-filler"></span>
-    <button md-button (click)="isDarkTheme = !isDarkTheme">TOGGLE DARK THEME</button>
+    <button md-button (click)="isDarkTheme = !isDarkTheme">TOGGLE THEME</button>
+    <button md-button >Contact Us</button>
+    <a *ngIf="auth.authenticated()" routerLink="profile">Profile&nbsp;</a>
+
+    <button md-button *ngIf="!auth.authenticated()" (click)="auth.login()">Login</button>
+    <button md-button *ngIf="auth.authenticated()" (click)="auth.logout()">Logout</button>
+
   </md-toolbar>
 
   <div class="app-content">
