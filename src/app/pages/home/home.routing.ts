@@ -6,4 +6,4 @@ export const routes: Routes = [
     { path: 'home', component: HomeComponent }
 ];
 
-export const routing = RouterModule.forChild(routes);
+export const HomeRouter = RouterModule.forChild(routes);

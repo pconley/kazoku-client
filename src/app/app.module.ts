@@ -14,6 +14,7 @@ import { EventService } from "./services/event.service"
 
 import { HomeModule }    from "./pages/home/home.module";
 import { SampleModule } from "./pages/sample/sample.module";
+import { ContactModule } from "./pages/contact/contact.module";
 import { ProfileModule } from "./pages/profile/profile.module";
 
 @NgModule({
@@ -22,7 +23,7 @@ import { ProfileModule } from "./pages/profile/profile.module";
   ],
   imports: [
     BrowserModule, FormsModule, HttpModule,
-    HomeModule, ProfileModule, SampleModule, // the pages
+    HomeModule, ProfileModule, SampleModule, ContactModule, // the pages
     MaterialModule.forRoot(),
     AppRouting
   ],
