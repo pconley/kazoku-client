@@ -17,4 +17,8 @@ export class ProfileComponent implements OnInit {
         this.profile = this.profile || this.profileService.load_profile();
         console.log("*** ProfileComponent#init profile...",this.profile);
     }
+
+    alert(msg){
+        alert(msg);
+    }
 }
