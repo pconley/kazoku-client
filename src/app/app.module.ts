@@ -11,6 +11,7 @@ import { AppRouting } from "./app.routing";
 import { ApiService } from "./services/api.service"
 import { AuthService } from "./services/auth.service"
 import { EventService } from "./services/event.service"
+import { ProfileService } from "./services/profile.service"
 
 import { HomeModule }    from "./pages/home/home.module";
 import { SampleModule } from "./pages/sample/sample.module";
@@ -28,7 +29,8 @@ import { ProfileModule } from "./pages/profile/profile.module";
     AppRouting
   ],
   providers: [
-    EventService, AuthService, ApiService,
+    // globally available services at this top level
+    EventService, AuthService, ApiService, ProfileService,
     provideAuth({
         globalHeaders: [{"Content-type": "application/json"}],
         //newJwtError: true,

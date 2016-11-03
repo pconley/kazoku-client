@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
-import { ApiService } from "../../services/api.service";
-import { EventService } from "../../services/event.service";
+import { ProfileService } from "../../services/profile.service";
 
 @Component({
     selector: "kz-profile",
@@ -10,13 +9,12 @@ import { EventService } from "../../services/event.service";
 export class ProfileComponent implements OnInit {
     
     dummy: number = 999;
+    profile: any = null;
 
-    constructor(private apiService: ApiService) {
-        console.log("ProfileComponent#constructor: "+this.dummy);
-    }
+    constructor( private profileService: ProfileService ) {}
 
     ngOnInit() {
-        var currentTime = new Date();
-        console.log("ProfileComponent#ngOnInit: "+currentTime);
+        this.profile = this.profile || this.profileService.load_profile();
+        console.log("*** ProfileComponent#init profile...",this.profile);
     }
 }

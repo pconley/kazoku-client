@@ -1,3 +1,19 @@
 <md-card>
-	<h1>Kazoku Profile: {{dummy}}</h1>
+	<h1>Kazoku User Profile</h1>
+	<h4 *ngIf="!profile">No profile????</h4>
+	
+	<md-card>
+	<md-card-header>
+		<img md-card-avatar [src]="profile.picture">
+		<md-card-title>{{profile.nickname}}</md-card-title>
+		<md-card-subtitle>User since {{profile.create_year}}</md-card-subtitle>
+	</md-card-header>
+	<md-card-content>
+		<p>Pat is a developer, judoka and go player.</p>
+		<div> <span><md-icon>email</md-icon>&nbsp;{{profile.email}}</span></div>
+		<div> <span><md-icon>place</md-icon>&nbsp;Rochester, NY</span></div>
+		<div> <span><md-icon>group</md-icon>&nbsp;22 Friends</span></div>
+	</md-card-content>
+	</md-card>
+
 </md-card>
