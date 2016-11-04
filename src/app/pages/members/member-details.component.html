@@ -1,12 +1,11 @@
-<!--<div>submited flag = {{submitted}}</div>
-<div>dirty record = {{is_dirty}}</div>
-<div>rails record id = {{member.id}}</div>-->
 
-<form *ngIf="active" (ngSubmit)="onSubmit(theForm)" #theForm="ngForm" class="ui form">
+<md-card class="warning-message" *ngIf="!submitted">
+      Note: The Edit Page does not really update the database at the server! But it 
+      should record the changes locally.  The will be lost the next time you load the
+      application (web page) from the server.
+</md-card>
 
-    <!--<h4 class="ui horizontal divider header"><i class="user icon"></i>Description</h4>
-    <p  class="ui">{{member.description}}</p>-->
-
+<form *ngIf="active" (ngSubmit)="onSubmit(theForm)" #theForm="ngForm" class="ui form">  
     <h4 class="ui horizontal divider header"><i class="list layout icon"></i>Member Details</h4>
     <table class="ui definition table">
     <tbody>
@@ -33,8 +32,8 @@
       <td>
             <input type="text" *ngIf="!submitted"
                 required name="birth-yeare" id="birth-year" 
-                [(ngModel)]="member.birth_year" #lname="ngModel" >
-            <span  *ngIf="submitted">{{member.birth_year}}</span>
+                [(ngModel)]="member.birth.year" #lname="ngModel" >
+            <span  *ngIf="submitted">{{member.birth ? member.birth.year : "?" }}</span>
       </td>
     </tr>    
     <tr id='place_row'>
@@ -42,8 +41,8 @@
       <td>
             <input type="text" *ngIf="!submitted"
                 required name="birth-place" id="birth-place" 
-                [(ngModel)]="member.birth_place" #lname="ngModel" >
-            <span  *ngIf="submitted">{{member.birth_place}}</span>
+                [(ngModel)]="member.birth.place" #lname="ngModel" >
+            <span  *ngIf="submitted">{{member.birth ? member.birth.place : "?" }}</span>
       </td>
 
     </tr>
@@ -106,7 +105,7 @@
     </tbody>
     </table>
 
-    <div class="field">
+    <div class="field" *ngIf="!submitted">
     <div class="ui checkbox">
       <input type="checkbox" id="terms" name="terms">
       <label>I am authorized to make these changes.</label>

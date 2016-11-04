@@ -53,16 +53,21 @@
   </tr>
 </table>
 
-    <div class="row" *ngIf="members && !isListView">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4"
-            *ngFor='let member of members | memberFilter:listFilter :3'>
-    
-                <md-card class="kz-mem-card" [class.warning]="member.selected" (click)="onSelect(member)">
-                        <md-card-title-group>
-                            <md-card-title>{{ member.first_name}} {{member.last_name}}</md-card-title>
-                            <md-card-subtitle>{{ member.birth ?  member.birth.year : "?" }}</md-card-subtitle>
-                            <md-card-subtitle>{{ member.birth ?  member.birth.place : "?" }}</md-card-subtitle>
-                        </md-card-title-group>
-                </md-card>
-        </div>
+
+
+<div class="row" *ngIf="members && !isListView">
+
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngFor='let member of members | memberFilter:listFilter :3'>
+
+        <md-card class="kz-mem-card">
+            <md-card-title-group>
+                <md-card-title>{{ member.first_name}} {{member.last_name}}</md-card-title>
+                <md-card-subtitle>
+                    {{ member.birth ?  member.birth.year : "?" }} - 
+                    {{ member.birth ?  member.birth.place : "?" }}
+                </md-card-subtitle>
+                <img md-card-md-image src="http://lorempixel.com/400/200/people/{{member.id % 10}}">
+            </md-card-title-group>
+        </md-card>
     </div>
+</div>

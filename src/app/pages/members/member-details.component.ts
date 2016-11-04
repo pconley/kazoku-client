@@ -7,8 +7,7 @@ import { IMember } from "../../models/member";
 @Component({
     selector: "kz-member-details",
     templateUrl: "./member-details.component.html",
-    styleUrls: [ "./member-details.component.css" ],
-    //directives: [StarComponent]
+    styleUrls: [ "./member-details.component.css" ]
 })
 export class MemberDetailsComponent implements OnInit {
 
@@ -57,17 +56,6 @@ export class MemberDetailsComponent implements OnInit {
         this.is_dirty = false;
         this.submitted = true; 
     }
-
-
-
-    // newMember() {
-    //     this.member = { id:0, key: "",
-    //         first_name: "", last_name:"", 
-    //         starRating: 0, selected: false, description: ""
-    //     };
-    //     this.resetPristine();
-    //     this.submitted = false;
-    // }
 
     resetPristine(){
         console.log("MemberDetailsComponent#resetPristine");

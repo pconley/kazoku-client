@@ -19,6 +19,11 @@ export class AppComponent implements OnInit {
     console.log("AppComponent#constructor");
   }
 
+  goto_home(){
+    let home = this.auth.authenticated() ? 'dashboard' : 'home';
+    this.goto(home);
+  }
+
   goto(route){
     console.log("*** AppComponent#goto route="+route);
     this.router.navigate([route]);
@@ -26,10 +31,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(){ 
     console.log("AppComponent#init");
-
     // set up a global watcher of the authentication actions
     this.auth.login_observable.subscribe( x => { console.log(">>> watcher#login "+x); } );
-
- 
   }
 }
