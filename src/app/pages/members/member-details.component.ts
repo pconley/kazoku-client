@@ -34,7 +34,8 @@ export class MemberDetailsComponent implements OnInit {
             .subscribe((id) => {
                 this.service
                     .getMember(id)
-                    .subscribe(m => this.member = m);
+                    .do(obj => { console.log("MemberDetails#init: obj...",obj); })
+                    .subscribe(m => {this.member = m; console.log(this.member.birth); });
             });
     }
 

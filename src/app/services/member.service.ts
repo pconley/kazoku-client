@@ -43,7 +43,7 @@ export class MemberService {
         var action = `members/${id}`;
         return this.apiService.get(action)
             .map((obj: any) => <IMember> obj) 
-            //.do(obj => { console.log("MemberService#getMember: obj...",obj); })
+            .do(obj => { console.log("MemberService#getMember: obj...",obj); })
             .catch(this.handleError);
     }
 

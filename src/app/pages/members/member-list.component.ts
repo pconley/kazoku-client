@@ -24,6 +24,8 @@ export class MemberListComponent implements OnInit {
     loading: boolean = false;
     members: IMember[] = [];
 
+    isListView: boolean = true;
+
     constructor(
         private router: Router, 
         private authService: AuthService,

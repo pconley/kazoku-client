@@ -5,6 +5,7 @@ export interface IMember {
     key: string;
     starRating: number;
     selected: boolean;
+    birth?: any;
     description: string;
     parents?: IMember[];
 }
