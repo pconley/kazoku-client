@@ -1,0 +1,129 @@
+<!--<div>submited flag = {{submitted}}</div>
+<div>dirty record = {{is_dirty}}</div>
+<div>rails record id = {{member.id}}</div>-->
+
+<form *ngIf="active" (ngSubmit)="onSubmit(theForm)" #theForm="ngForm" class="ui form">
+
+    <!--<h4 class="ui horizontal divider header"><i class="user icon"></i>Description</h4>
+    <p  class="ui">{{member.description}}</p>-->
+
+    <h4 class="ui horizontal divider header"><i class="list layout icon"></i>Member Details</h4>
+    <table class="ui definition table">
+    <tbody>
+    <tr id='lname_row'>
+      <td class="three wide column">Last Name</td>
+      <td>
+          <input *ngIf="!submitted" type="text" required 
+            name="first-name" id="first-name" 
+            [(ngModel)]="member.first_name" #fname="ngModel">
+          <span  *ngIf="submitted">{{member.first_name}}</span>
+      </td>
+    </tr>
+    <tr id='fname_row'>
+      <td>First Name</td>
+      <td>
+            <input type="text" *ngIf="!submitted"
+                required name="last-name" id="last-name" 
+                [(ngModel)]="member.last_name" #lname="ngModel" >
+            <span  *ngIf="submitted">{{member.last_name}}</span>
+      </td>
+    </tr>
+    <tr id='year_row'>
+      <td>Born in</td>
+      <td>
+            <input type="text" *ngIf="!submitted"
+                required name="birth-yeare" id="birth-year" 
+                [(ngModel)]="member.birth_year" #lname="ngModel" >
+            <span  *ngIf="submitted">{{member.birth_year}}</span>
+      </td>
+    </tr>    
+    <tr id='place_row'>
+      <td>Born at</td>
+      <td>
+            <input type="text" *ngIf="!submitted"
+                required name="birth-place" id="birth-place" 
+                [(ngModel)]="member.birth_place" #lname="ngModel" >
+            <span  *ngIf="submitted">{{member.birth_place}}</span>
+      </td>
+
+    </tr>
+    <tr id='parent_row'>
+      <td>Parents</td>
+      <td>
+          <span *ngIf="member.parents">
+            <a href="#" *ngIf="member.parents[0]" 
+                [routerLink]="['/member', member.parents[0].id]">{{member.parents[0].first_name}}</a>
+            <span *ngIf="(member.parents.length==2)"> & </span>
+            <a href="#" *ngIf="member.parents[1]"
+                [routerLink]="['/member', member.parents[1].id]">{{member.parents[1].first_name}}</a>
+          </span>
+      </td>
+    </tr>
+
+    <tr id='spouse_row'>
+      <td>Spouse(s)</td>
+      <td>
+        <span *ngFor='let spouse of member.spouses'>
+            <a href="#" [routerLink]="['/member', spouse.id]">{{spouse.first_name}} {{spouse.last_name}}</a>
+            ; &nbsp;
+        </span>
+      </td>
+    </tr>
+
+    <tr id='sibling_row'>
+      <td>Siblings</td>
+      <td>
+        <span *ngFor='let sib of member.siblings'>
+            <a href="#" [routerLink]="['/member', sib.id]">{{sib.first_name}}</a>
+            ; &nbsp;
+        </span>
+      </td>
+    </tr>
+  
+    <tr id='children_row'>
+      <td>Children</td>
+      <td>
+        <span *ngFor='let child of member.children'>
+            <a href="#" [routerLink]="['/member', child.id]">{{child.first_name}}</a>
+            ; &nbsp;
+        </span>
+      </td>
+    </tr>
+
+  
+    <tr id='description_row'> 
+      <td>Description</td>
+      <td>
+          <div *ngIf="!submitted">
+          <textarea rows="4" cols="50" required
+            name="description" id="description" 
+            [(ngModel)]="member.description" #fdesc="ngModel">
+          </textarea>
+          </div>
+          <span *ngIf="submitted">{{member.description}}</span>
+      </td>
+    </tr>
+    </tbody>
+    </table>
+
+    <div class="field">
+    <div class="ui checkbox">
+      <input type="checkbox" id="terms" name="terms">
+      <label>I am authorized to make these changes.</label>
+    </div>
+    </div>
+  
+    <button *ngIf="submitted" class="ui button primary" (click)="submitted=false">Edit</button>
+    <button *ngIf="!submitted" class="ui button primary" [disabled]="!theForm.form.valid" type="submit" >Submit</button>
+    <button *ngIf="!submitted" class="ui button" (click)="this.onCancel()" >Cancel</button>
+
+  <!--<button class="ui button" (click)="newMember()">New Member</button>-->
+
+  <!--<div *ngIf="!submitted" [hidden]="theForm.form.valid" 
+            class="ui attached message error-message">
+            <div class="header">Validations Errors!</div>
+            <p [hidden]="fname.valid || fname.pristine">First Name is required</p>
+            <p [hidden]="lname.valid || lname.pristine">Last Name is required</p>
+  </div>-->
+  
+</form>

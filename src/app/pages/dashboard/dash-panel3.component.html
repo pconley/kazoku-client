@@ -1,0 +1,37 @@
+<div class="ui segment">
+
+    <h3>Calender View for {{month}} has {{weeks.length}} weeks. (add navigation here)</h3>
+
+    <table class="ui celled table">
+    <thead>
+        <tr>
+            <th class="one wide center aligned" *ngFor='let hdr of hdrs'>{{hdr}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor='let week of weeks'>
+            <td *ngFor='let d of week'>
+                <p>{{d.day}}</p>
+                <p>{{d.name}}&nbsp;</p>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot class="full-width">
+        <tr>
+        <th></th>
+        <th colspan="6">
+            <div class="ui right floated small primary labeled icon button">
+            <i class="user icon"></i> Add User
+            </div>
+            <div class="ui small  button">
+            Approve
+            </div>
+            <div class="ui small  disabled button">
+            Approve All
+            </div>
+        </th>
+        </tr>
+    </tfoot>
+    </table>
+
+</div>

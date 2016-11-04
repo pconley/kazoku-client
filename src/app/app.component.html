@@ -31,6 +31,9 @@
         <button md-menu-item (click)="goto('sample')">
           <span><md-icon>new_releases</md-icon>Samples</span>
         </button>
+        <button md-menu-item (click)="goto('dashboard')" *ngIf="auth.authenticated()">
+          <span><md-icon>dashboard</md-icon>Dashboard</span>
+        </button>
         <button md-menu-item (click)="isDarkTheme = !isDarkTheme">
             <span><md-icon>swap_horiz</md-icon>Toggle</span>
         </button>
@@ -40,7 +43,7 @@
         <button md-menu-item disabled>
             <span><md-icon>help</md-icon>Help</span>
         </button>
-        <button md-menu-item *ngIf="auth.authenticated()" (click)="auth.logout()">
+        <button md-menu-item (click)="auth.logout()" *ngIf="auth.authenticated()">
             <span><md-icon>exit_to_app</md-icon>Logout</span>
         </button>
     </md-menu>

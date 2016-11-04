@@ -1,0 +1,37 @@
+<h1 class="ui header">Family Members</h1>
+
+<md-card>
+
+    <!-- the header -->
+    <div>Filter by:</div>
+    <div><input type='text' [(ngModel)]='listFilter' /></div>
+    <button *ngIf='!loading' class='ui secondary button' (click)='refresh()'>Reload</button>
+    <button *ngIf='loading' class='ui loading button' >Reload</button>
+
+    <md-grid-list cols="4" rowHeight="50px" gutterSize="4px" [style.background]="'lightblue'" >
+        <md-grid-tile gutterSize="4px">One</md-grid-tile>
+        <md-grid-tile>Two</md-grid-tile>
+        <md-grid-tile>Three</md-grid-tile>
+        <md-grid-tile>Four</md-grid-tile>
+        <md-grid-tile>555</md-grid-tile>
+        <md-grid-tile>666</md-grid-tile>
+    </md-grid-list>
+
+    <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div> 
+
+
+     <div *ngIf="members && members.length">
+                    <md-card *ngFor='let member of members | memberFilter:listFilter :3' 
+                    [class.warning]="member.selected"
+                    (click)="onSelect(member)">
+
+                        <md-card-title-group>
+                            <md-card-title>{{ member.first_name}} {{member.last_name}}</md-card-title>
+                            <md-card-subtitle>{{ member.birth_year > 0 ? member.birth_year : '' }}</md-card-subtitle>
+                        </md-card-title-group>
+                    </md-card>
+
+                        
+    </div>
+
+</md-card>
