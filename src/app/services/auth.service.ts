@@ -72,6 +72,7 @@ export class AuthService {
       // THIS CALLBACK IS NOT GETTING FIRED FOR SOME REASON, SO 
       // WE ARE GENERATING AN ERROR MESSAGE IN CASE IT EVER DOES
       console.error('*** AuthService#OnAuthenticated. authResult...',authResult);
+      console.log('>>> token = '+authResult.idToken);
       localStorage.setItem('id_token', authResult.idToken);
     });
   }

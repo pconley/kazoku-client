@@ -1,0 +1,6 @@
+
+-- preload memebers in background after login?
+-- loading box on members page if loading
+-- rename the firebase host site
+-- member filter by first OR last name
+

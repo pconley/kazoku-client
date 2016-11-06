@@ -1,7 +1,7 @@
 <md-sidenav-layout [class.m2app-dark]="isDarkTheme">
 
   <md-sidenav #leftnav (open)="lcbutton.focus()">
-      Left Nav<br><button md-button #lcbutton (click)="leftnav.close()">L-Close</button>
+      Proto Sidebar<br><button md-button #lcbutton (click)="leftnav.close()">L-Close</button>
   </md-sidenav>
 
   <!--an example of the right nav-->
@@ -17,28 +17,26 @@
 
     <button md-raised-button color="primary" (click)="goto_home()">Kazoku!</button>
 
-    &nbsp;&nbsp;&nbsp;&nbsp; <!-- spacer -->
+    &nbsp;&nbsp;&nbsp; <!-- spacer -->
 
-    <button md-raised-button color="accent" (click)="goto('members')">Members</button>
+    <button md-raised-button color="accent" (click)="goto('members')" *ngIf="auth.authenticated()">Members</button>
 
     <span class="app-toolbar-filler"></span>
 
     <button md-raised-button color="primary" (click)="goto('contact')">Contact Us</button>
-    <button md-raised-button color="primary" *ngIf="!auth.authenticated()" (click)="auth.login()">Login</button>
+    &nbsp;&nbsp; <!-- spacer -->
+    <button md-raised-button color="accent" *ngIf="!auth.authenticated()" (click)="auth.login()">Login</button>
 
     <!-- 3 dot menu opens when trigger button is clicked -->
     <button md-icon-button [md-menu-trigger-for]="menu">
       <md-icon>more_vert</md-icon>
     </button>
     <md-menu x-position="before" #menu="mdMenu">
-        <button md-menu-item (click)="goto('sample')">
-          <span><md-icon>new_releases</md-icon>Samples</span>
+        <button md-menu-item (click)="goto('home')">
+          <span><md-icon>home</md-icon>Home</span>
         </button>
         <button md-menu-item (click)="goto('dashboard')" *ngIf="auth.authenticated()">
           <span><md-icon>dashboard</md-icon>Dashboard</span>
-        </button>
-        <button md-menu-item (click)="isDarkTheme = !isDarkTheme">
-            <span><md-icon>swap_horiz</md-icon>Toggle</span>
         </button>
         <button md-menu-item (click)="goto('profile')" *ngIf="auth.authenticated()">
             <span><md-icon>perm_identity</md-icon>Profile</span>
@@ -48,6 +46,13 @@
         </button>
         <button md-menu-item (click)="auth.logout()" *ngIf="auth.authenticated()">
             <span><md-icon>exit_to_app</md-icon>Logout</span>
+        </button>
+        <hr>
+        <button md-menu-item (click)="goto('sample')">
+            <span><md-icon>new_releases</md-icon>Samples</span>
+        </button>
+        <button md-menu-item (click)="isDarkTheme = !isDarkTheme">
+            <span><md-icon>swap_horiz</md-icon>Colors</span>
         </button>
     </md-menu>
 

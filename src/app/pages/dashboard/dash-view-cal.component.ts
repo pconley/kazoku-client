@@ -1,18 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
-// import {
-//   startOfDay,subDays,addDays,endOfMonth,isSameDay,isSameMonth,
-//   addWeeks,subWeeks,addMonths,subMonths,addHours
-// } from 'date-fns';
-
-import { Subject } from 'rxjs/Subject';
-
 import {
   CalendarEvent,
   CalendarEventAction,
   CalendarEventTimesChangedEvent
 } from 'angular-calendar'; 
 
+import { EventService } from '../../services/event.service';
 import { DashboardService } from '../../services/dashboard.service';
 
 const colors: any = {
@@ -24,12 +18,10 @@ const colors: any = {
 const months: string[] = ["January","February","March","April","May","Jun","July","August","September","October","November","December"];
 
 @Component({
-  selector: 'kz-dashboard',
-  templateUrl: "./dashboard.component.html"
+  selector: 'kz-dash-view-cal',
+  templateUrl: "./dash-view-cal.component.html"
 })
-export class DashboardComponent implements OnInit {
-
-    profile: any = null;
+export class DashViewCalComponent implements OnInit {
 
     viewDate: Date = new Date();
     viewMonth: string = "";
@@ -48,22 +40,21 @@ export class DashboardComponent implements OnInit {
         }
     }];
 
-  refresh: Subject<any> = new Subject();
+    events: CalendarEvent[] = [
+        { start: new Date(2016,10,24), end: new Date(2016,10,25), title: 'TwoDays', color: colors.blue, actions: this.actions },
+        { start: new Date(2016,11,25), title: 'Xmas', color: colors.blue, actions: this.actions }
+    ];
 
-  events: CalendarEvent[] = [
-    { start: new Date(2016,10,24), end: new Date(2016,10,25), title: 'TwoDays', color: colors.blue, actions: this.actions },
-    { start: new Date(2016,11,25), title: 'Xmas', color: colors.blue, actions: this.actions }
-  ];
-  
-    constructor( private profileService: DashboardService ) {
-        this.today(); // initial view is today
-    }
+    constructor( 
+        private EventService: EventService,
+        private dashboardService: DashboardService 
+    ) {}
 
     ngOnInit() { 
-        //this.profile = this.profile || this.profileService.load_profile();
+        console.log("DashViewCalComponent#init");
     }
 
-    setViewDate(date: Date){
+        setViewDate(date: Date){
         this.viewDate = date;
         this.viewMonth = months[date.getMonth()];
     }
@@ -91,4 +82,16 @@ export class DashboardComponent implements OnInit {
         this.setViewDate( date );
     }
 
+    getDateAsString(date){
+        var day = date.getDate();
+        var month = date.toLocaleString("en-us", { month: "long" });
+        var suffix = "th";
+        if( day%10 === 1 && day !== 11 ) suffix = "st";
+        if( day%10 === 2 && day !== 12 ) suffix = "nd";
+        if( day%10 === 3 && day !== 13 ) suffix = "rd";
+        // if( day === 11 ) suffix = "th";
+        // if( day === 12 ) suffix = "th";
+        // if( day === 13 ) suffix = "th";
+        return month+" "+day+suffix;
+    }
 }

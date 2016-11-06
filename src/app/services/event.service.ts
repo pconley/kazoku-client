@@ -23,7 +23,7 @@ export class EventService {
 
     constructor(private _http: Http, private _auth: AuthHttp) {}
 
-    getEvents(force: boolean): Observable<IEvent[]> {
+    getEvents(month: number, force: boolean = false): Observable<IEvent[]> {
         // if we are not forcing a reload, and there are already
         // events stored in the events cache... then use cache
         if( !force && this.eventsCache ){
@@ -31,7 +31,7 @@ export class EventService {
             return Observable.of(this.eventsCache);
         }
         // otherwise do the load from the server
-        return this.loadEvents(10);
+        return this.loadEvents(month);
     }
 
     getEvent(id: number): Observable<IEvent> {
