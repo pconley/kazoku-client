@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { EventService } from '../../services/event.service';
-import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'kz-dash-view-list',
@@ -14,21 +13,17 @@ export class DashViewListComponent implements OnInit {
     status: string = null;
     events: any[] = [];
 
-    birthdays: any[] = [];
-
     constructor( 
-        private EventService: EventService, 
-        private DashboardService: DashboardService 
+        private EventService: EventService
     ) {}
 
     ngOnInit() { 
-        console.log("DashViewListComponent#init");
+        console.log("*** DashViewListComponent#init");
 
         var today = new Date();
         this.month = today.toLocaleString("en-us", { month: "long" });
-        this.birthdays = this.DashboardService.getBirthdays(today.getMonth());
 
-        this.EventService.getEvents(today.getMonth())
+        this.EventService.getEvents(today.getMonth()+1)
             .subscribe(
                 (data) => { 
                     // push in case the data come back in chunks

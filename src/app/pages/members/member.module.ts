@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpModule } from "@angular/http";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from '@angular/router';
@@ -9,10 +9,10 @@ import { MemberListComponent } from "./member-list.component";
 import { MemberDetailsComponent } from "./member-details.component";
 
 import { StarComponent } from "../../components/stars/star.component";
+import { NoticeComponent } from "../../components/notice.component";
 
 // the turorial showed this in the app component, but
 // i could only get ngModel to work after puttting here
-// note that it is also imported below
 import { FormsModule } from '@angular/forms';
 
 import { MemberFilterPipe } from "./member-filter.pipe";
@@ -21,20 +21,25 @@ import { CanActivateViaAuthGuard } from '../../services/auth.guard'
 
 @NgModule({
     imports: [
-        CommonModule, 
-        FormsModule,
-        HttpModule,
-        MemberRouter,
-        // core material elements
+        // core angular stuff
+        CommonModule, FormsModule, HttpModule,
+        // material design stuff
         MaterialModule.forRoot(),
+        // kz custom stuff
+        MemberRouter //, NoticeModule
     ],
     providers: [ CanActivateViaAuthGuard ],
     declarations: [ 
+        // member pages
         MemberListComponent, MemberDetailsComponent, 
+        // pipes
         MemberFilterPipe, TitleCasePipe, 
-        StarComponent 
+        // shared components
+        StarComponent, NoticeComponent
     ],
-    bootstrap: [ MemberListComponent ]
+    bootstrap: [ MemberListComponent ],
+    schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+
 })
 
 export class MemberModule { }

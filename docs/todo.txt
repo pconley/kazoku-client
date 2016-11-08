@@ -1,6 +1,17 @@
 
--- preload memebers in background after login?
+*** PENDING 
+
+-- preload members in background after login?
 -- loading box on members page if loading
 -- rename the firebase host site
+-- loading spinner on the calendar
+-- need to sort out share aspects of calendar
+-- does the existing 3rd party calendar suffice?
+
+*** DONE
+
 -- member filter by first OR last name
+-- jump home after logout
+
+
 

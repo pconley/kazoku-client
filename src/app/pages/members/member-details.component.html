@@ -1,9 +1,8 @@
 
-<md-card class="warning-message" *ngIf="!submitted">
-      Note: The Edit Page does not really update the database at the server! But it 
-      should record the changes locally.  The will be lost the next time you load the
-      application (web page) from the server.
-</md-card>
+<kz-notice *ngIf="!submitted">
+      The Edit Page does not really update the database at the server! But it will record the changes 
+      locally.  The will be lost the next time you load the application (web page) from the server.
+</kz-notice>
 
 <form *ngIf="active" (ngSubmit)="onSubmit(theForm)" #theForm="ngForm" class="ui form">  
     <h4 class="ui horizontal divider header"><i class="list layout icon"></i>Member Details</h4>

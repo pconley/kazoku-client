@@ -22,8 +22,10 @@ export class MemberFilterPipe implements PipeTransform {
         }
         let filter: string = str.toLocaleLowerCase();
         //console.log("memberFilter: "+filter);
-        let result = value.filter((member: IMember) =>
-            member.first_name.toLocaleLowerCase().indexOf(filter) !== -1);
+        let result = value.filter((member: IMember) => {
+            let search_text = member.first_name + member.last_name;
+            return search_text.toLocaleLowerCase().indexOf(filter) !== -1;
+        });
         return result;
     }
 }

@@ -95,6 +95,5 @@ export class AuthService {
     console.log("*** AuthService#logout");
     localStorage.removeItem('id_token');
     this._login_subject.next("the logout!");
-    this.router.navigate(['']);
   };
 }

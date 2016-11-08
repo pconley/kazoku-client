@@ -13,11 +13,11 @@ import { AuthService } from "./services/auth.service"
 import { EventService } from "./services/event.service"
 import { MemberService } from "./services/member.service"
 import { ProfileService } from "./services/profile.service"
-import { DashboardService } from "./services/dashboard.service"
 
 import { CanActivateViaAuthGuard } from "./services/auth.guard"
 
 import { HomeModule }      from "./pages/home/home.module";
+import { NotesModule }     from "./pages/notes/notes.module";
 import { ErrorModule }     from "./pages/error/error.module";
 import { SampleModule }    from "./pages/sample/sample.module";
 import { MemberModule }    from "./pages/members/member.module";
@@ -33,7 +33,7 @@ import { DashboardModule } from "./pages/dashboard/dashboard.module";
     // these are the page level modules
     HomeModule, ProfileModule, SampleModule, 
     DashboardModule, ContactModule, ErrorModule,
-    MemberModule,
+    MemberModule, NotesModule,
     // core material elements
     MaterialModule.forRoot(),
     AppRouting
@@ -41,8 +41,7 @@ import { DashboardModule } from "./pages/dashboard/dashboard.module";
   providers: [
     // globally available services at this top level
     EventService, AuthService, ApiService, 
-    DashboardService, ProfileService,
-    MemberService,
+    ProfileService, MemberService,
     // here are the custom route gaurds
     CanActivateViaAuthGuard,
     provideAuth({

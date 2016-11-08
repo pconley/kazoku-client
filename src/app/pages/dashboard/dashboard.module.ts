@@ -10,8 +10,8 @@ import { DashViewCalComponent }   from "./dash-view-cal.component";
 import { DashViewListComponent }   from "./dash-view-list.component";
 import { DashPanelThreeComponent } from "./dash-panel3.component";
 
-import { CalendarHdrComponent } from "../../components/calendar-hdr.component";
-import { CalendarDayComponent } from "../../components/calendar-day.component";
+import { CalendarHdrComponent } from "../../components/calendar/calendar-hdr.component";
+import { CalendarDayComponent } from "../../components/calendar/calendar-day.component";
 
 @NgModule({
     imports: [ 

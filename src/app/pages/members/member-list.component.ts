@@ -5,12 +5,10 @@ import { AuthService } from "../../services/auth.service";
 import { MemberService } from "../../services/member.service";
 import { IMember } from "../../models/member"
 
-
 @Component({
     selector: "kz-members",
     templateUrl: "./member-list.component.html",
-    styleUrls: [ "./member-list.component.css" ],
-    //directives: [StarComponent]
+    styleUrls: [ "./member-list.component.css" ]
 })
 export class MemberListComponent implements OnInit {
  

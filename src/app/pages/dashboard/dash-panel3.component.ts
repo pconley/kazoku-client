@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { DashboardService } from '../../services/dashboard.service';
-
-import { CalendarDayComponent } from '../../components/calendar-day.component';
+import { CalendarDayComponent } from '../../components/calendar/calendar-day.component';
 
 @Component({
   selector: 'kz-dash-panel3',
@@ -20,14 +18,14 @@ export class DashPanelThreeComponent implements OnInit {
     hdrs: string[] = ["Sunday","Montag","Tue","Weds","Thor's Day","Frietag","Saturn"]
     birthdays: any[] = [];
 
-    constructor( private dashboardService: DashboardService ) {}
+    constructor() {}
 
     ngOnInit() { 
         console.log("DashPanelTwoComponent#init");
 
         var today = new Date();
         this.month = today.toLocaleString("en-us", { month: "long" });
-        this.birthdays = this.dashboardService.getBirthdays(today.getMonth());
+        this.birthdays = []; //this.dashboardService.getBirthdays(today.getMonth());
 
         this.days = [];
         this.weeks = [];
