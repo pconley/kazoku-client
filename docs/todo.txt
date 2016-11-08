@@ -7,6 +7,9 @@
 -- loading spinner on the calendar
 -- need to sort out share aspects of calendar
 -- does the existing 3rd party calendar suffice?
+-- accumulate/cache the events as we change months
+-- member list action bar need work
+-- remember list/card view choice on members list
 
 *** DONE
 

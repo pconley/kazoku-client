@@ -22,7 +22,7 @@ export class MemberListComponent implements OnInit {
     loading: boolean = false;
     members: IMember[] = [];
 
-    isListView: boolean = false;
+    isListView: boolean = true;
 
     constructor(
         private router: Router, 

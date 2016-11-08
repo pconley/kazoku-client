@@ -1,41 +1,24 @@
-<md-toolbar color="primary">
-    Members
-    <span class="app-toolbar-filler"></span>
+<md-toolbar>
+    <span>Members</span>
+
+    <!-- fills the remaining space of the current row -->
+    <span class="example-fill-remaining-space"></span>
+
     <!--search/filter field-->
     <md-input placeholder="name filter" [(ngModel)]='listFilter'>
         <span md-prefix><i class="material-icons app-input-icon">search</i>&nbsp;&nbsp;</span>
-    </md-input>
-    <!--a wonky spacer-->
-    <div>&nbsp;&nbsp;&nbsp;</div> 
+    </md-input> &nbsp;&nbsp;&nbsp;
+
     <!--reload button-->
-    <button md-raised-button color="primary" *ngIf='!loading' class='ui secondary button' (click)='refresh()'>Reload</button>
-    <button md-raised-button color="primary" *ngIf='loading' class='ui loading button' >Reload</button>
-    
-    <button md-icon-button *ngIf='!isListView' (click)="isListView = !isListView">
-      <md-icon>list</md-icon>
+    <button md-raised-button color="primary" (click)='refresh()' [disabled]='loading'>
+        {{loading ? 'Loading' : 'Reload' }}
     </button>
-     <button md-icon-button *ngIf='isListView' (click)="isListView = !isListView">
-      <md-icon>dashboard</md-icon>
+
+    <!--list/grid view toggle button-->
+    <button md-icon-button [ngSwitch]="isListView" (click)="isListView = !isListView">
+        <md-icon *ngSwitchCase="true">dashboard</md-icon>
+        <md-icon *ngSwitchCase="false">list</md-icon>
     </button>
-    
-    <!-- 3 dot menu opens when trigger button is clicked -->
-    <!--<button md-icon-button [md-menu-trigger-for]="menu">
-      <md-icon>more_vert</md-icon>
-    </button>
-    <md-menu x-position="before" #menu="mdMenu">
-        <button md-menu-item (click)="isListView = false">
-          <span><md-icon>dashboard</md-icon>Card View</span>
-        </button>
-        <button md-menu-item (click)="isListView = true">
-            <span><md-icon>list</md-icon>List View</span>
-        </button>
-        <button md-menu-item>
-            <span><md-icon>perm_identity</md-icon>Action 2</span>
-        </button>
-        <button md-menu-item disabled>
-            <span><md-icon>help</md-icon>Action 3</span>
-        </button>
-    </md-menu>-->
 </md-toolbar>
 
 <table class="table table-striped" *ngIf='isListView'>
