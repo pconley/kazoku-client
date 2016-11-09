@@ -1,6 +1,8 @@
 
 *** PENDING 
 
+-- connect "user" to a "member"
+-- establish "proximity" beween members
 -- preload members in background after login?
 -- loading box on members page if loading
 -- rename the firebase host site
@@ -8,13 +10,13 @@
 -- need to sort out share aspects of calendar
 -- does the existing 3rd party calendar suffice?
 -- accumulate/cache the events as we change months
--- member list action bar need work
 -- remember list/card view choice on members list
+
+>> kserg/ng2-toasty
 
 *** DONE
 
 -- member filter by first OR last name
 -- jump home after logout
-
-
+-- member list action bar needs work
 

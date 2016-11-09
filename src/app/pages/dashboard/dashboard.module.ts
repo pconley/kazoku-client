@@ -6,13 +6,6 @@ import { CalendarModule }     from 'angular-calendar';
 import { DashboardComponent } from "./dashboard.component";
 import { DashboardRouter }    from "./dashboard.routing";
 
-import { DashViewCalComponent }   from "./dash-view-cal.component";
-import { DashViewListComponent }   from "./dash-view-list.component";
-import { DashPanelThreeComponent } from "./dash-panel3.component";
-
-import { CalendarHdrComponent } from "../../components/calendar/calendar-hdr.component";
-import { CalendarDayComponent } from "../../components/calendar/calendar-day.component";
-
 @NgModule({
     imports: [ 
         CommonModule, 
@@ -22,10 +15,7 @@ import { CalendarDayComponent } from "../../components/calendar/calendar-day.com
         // 3rd party material cal
         CalendarModule.forRoot()
     ],
-    declarations: [ DashboardComponent, 
-        DashViewCalComponent, DashViewListComponent, DashPanelThreeComponent,
-        CalendarDayComponent, CalendarHdrComponent
-    ],
+    declarations: [ DashboardComponent ],
     bootstrap: [ DashboardComponent ]
 })
 export class DashboardModule { }
