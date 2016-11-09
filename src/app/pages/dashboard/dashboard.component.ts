@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 
 import {
@@ -51,6 +51,7 @@ export class DashboardComponent implements OnInit {
     ];
 
     constructor( 
+        private router : Router,
         private EventService: EventService
     ) {}
 
@@ -92,12 +93,14 @@ export class DashboardComponent implements OnInit {
                         let title = `${fname} ${lname}`;
                         let color = datum['kind'] == "death" ? colors.death : colors.birth;
                         let ordstr = event_day+this.ordinal(event_day);
-                        this.items.push({day: event_day, ordinal: ordstr, year: event_year,
+                        this.items.push({day: event_day, 
+                            member_id: datum['member']['id'], 
+                            ordinal: ordstr, year: event_year,
                             kind: datum['kind'], title: title});
                         this.events.push({start: anniv, color: color, 
                             title: title, actions: this.actions});
                     }
-                    //console.log(">>> loading. first event...",this.events[0]);
+                    console.log(">>> loading. first event...",this.events[0]);
                     //console.log(">>> loading. seventh event...",this.events[6]);
                     this.refresh.next(); // refresh the calendar view
                 },
@@ -133,6 +136,16 @@ export class DashboardComponent implements OnInit {
         if( date.getMonth() != this.viewDate.getMonth() ) return;
         this.setViewDate( date );
         this.activeDayIsOpen = true;
+    }
+
+    eventClicked(obj): void {
+        console.log("--- event clicked. obj...",obj);
+        var event = obj.event;
+        console.log("--- event clicked. event...",event);
+        console.log("--- event clicked with title="+event.title);
+        var items = this.items.filter( (item) => item.title == event.title );
+        console.log("--- the matching item is...",items[0]);
+        this.router.navigate(['/member', items[0].member_id]);
     }
 
     ordinal(n: number){

@@ -25,11 +25,17 @@ export class AppComponent implements OnInit {
     this.auth.logout();
   }
 
+  goto_user(){
+    var id = 266;
+    console.log("*** AppComponent#goto id = "+id);
+    // jump to the member page for the current user
+    this.router.navigate(['/member', id]);
+  }
+
   goto_home(){
     let home = this.auth.authenticated() ? 'dashboard' : 'home';
     this.goto(home);
   }
-
   goto(route){
     console.log("*** AppComponent#goto route="+route);
     this.router.navigate([route]);

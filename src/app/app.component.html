@@ -16,11 +16,11 @@
     </button>
 
     <button md-raised-button color="primary" (click)="goto_home()">Kazoku!</button>
-
-    &nbsp;&nbsp;&nbsp; <!-- spacer -->
-
+    &nbsp;&nbsp; <!-- spacer -->
     <button md-raised-button color="accent" (click)="goto('members')" *ngIf="auth.authenticated()">Members</button>
-
+     &nbsp;&nbsp; <!-- spacer -->
+    <button md-raised-button color="accent" (click)="goto_user()" *ngIf="auth.authenticated()">You!</button>
+   
     <span class="app-toolbar-filler"></span>
 
     <button md-raised-button color="primary" (click)="goto('contact')">Contact Us</button>

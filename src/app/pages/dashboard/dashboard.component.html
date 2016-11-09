@@ -9,6 +9,7 @@
         [events]="events" 
         [refresh]="refresh"
         [activeDayIsOpen]="activeDayIsOpen"
+        (eventClicked)="eventClicked($event)"
         (dayClicked)="dayClicked($event.day)">
     </mwl-calendar-month-view>
 </md-card>
