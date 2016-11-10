@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MemberFilterPipe } from "./member-filter.pipe";
 import { TitleCasePipe } from "../../pipes/titlecase.pipe";
-import { CanActivateViaAuthGuard } from '../../services/auth.guard'
+//import { CanActivateViaAuthGuard } from '../../services/auth.guard'
 
 @NgModule({
     imports: [
@@ -28,7 +28,8 @@ import { CanActivateViaAuthGuard } from '../../services/auth.guard'
         // kz custom stuff
         MemberRouter //, NoticeModule
     ],
-    providers: [ CanActivateViaAuthGuard ],
+    // removed to see if provided in main
+    //providers: [ CanActivateViaAuthGuard ],
     declarations: [ 
         // member pages
         MemberListComponent, MemberDetailsComponent, 

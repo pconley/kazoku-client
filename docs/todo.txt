@@ -1,7 +1,7 @@
 
 *** PENDING 
 
--- connect "user" to a "member"
+-- what can a guest do?
 -- establish "proximity" beween members
 -- preload members in background after login?
 -- loading box on members page if loading
@@ -19,4 +19,7 @@
 -- member filter by first OR last name
 -- jump home after logout
 -- member list action bar needs work
+-- connect "user" to a "member"
+-- add a "YOU" button to main menu
+
 

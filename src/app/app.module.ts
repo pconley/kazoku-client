@@ -14,7 +14,9 @@ import { EventService } from "./services/event.service"
 import { MemberService } from "./services/member.service"
 import { ProfileService } from "./services/profile.service"
 
-import { CanActivateViaAuthGuard } from "./services/auth.guard"
+import { AuthGuard } from "./guards/auth.guard"
+import { UserGuard } from "./guards/user.guard"
+import { AdminGuard } from "./guards/admin.guard"
 
 import { HomeModule }      from "./pages/home/home.module";
 import { NotesModule }     from "./pages/notes/notes.module";
@@ -43,7 +45,7 @@ import { DashboardModule } from "./pages/dashboard/dashboard.module";
     EventService, AuthService, ApiService, 
     ProfileService, MemberService,
     // here are the custom route gaurds
-    CanActivateViaAuthGuard,
+    AuthGuard, UserGuard, AdminGuard,
     provideAuth({
         globalHeaders: [{"Content-type": "application/json"}],
         //newJwtError: true,

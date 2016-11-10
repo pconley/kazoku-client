@@ -36,10 +36,11 @@ export class AuthService {
       // then this is a normal page load, *not* one triggered
       // by the login process from the user via Auth0 calllback
       console.log("*** page load from scratch");
-      if( this.authenticated ){
+      if( this.authenticated() ){
         // we are already logged into the application on the page restart
         // so send the message to anyone that has on-login actions to take
         this._login_subject.next("the auto login");
+        this.userProfile = this.get_local_profile();
       }
       return;
     }
@@ -61,10 +62,7 @@ export class AuthService {
         alert(error); 
         return; 
       }
-      this._login_subject.next("found the profile... save it");
-      localStorage.setItem('profile', JSON.stringify(profile));
-      console.log("auth profile...",profile);
-      this.userProfile = profile;
+      this.userProfile = this.set_local_profile(profile);
     });
   
     // Add callback for lock `authenticated` event
@@ -79,6 +77,7 @@ export class AuthService {
 
   public login() {
     console.log("*** AuthService#login");
+    this.router.navigate(['home']);
     this._login_subject.next("open login window");
     this.lock.show(); // display login popup window
   };
@@ -94,6 +93,26 @@ export class AuthService {
   public logout() {
     console.log("*** AuthService#logout");
     localStorage.removeItem('id_token');
+    localStorage.removeItem('profile');
     this._login_subject.next("the logout!");
   };
+
+  get_local_profile(){
+        // the profile was saved to local storage (along with the
+        // token_id) at the time the user logged into the system
+        var json = localStorage.getItem('profile');
+        var profile = JSON.parse(json);
+        profile.create_year = profile.created_at.substring(0, 4);
+        console.log("AuthService#get_local_profile: profile...",profile); 
+        return profile;
+    }
+
+    set_local_profile(profile){
+        // the profile is saved to local storage (along with the
+        // token_id) at the time the user logged into the system
+        this._login_subject.next("found the profile... save it");
+        localStorage.setItem('profile', JSON.stringify(profile));
+        console.log("set local profile...",profile);
+        return profile;
+    }
 }

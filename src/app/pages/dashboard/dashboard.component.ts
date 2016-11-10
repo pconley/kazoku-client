@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit {
                     this.refresh.next(); // refresh the calendar view
                 },
                 (error: Error) => {
-                    console.log(">>> error "+ error.message);
+                    console.error(">>> DashViewCalComponent#getEvents error... ",error);
                     this.events = [];
                     this.loading = false;
                     this.status = "Error: "+error.message;

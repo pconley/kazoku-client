@@ -16,11 +16,13 @@
     </button>
 
     <button md-raised-button color="primary" (click)="goto_home()">Kazoku!</button>
-    &nbsp;&nbsp; <!-- spacer -->
-    <button md-raised-button color="accent" (click)="goto('members')" *ngIf="auth.authenticated()">Members</button>
-     &nbsp;&nbsp; <!-- spacer -->
-    <button md-raised-button color="accent" (click)="goto_user()" *ngIf="auth.authenticated()">You!</button>
-   
+    <span *ngIf="UserGuard.canActivate()">
+        &nbsp;&nbsp; <!-- spacer -->
+        <button md-raised-button color="accent" (click)="goto('members')">Members</button>
+        &nbsp;&nbsp; <!-- spacer -->
+        <button md-raised-button color="accent" (click)="goto_user()" >You!</button>
+    </span>
+
     <span class="app-toolbar-filler"></span>
 
     <button md-raised-button color="primary" (click)="goto('contact')">Contact Us</button>
@@ -35,10 +37,10 @@
         <button md-menu-item (click)="goto('home')">
           <span><md-icon>home</md-icon>Home</span>
         </button>
-        <button md-menu-item (click)="goto('dashboard')" *ngIf="auth.authenticated()">
+        <button md-menu-item (click)="goto('dashboard')" *ngIf="UserGuard.canActivate()">
           <span><md-icon>dashboard</md-icon>Dashboard</span>
         </button>
-        <button md-menu-item (click)="goto('profile')" *ngIf="auth.authenticated()">
+        <button md-menu-item (click)="goto('profile')" *ngIf="UserGuard.canActivate()">
             <span><md-icon>perm_identity</md-icon>Profile</span>
         </button>
         <button md-menu-item disabled>
@@ -46,10 +48,10 @@
         </button>
 
         <hr>
-        <button md-menu-item (click)="goto('notes')">
+        <button md-menu-item (click)="goto('notes')" *ngIf="UserGuard.canActivate()">
             <span><md-icon>info</md-icon>Release notes</span>
         </button>
-        <button md-menu-item (click)="goto('sample')">
+        <button md-menu-item (click)="goto('sample')" *ngIf="AdminGuard.canActivate()">
             <span><md-icon>new_releases</md-icon>Samples</span>
         </button>
         <button md-menu-item (click)="isDarkTheme = !isDarkTheme">
