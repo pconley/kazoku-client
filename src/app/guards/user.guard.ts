@@ -11,22 +11,22 @@ export class UserGuard implements CanActivate {
   canActivate() {
     var authenticated = this.authService.authenticated();
     if( !authenticated ){
-        console.log("UserGuard. cannot activate because not authorized");
+        //console.log("UserGuard. cannot activate because not authorized");
         return false; // deny access to the route
     }
     var profile = this.authService.userProfile;
     if( !profile ){
-        console.log("UserGuard. cannot activate because no profile");
+        //console.log("UserGuard. cannot activate because no profile");
         return false; // deny access to the route
     }
     var currentRole = profile['role']
     var index = ['admin','user'].indexOf(currentRole);
     var isUserOrAdmin = (index != -1);
     if( !isUserOrAdmin ){
-        console.log("UserGuard. cannot activate because invalid role = "+currentRole);
+        //console.log("UserGuard. cannot activate because invalid role = "+currentRole);
         return false; // deny access to the route
     }
-    console.log("UserGuard: can active? "+isUserOrAdmin);
+    //console.log("UserGuard: can active? "+isUserOrAdmin);
     return isUserOrAdmin;
   }
 }

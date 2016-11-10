@@ -1,24 +1,27 @@
 
 *** PENDING 
 
--- what can a guest do?
+-- add real profile data to auth0 and show
+-- rename move client project into github
 -- establish "proximity" beween members
 -- preload members in background after login?
 -- loading box on members page if loading
--- rename the firebase host site
+-- rename the firebase host site to kazoku
 -- loading spinner on the calendar
 -- need to sort out share aspects of calendar
+-- experiment with the week view
 -- does the existing 3rd party calendar suffice?
 -- accumulate/cache the events as we change months
 -- remember list/card view choice on members list
+-- implement contact us as a suggestion box
+-- toast... via kserg/ng2-toasty?
 
->> kserg/ng2-toasty
+*** 0.0.4
 
-*** DONE
-
+-- restructure guards: guest and admin
 -- member filter by first OR last name
--- jump home after logout
--- member list action bar needs work
+-- jump home after logout; before login
+-- member list action bar refined colors
 -- connect "user" to a "member"
 -- add a "YOU" button to main menu
 

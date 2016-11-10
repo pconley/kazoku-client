@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
   canActivate() {
     var allowed = this.AuthService.authenticated();
     //console.log("can active? "+allowed);
-    if( !allowed ) console.error("cannot activate authorized route!");
+    //if( !allowed ) console.error("cannot activate authorized route!");
     return allowed;
   }
 }
