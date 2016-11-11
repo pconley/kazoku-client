@@ -58,10 +58,12 @@
             <span><md-icon>swap_horiz</md-icon>Colors</span>
         </button>
 
+        <span *ngIf="auth.authenticated()">
         <hr>
-        <button md-menu-item (click)="logout()" *ngIf="auth.authenticated()">
+        <button md-menu-item (click)="logout()">
             <span><md-icon>exit_to_app</md-icon>Logout</span>
         </button>
+        </span>
     </md-menu>
 
     <!--this is the button to activate the right nav above-->

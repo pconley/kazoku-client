@@ -6,7 +6,6 @@ import { ContactMainComponent } from "./contact-main.component";
 import { ContactFormComponent } from "./contact-form.component";
 import { ContactCardComponent } from "./contact-card.component";
 
-
 @NgModule({
     imports: [ ContactRouter, MaterialModule.forRoot() ],
     exports: [ ContactCardComponent ],
