@@ -2,7 +2,8 @@
     <h3 class="kz-header full-width">Update Member</h3>
     <br>
     <form (ngSubmit)="onSubmit(theForm)" #theForm="ngForm">  
-      <md-input maxlength="50" required placeholder="Last Name"
+
+      <md-input maxlength="50" required placeholder="First"
           name="firstname" [(ngModel)]="member.first_name" #fname="ngModel">
           <md-hint class="error" *ngIf="!(fname.valid || fname.pristine)" align="start">First Name is required</md-hint>
      </md-input>
@@ -10,8 +11,8 @@
           name="lastname" [(ngModel)]="member.last_name" #lname="ngModel">
           <md-hint class="error" *ngIf="!(lname.valid || lname.pristine)" align="start">Last Name is required</md-hint>
       </md-input>
-      <!--birth?-->
-      <br>
+     
+      <br>  <!--birth-->
       <md-label>Born: </md-label>
       <md-input maxlength="2" placeholder="Month" type="number" align="end" class="month"
           name="birth_month" [(ngModel)]="member.birth.month" #bmonth="ngModel">
@@ -29,8 +30,8 @@
           name="birth_place" [(ngModel)]="member.birth.place" #bplace="ngModel">
           <md-hint align="end">{{member.birth.place.length}} / 100</md-hint>
       </md-input>
-      <!--death?-->
-      <br>
+      
+      <br> <!--death-->
       <md-label>Died: </md-label>
       <md-input maxlength="2" placeholder="Month" type="number" align="end" class="month"
           name="death_month" [(ngModel)]="member.death.month" #dmonth="ngModel">

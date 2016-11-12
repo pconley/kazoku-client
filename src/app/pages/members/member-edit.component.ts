@@ -5,11 +5,11 @@ import { MemberService } from "../../services/member.service";
 import { IMember } from "../../models/member";
 
 @Component({
-    selector: "kz-member-details",
-    templateUrl: "./member-details.component.html",
-    styleUrls: [ "./member-details.component.css" ]
+    selector: "kz-member-edit",
+    templateUrl: "./member-edit.component.html",
+    styleUrls: [ "./member-edit.component.css" ]
 })
-export class MemberDetailsComponent implements OnInit {
+export class MemberEditComponent implements OnInit {
 
     isLoading: boolean = false;
     isAuthorized: boolean = false;
@@ -24,17 +24,17 @@ export class MemberDetailsComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private service: MemberService) {}
+        private MemberService: MemberService) {}
 
     ngOnInit() {
-        console.log("***MemberDetailsComponent#init");
+        console.log("*** MemberEditComponent#init");
         this.isLoading = true;
         this.route.params
             .map(params => params['id'])
             .subscribe((id) => {
-                this.service
+                this.MemberService
                     .getMember(id)
-                    .do(obj => { console.log("MemberDetails#init: obj...",obj); })
+                    .do(obj => { console.log("*** MemberEditComponent#init: obj...",obj); })
                     .subscribe(m => {
                         this.member = m; 
                         this.member.description = this.member.description || "";
@@ -45,14 +45,22 @@ export class MemberDetailsComponent implements OnInit {
             });
     }
 
-
     goto_show(){
         // page action... navigate to the show page for this user
-        console.log("*** Membershow#goto_show: id = "+this.member.id);
+        console.log("*** MemberEditComponent#goto_show: id = "+this.member.id);
         this.router.navigate(['/member', this.member.id]);
     }
 
-    onSubmit(the_form) { 
-        console.log("MemberDetailsComponent#submit: the form...",the_form);
+    onSubmit(form) { 
+        console.log("*** MemberEditComponent#submit");
+        // note that this.member already has all the form changes
+        // becasue we use the ngModel to link form to memeber
+        if(form.valid) {
+            this.MemberService.saveMember(this.member);
+            this.goto_show();
+        } else {
+            alert("Member Edit Form Not Valid");
+        }
     }
+
 }

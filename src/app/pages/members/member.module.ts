@@ -6,6 +6,8 @@ import { MaterialModule } from '@angular/material';
 
 import { MemberRouter } from './member.routing';
 import { MemberListComponent } from "./member-list.component";
+import { MemberShowComponent } from "./member-show.component";
+import { MemberEditComponent } from "./member-edit.component";
 import { MemberDetailsComponent } from "./member-details.component";
 
 import { StarComponent } from "../../components/stars/star.component";
@@ -30,6 +32,7 @@ import { TitleCasePipe } from "../../pipes/titlecase.pipe";
     declarations: [ 
         // member pages
         MemberListComponent, MemberDetailsComponent, 
+        MemberShowComponent, MemberEditComponent,
         // pipes
         MemberFilterPipe, TitleCasePipe, 
         // shared components

@@ -1,0 +1,56 @@
+<h4>Member Show Page</h4>
+
+<div *ngIf="member">
+        <div class="row">
+                <div class="col-sm-3">Last Name</div>
+                <div class="col-sm-9">{{member.last_name}}</div>
+        </div>   
+        <div class="row">
+                <div class="col-sm-3">First Name</div>
+                <div class="col-sm-9">{{member.first_name}}</div>
+        </div>
+        <div id='birth_row' class="row">
+                <div class="col-sm-3">Born</div>
+                <div class="col-sm-9">{{birth_string}}</div>
+        </div>
+        <div id='death_row' class="row">
+                <div class="col-sm-3">Died</div>
+                <div class="col-sm-9">{{death_string}}</div>
+        </div>
+        <div id='parent_row' class="row">
+                <div class="col-sm-3">Parents</div>
+                <div class="col-sm-9">
+                        <span *ngIf="member.parents">
+                                <a href="#" *ngIf="member.parents[0]" 
+                                [routerLink]="['/member', member.parents[0].id]">{{member.parents[0].first_name}}</a>
+                                <span *ngIf="(member.parents.length==2)"> & </span>
+                                <a href="#" *ngIf="member.parents[1]"
+                                [routerLink]="['/member', member.parents[1].id]">{{member.parents[1].first_name}}</a>
+                        </span>
+                </div>
+        </div>
+        <div id='sibling_row' class="row">
+                <div class="col-sm-3">Siblings</div>
+                <div class="col-sm-9">
+                        <span *ngFor='let sib of member.siblings'>
+                                <a href="#" [routerLink]="['/member', sib.id]">{{sib.first_name}}</a>
+                                ; &nbsp;
+                        </span>
+                </div>
+        </div>
+        <div id='children_row' class="row">
+                <div class="col-sm-3">Children</div>
+                <div class="col-sm-9">
+                        <span *ngFor='let child of member.children'>
+                                <a href="#" [routerLink]="['/member', child.id]">{{child.first_name}}</a>
+                                ; &nbsp;
+                        </span>
+                </div>
+        </div>
+        <div id='description_row' class="row">
+                <div class="col-sm-3">Description</div>
+                <div class="col-sm-9">{{member.description}}</div>
+        </div>
+        <br>
+        <button md-raised-button color="primary" (click)="goto_edit()">Edit</button>
+</div>

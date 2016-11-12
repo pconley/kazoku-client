@@ -16,6 +16,7 @@ import { IMember } from '../models/member';
 @Injectable()
 export class MemberService {
 
+    public memberCache: IMember = null;
     public membersCache: IMember[] = null;
 
     constructor(
@@ -30,16 +31,28 @@ export class MemberService {
         // if we are not forcing a reload, and there are already
         // members stored in the members cache... then use cache
         if( !force && this.membersCache ){
-            console.log("MemberService#getMembers: using cache data!");
+            console.log("*** MemberService#getMembers: using cache data!");
             return Observable.of(this.membersCache);
         }
         // otherwise do the load from the server
         return this.loadPages();
     }
 
-    getMember(id: number): Observable<IMember> {
+    saveMember(member: IMember){
+        console.log("*** MemberService#saveMember: member...",member);
+
+        // WE ARE NOT YET SAVING THE CHANGES TO THE SERVER< WE
+        // JUST REFLECT THE CHANGES IN THE CACHE FOR THE NEXT CALL
+        this.memberCache = member;
+    }
+
+    getMember(id: number, force: boolean = false): Observable<IMember> {
+        console.log(`*** MemberService#getMember: id=${id}`);
         if( ! this.authService.authenticated() ) return this.authError();
-        console.log(`MemberService#getMember: id=${id}`);
+        if( !force && this.memberCache ){
+            console.log("*** MemberService#getMember: using cache data!");
+            return Observable.of(this.memberCache);
+        }
         var action = `members/${id}`;
         return this.apiService.get(action)
             .map((obj: any) => <IMember> obj) 

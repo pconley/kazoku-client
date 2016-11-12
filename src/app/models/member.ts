@@ -6,6 +6,7 @@ export interface IMember {
     starRating: number;
     selected: boolean;
     birth?: any;
+    death?: any;
     description: string;
     parents?: IMember[];
 }

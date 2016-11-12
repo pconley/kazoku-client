@@ -3,7 +3,6 @@
 
 -- what should the floating yellow check do?
 -- add death event to the member details
--- add real profile data to auth0 and show
 -- rename move client project into github
 -- establish "proximity" beween members
 -- preload members in background after login?
@@ -19,6 +18,8 @@
 -- toast... via kserg/ng2-toasty?
 
 *** 0.0.5
+
+-- add real profile data to auth0 and show
 
 *** 0.0.4 (closed)
 
