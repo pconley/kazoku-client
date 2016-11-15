@@ -47,7 +47,7 @@ export class MemberShowComponent implements OnInit {
 
     to_string(event){
         if( !event ) return "";
-        return event.day + "/" +event.month + "/" + event.year + " " + event.place;
+        return event.month + "/" +event.day + "/" + event.year + " " + event.place;
     }
 
     goto_edit(){

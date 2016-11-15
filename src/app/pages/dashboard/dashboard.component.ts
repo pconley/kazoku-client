@@ -82,15 +82,16 @@ export class DashboardComponent implements OnInit {
                 (data) => { 
                     //console.log(">>> loading. event count = "+data.length);
                     for (let datum of data) {
-                        //console.log(">>> member...",datum['member']);
+                        console.log(">>> member...",datum['member']);
                         let event_day = datum['day']+0;
                         if( event_day == 0 ) continue; //skip zeros
                         let event_year = datum['year']+0;
                         let anniv = new Date(display_year,datum['month']-1,event_day);
                         let fname = datum['member']['first_name'];
                         let lname = datum['member']['last_name'];
+                        let range = datum['member']['display_range'];
                         //let range = datum['member']['display_range'];
-                        let title = `${fname} ${lname}`;
+                        let title = `${fname} ${lname} ${range}`;
                         let color = datum['kind'] == "death" ? colors.death : colors.birth;
                         let ordstr = event_day+this.ordinal(event_day);
                         this.items.push({day: event_day, 
@@ -100,7 +101,7 @@ export class DashboardComponent implements OnInit {
                         this.events.push({start: anniv, color: color, 
                             title: title, actions: this.actions});
                     }
-                    console.log(">>> loading. first event...",this.events[0]);
+                    console.log(">>> loading. first event = "+this.events[0].title);
                     //console.log(">>> loading. seventh event...",this.events[6]);
                     this.refresh.next(); // refresh the calendar view
                 },

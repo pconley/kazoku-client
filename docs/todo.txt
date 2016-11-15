@@ -2,7 +2,6 @@
 *** PENDING 
 
 -- what should the floating yellow check do?
--- add death event to the member details
 -- rename move client project into github
 -- establish "proximity" beween members
 -- preload members in background after login?
@@ -16,10 +15,23 @@
 -- remember list/card view choice on members list
 -- implement contact us as a suggestion box
 -- toast... via kserg/ng2-toasty?
+-- remove data from the github repo!!!
+-- learn unit and e2e testing
+
+*** 0.0.6
+
+-- moved versioning from title (cache problem)
+-- m/d/y problem on members detail
+-- show better display string on event day
+
 
 *** 0.0.5
 
+-- new simple member details form
+-- new material members edit form
+-- sort siblings by birth year (server)
 -- add real profile data to auth0 and show
+-- add death event to the member detail
 
 *** 0.0.4 (closed)
 
