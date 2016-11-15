@@ -1,19 +1,11 @@
-<h4>Member Show Page</h4>
+<h4>{{member.first_name}} {{member.last_name}}</h4>
 
 <div *ngIf="member">
-        <div class="row">
-                <div class="col-sm-3">Last Name</div>
-                <div class="col-sm-9">{{member.last_name}}</div>
-        </div>   
-        <div class="row">
-                <div class="col-sm-3">First Name</div>
-                <div class="col-sm-9">{{member.first_name}}</div>
-        </div>
         <div id='birth_row' class="row">
                 <div class="col-sm-3">Born</div>
                 <div class="col-sm-9">{{birth_string}}</div>
         </div>
-        <div id='death_row' class="row">
+        <div id='death_row' class="row grayback">
                 <div class="col-sm-3">Died</div>
                 <div class="col-sm-9">{{death_string}}</div>
         </div>
@@ -29,7 +21,7 @@
                         </span>
                 </div>
         </div>
-        <div id='sibling_row' class="row">
+        <div id='sibling_row' class="row grayback">
                 <div class="col-sm-3">Siblings</div>
                 <div class="col-sm-9">
                         <span *ngFor='let sib of member.siblings'>
@@ -38,7 +30,16 @@
                         </span>
                 </div>
         </div>
-        <div id='children_row' class="row">
+        <div id='spouse_row' class="row">
+                <div class="col-sm-3">Spouse(s)</div>
+                <div class="col-sm-9">
+                        <span *ngFor='let spouse of member.spouses'>
+                                <a href="#" [routerLink]="['/member', spouse.id]">{{spouse.first_name}} {{spouse.last_name}}</a>
+                                ; &nbsp;
+                        </span>
+                </div>
+        </div>
+        <div id='children_row' class="row grayback">
                 <div class="col-sm-3">Children</div>
                 <div class="col-sm-9">
                         <span *ngFor='let child of member.children'>

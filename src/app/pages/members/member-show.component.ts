@@ -7,7 +7,7 @@ import { IMember } from "../../models/member";
 @Component({
     selector: "kz-member-show",
     templateUrl: "./member-show.component.html",
-    //styleUrls: [ "./member-show.component.css" ]
+    styleUrls: [ "./member-show.component.css" ]
 })
 export class MemberShowComponent implements OnInit {
 
