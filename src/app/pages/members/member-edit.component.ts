@@ -13,10 +13,9 @@ export class MemberEditComponent implements OnInit {
 
     isLoading: boolean = false;
     isAuthorized: boolean = false;
-    member: IMember = {id:0, 
-        first_name:'',last_name:'Loading...',
-        key:'',starRating:0,selected:false,
-        description:'',
+    member: IMember = {
+        id:0, key:'',starRating:0,selected:false,
+        first_name:'',last_name:'', description:'',
         birth: {month:0, day: 0, year: 0, place: "" },
         death: {month:0, day: 0, year: 0, place: "" }
     };
@@ -36,7 +35,7 @@ export class MemberEditComponent implements OnInit {
                     .getMember(id)
                     .do(obj => { console.log("*** MemberEditComponent#init: obj...",obj); })
                     .subscribe(m => {
-                        this.member = m; 
+                        Object.assign(this.member, m); 
                         this.member.description = this.member.description || "";
                         this.member.birth = this.member.birth || {month:0, day: 0, year: 0, place: "" };
                         this.member.death = this.member.death || {month:0, day: 0, year: 0, place: "" };

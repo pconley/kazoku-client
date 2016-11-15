@@ -11,9 +11,16 @@ import { IMember } from "../../models/member";
 })
 export class MemberShowComponent implements OnInit {
 
-    member: IMember;
     birth_string: string = null;
     death_string: string = null;
+    member: IMember = {id:0, 
+        first_name:'',last_name:'',
+        key:'',starRating:0,selected:false,
+        description:'',
+        birth: {month:0, day: 0, year: 0, place: "" },
+        death: {month:0, day: 0, year: 0, place: "" }
+    };
+
 
     constructor(
         private route: ActivatedRoute,
@@ -28,9 +35,9 @@ export class MemberShowComponent implements OnInit {
             .subscribe((id) => {
                 this.MemberService
                     .getMember(id)
-                    .do(obj => { console.log("*** Membershow#init: obj...",obj); })
+                    .do(obj => { console.log("*** MemberShow#init: obj...",obj); })
                     .subscribe(m => {
-                        this.member = m; 
+                        Object.assign(this.member,m); 
                         console.log("birth...",this.member.birth);
                         this.birth_string = this.to_string(this.member.birth);
                         this.death_string = this.to_string(this.member.death);

@@ -1,5 +1,5 @@
 <md-card>
-    <h3 class="kz-header full-width">Update Member</h3>
+    <h3 class="kz-header full-width">{{member.first_name}} {{member.last_name}}</h3>
     <br>
     <form (ngSubmit)="onSubmit(theForm)" #theForm="ngForm">  
 
@@ -59,10 +59,8 @@
       <md-checkbox [(ngModel)]="isAuthorized" required name="authorized">I am authorized to make these changes.</md-checkbox>
       <br><br>
       <button md-raised-button color="primary" type="submit" 
-          md-tooltip="why is the save button diableed?"
           [disabled]="!isAuthorized || !theForm.form.valid">Save</button>
       <button md-raised-button color="accent" 
-          md-tooltip="what does the cancel button do?"
           (click)="goto_show()">Cancel</button>
   </form>
 

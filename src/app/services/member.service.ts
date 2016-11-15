@@ -16,8 +16,13 @@ import { IMember } from '../models/member';
 @Injectable()
 export class MemberService {
 
-    public memberCache: IMember = null;
     public membersCache: IMember[] = null;
+    public memberCache: IMember = {
+        id:0, key:'',starRating:0,selected:false,
+        first_name:'',last_name:'', description:'',
+        birth: {month:0, day: 0, year: 0, place: "" },
+        death: {month:0, day: 0, year: 0, place: "" }
+    };
 
     constructor(
         private apiService: ApiService,
@@ -43,20 +48,23 @@ export class MemberService {
 
         // WE ARE NOT YET SAVING THE CHANGES TO THE SERVER< WE
         // JUST REFLECT THE CHANGES IN THE CACHE FOR THE NEXT CALL
-        this.memberCache = member;
+        Object.assign(this.memberCache,member);
     }
 
     getMember(id: number, force: boolean = false): Observable<IMember> {
         console.log(`*** MemberService#getMember: id=${id}`);
         if( ! this.authService.authenticated() ) return this.authError();
-        if( !force && this.memberCache ){
+        if( !force && this.memberCache.id == id ){
             console.log("*** MemberService#getMember: using cache data!");
             return Observable.of(this.memberCache);
         }
         var action = `members/${id}`;
         return this.apiService.get(action)
             .map((obj: any) => <IMember> obj) 
-            .do(obj => { console.log("MemberService#getMember: obj...",obj); })
+            .do(obj => { 
+                console.log("MemberService#getMember: obj...",obj); 
+                Object.assign(this.memberCache,obj);
+            })
             .catch(this.handleError);
     }
 
