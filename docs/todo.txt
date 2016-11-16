@@ -1,7 +1,6 @@
 
 *** PENDING 
 
--- show SPOUSE(S) on the members show page
 -- what should the floating yellow check do?
 -- rename move client project into github
 -- establish "proximity" beween members
@@ -20,6 +19,9 @@
 -- learn unit and e2e testing
 
 *** 0.0.7
+
+-- show SPOUSE(S) on the members show page
+
 
 *** 0.0.6
 

@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit {
                 (data) => { 
                     //console.log(">>> loading. event count = "+data.length);
                     for (let datum of data) {
-                        console.log(">>> member...",datum['member']);
+                        //console.log(">>> member...",datum['member']);
                         let event_day = datum['day']+0;
                         if( event_day == 0 ) continue; //skip zeros
                         let event_year = datum['year']+0;
