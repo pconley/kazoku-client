@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
-import { ProfileService } from "../../services/profile.service";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
     selector: "kz-profile",
@@ -14,10 +14,10 @@ export class ProfileComponent implements OnInit {
     location: string = null;
     description: string = null;
 
-    constructor( private profileService: ProfileService ) {}
+    constructor( private AuthService: AuthService ) {}
 
     ngOnInit() {
-        this.profile = this.profile || this.profileService.load_profile();
+        this.profile = this.profile || this.AuthService.get_user_profile();
         console.log("*** ProfileComponent#init profile...",this.profile);
         this.usermeta = this.profile.user_metadata || {};
         this.friends = this.usermeta.friends || null;

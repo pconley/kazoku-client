@@ -40,12 +40,11 @@ export class MemberService {
             return Observable.of(this.membersCache);
         }
         // otherwise do the load from the server
-        return this.loadPages();
+        return this.loadRanges();
     }
 
     saveMember(member: IMember){
         console.log("*** MemberService#saveMember: member...",member);
-
         // WE ARE NOT YET SAVING THE CHANGES TO THE SERVER< WE
         // JUST REFLECT THE CHANGES IN THE CACHE FOR THE NEXT CALL
         Object.assign(this.memberCache,member);
@@ -68,44 +67,48 @@ export class MemberService {
             .catch(this.handleError);
     }
 
-    private loadPages(): Observable<IMember[]> {
-        var page = 0;
+    private loadRanges(): Observable<IMember[]> {
         var that = this;
         that.membersCache =  [];
-        console.log("MemberService#loadPages:");
+        console.log("MemberService#loadRanges:");
         return Observable.create(observer => {
-            function recursiveFunction() {
-                that.loadPage(++page)
+            function recursiveFunction(start,count) {
+                that.loadRange({start: start, count: count})
                     .subscribe(
                         members => { 
-                            console.log("loadPages: page "+page+" loaded "+members.length); 
-                            // observers are shown loaded members
+                            // observers are shown set of loaded members
                             observer.next(members); 
                             // and we also accumulate a full copy in the cache
                             Array.prototype.push.apply(that.membersCache,members);
-                            // stop with empty page or failsafe
-                            if( members.length == 0 || page > 100 )
+                            // stop when partial range returned or failsafe
+                            if( members.length < count || start > 1000 ){
                                 observer.complete();
-                            else
-                                recursiveFunction();
+                            } else { 
+                                // increase count requested with each request
+                                recursiveFunction(start+count, count+10);
+                            }
                         },
                         error => { 
                             // pass on the error message and stop the recusion at first error
-                            console.log("MemberService#loadPages: load error = "+<any>error); 
+                            console.log("MemberService#loadRanges: load error = "+<any>error); 
                             observer.error(<any>error); 
                         }
                      );
             }
-            recursiveFunction();
+            let _start = 0;
+            let _count = 20;
+            recursiveFunction(_start,_count);
         });
     }
- 
-    private loadPage(page: number): Observable<IMember[]> {
-        console.log("MemberService#loadPage. page="+page);
-        return this.apiService.get("members",{page: page})
+
+    private loadRange(args): Observable<IMember[]> {
+        console.log("MemberService#loader. range...",args);
+        return this.apiService.get("members",args)
             .map((obj: any) => <IMember[]> obj) 
+            .do(obj => { console.log("MemberService#loader: members = ",obj.length); })
             .catch(this.handleError);
     }
+
 
     private handleError(error: Response) {
         console.error("MemberService#handleError: 3956...",error);

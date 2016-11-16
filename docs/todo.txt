@@ -21,6 +21,8 @@
 *** 0.0.7
 
 -- show SPOUSE(S) on the members show page
+-- streamline authentication callback
+-- remove the redundant profile service
 
 
 *** 0.0.6

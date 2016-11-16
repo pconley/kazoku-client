@@ -12,7 +12,6 @@ import { ApiService } from "./services/api.service"
 import { AuthService } from "./services/auth.service"
 import { EventService } from "./services/event.service"
 import { MemberService } from "./services/member.service"
-import { ProfileService } from "./services/profile.service"
 
 import { AuthGuard } from "./guards/auth.guard"
 import { UserGuard } from "./guards/user.guard"
@@ -43,7 +42,7 @@ import { DashboardModule } from "./pages/dashboard/dashboard.module";
   providers: [
     // globally available services at this top level
     EventService, AuthService, ApiService, 
-    ProfileService, MemberService,
+    MemberService,
     // here are the custom route gaurds
     AuthGuard, UserGuard, AdminGuard,
     provideAuth({

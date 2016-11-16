@@ -14,7 +14,7 @@ export class ApiService {
     get(action: string, data?: any) {
         var url = this.baseUrl+action+".json"; 
         var params = this.toParams(data); 
-        console.log("ApiService#get url="+url+"  params...",data);
+        // console.log("ApiService#get url="+url+"  params...",data);
         return this.authHttp
             .get(url, {search: params} )
             //.do(data => { console.log("ApiService#get: data...",data); })

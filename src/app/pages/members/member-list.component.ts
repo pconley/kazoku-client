@@ -65,7 +65,7 @@ export class MemberListComponent implements OnInit {
         this.memberService.getMembers(force)
             .subscribe(
                 (data) => { 
-                    console.log("*** loading. records = "+data.length);
+                    //console.log("*** loading. records = "+data.length);
                     Array.prototype.push.apply(this.members,data);
                     this.count = this.members.length;
                 },
