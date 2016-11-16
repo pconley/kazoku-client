@@ -33,8 +33,8 @@ export class AppComponent implements OnInit {
   }
 
   goto_user(){
-    var id = this.auth.userProfile['member_id'];
-    console.log("*** AppComponent#goto id = "+id);
+    var id = this.auth.get_user_profile()['member_id'];
+    console.log("*** AppComponent#goto member id = "+id);
     // jump to the member page for the current user
     this.router.navigate(['/member', id]);
   }

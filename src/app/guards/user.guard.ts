@@ -11,10 +11,10 @@ export class UserGuard implements CanActivate {
   canActivate() {
     var authenticated = this.authService.authenticated();
     if( !authenticated ){
-        //console.log("UserGuard. cannot activate because not authorized");
+        //console.log("UserGuard. cannot activate because not authenticated");
         return false; // deny access to the route
     }
-    var profile = this.authService.userProfile;
+    var profile = this.authService.get_user_profile();
     if( !profile ){
         //console.log("UserGuard. cannot activate because no profile");
         return false; // deny access to the route
