@@ -2,7 +2,6 @@
 *** PENDING 
 
 -- what should the floating yellow check do?
--- rename move client project into github
 -- establish "proximity" beween members
 -- preload members in background after login?
 -- loading box on members page if loading
@@ -23,7 +22,8 @@
 -- show SPOUSE(S) on the members show page
 -- streamline authentication callback
 -- remove the redundant profile service
-
+-- loading of mebers by increasing range
+-- rename "kazoku client" project in github
 
 *** 0.0.6
 
