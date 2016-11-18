@@ -21,6 +21,8 @@
     </button>
 </md-toolbar>
 
+<kz-spinner *ngIf="loading"></kz-spinner>
+
 <table class="table table-striped" *ngIf='isListView'>
   <thead>
       <td>Name</td>
@@ -29,14 +31,12 @@
       <td>At</td>
   </thead>
   <tr *ngFor='let member of members | memberFilter:listFilter :3' (click)="onSelect(member)">
-      <td>{{ member.first_name}} {{member.last_name}}</td>
+      <td>{{ member.first_name | titleCase }} {{member.last_name | uppercase }}</td>
       <td>{{ member.gender}}</td>
       <td>{{ member.birth ?  member.birth.year : "?" }}</td>
       <td>{{ member.birth ?  member.birth.place : "?" }}</td>
   </tr>
 </table>
-
-
 
 <div class="row" *ngIf="members && !isListView">
 

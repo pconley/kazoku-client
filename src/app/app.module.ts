@@ -26,6 +26,8 @@ import { ContactModule }   from "./pages/contact/contact.module";
 import { ProfileModule }   from "./pages/profile/profile.module";
 import { DashboardModule } from "./pages/dashboard/dashboard.module";
 
+import { SharedModule } from "./components/shared.module";
+
 @NgModule({
   declarations: [ AppComponent ],
   imports: [
@@ -35,6 +37,7 @@ import { DashboardModule } from "./pages/dashboard/dashboard.module";
     HomeModule, ProfileModule, SampleModule, 
     DashboardModule, ContactModule, ErrorModule,
     MemberModule, NotesModule,
+    SharedModule,
     // core material elements
     MaterialModule.forRoot(),
     AppRouting

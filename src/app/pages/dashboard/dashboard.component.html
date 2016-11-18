@@ -1,4 +1,16 @@
+<kz-spinner *ngIf="loading"></kz-spinner>
+
+<div *ngIf="!loading">
+
 <md-card>
+    <h3>Today in Conley Family History</h3>
+    <div *ngIf="todays.length == 0">No events</div>
+    <div *ngFor='let item of todays'>
+                {{item.title}} {{item.kind=='birth'?"born":"died"}} in {{item.year}}
+    </div>
+</md-card>
+
+<md-card >
     <h3>
         <button class="app-icon-button" (click)="decrement()"><i class="material-icons">chevron_left</i></button>
         <button class="app-icon-button" (click)="today()"    ><i class="material-icons">today</i></button>
@@ -30,4 +42,4 @@
     </md-card>
 </md-card>
 
-
+</div>

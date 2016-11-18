@@ -28,8 +28,10 @@ export class DashboardComponent implements OnInit {
     viewMonth: string = "";
     activeDayIsOpen: boolean = false;
     refresh: Subject<any> = new Subject();
+    today_day: number = new Date().getDate();
 
     items: any[] = [];
+    todays: any[] = [];
     events: CalendarEvent[] = [];
     holidays: CalendarEvent[] = [
         { start: new Date(2016,10,24), title: 'Thanksgiving', color: colors.holiday },
@@ -74,6 +76,7 @@ export class DashboardComponent implements OnInit {
     getEvents(date: Date){
         console.log("DashViewCalComponent#getEvents "+date);
         this.items.length = 0;
+        this.todays.length = 0;
         this.events.length = 0; // clear out existing events
         Array.prototype.push.apply(this.events, this.holidays);
         let display_year = date.getFullYear();
@@ -94,10 +97,12 @@ export class DashboardComponent implements OnInit {
                         let title = `${fname} ${lname} ${range}`;
                         let color = datum['kind'] == "death" ? colors.death : colors.birth;
                         let ordstr = event_day+this.ordinal(event_day);
-                        this.items.push({day: event_day, 
+                        let item = {day: event_day, 
                             member_id: datum['member']['id'], 
                             ordinal: ordstr, year: event_year,
-                            kind: datum['kind'], title: title});
+                            kind: datum['kind'], title: title};
+                        this.items.push(item);
+                        if( event_day == this.today_day ) this.todays.push(item);
                         this.events.push({start: anniv, color: color, 
                             title: title, actions: this.actions});
                     }
