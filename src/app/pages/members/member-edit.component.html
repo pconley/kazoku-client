@@ -12,7 +12,7 @@
           <md-hint class="error" *ngIf="!(lname.valid || lname.pristine)" align="start">Last Name is required</md-hint>
       </md-input>
      
-      <br>  <!--birth-->
+      <br> <!--birth-->
       <md-label>Born: </md-label>
       <md-input maxlength="2" placeholder="Month" type="number" align="end" class="month"
           name="birth_month" [(ngModel)]="member.birth.month" #bmonth="ngModel">

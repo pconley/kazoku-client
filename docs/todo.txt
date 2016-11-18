@@ -14,5 +14,6 @@
 -- remember list/card view choice on members list
 -- implement contact us as a suggestion box
 -- toast... via kserg/ng2-toasty?
--- remove data from the github repo!!!
 -- learn unit and e2e testing
+-- get a fuller list of holidays
+-- death as a black marker?

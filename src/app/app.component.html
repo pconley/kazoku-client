@@ -51,7 +51,9 @@
         <button md-menu-item (click)="goto('notes')" *ngIf="UserGuard.canActivate()">
             <span><md-icon>info</md-icon>Release notes</span>
         </button>
-        <button md-menu-item (click)="goto('sample')" *ngIf="AdminGuard.canActivate()">
+        <!-- note this is an intentional error; using the wrong guard, the -->
+        <!-- the route itself is protected by the admin guard, so throw error -->
+        <button md-menu-item (click)="goto('sample')" *ngIf="UserGuard.canActivate()">
             <span><md-icon>new_releases</md-icon>Samples</span>
         </button>
         <button md-menu-item (click)="isDarkTheme = !isDarkTheme">

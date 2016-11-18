@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from './services/auth.service';
 
-//import { AuthGuard }  from './guards/auth.guard';
+import { AuthGuard }  from './guards/auth.guard';
 import { UserGuard }  from './guards/user.guard';
 import { AdminGuard } from './guards/admin.guard';
 
@@ -13,7 +13,7 @@ import { AdminGuard } from './guards/admin.guard';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'material1';
+  title = 'KazokuClient';
 
   isDarkTheme: boolean = false;
 

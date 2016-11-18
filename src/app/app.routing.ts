@@ -1,6 +1,10 @@
 import { NgModule }     from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { AuthGuard } from "./guards/auth.guard"
+import { UserGuard } from "./guards/user.guard"
+import { AdminGuard } from "./guards/admin.guard"
+
 @NgModule({
   imports: [
     RouterModule.forRoot([
@@ -9,6 +13,7 @@ import { RouterModule } from '@angular/router';
         { path: "**", redirectTo: 'error' }
     ])
   ],
-  exports: [ RouterModule ]
+  exports: [ RouterModule ],
+  providers: [ AuthGuard, UserGuard, AdminGuard ]
 })
 export class AppRouting {}

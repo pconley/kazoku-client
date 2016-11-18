@@ -12,10 +12,7 @@ import { ApiService } from "./services/api.service"
 import { AuthService } from "./services/auth.service"
 import { EventService } from "./services/event.service"
 import { MemberService } from "./services/member.service"
-
-import { AuthGuard } from "./guards/auth.guard"
-import { UserGuard } from "./guards/user.guard"
-import { AdminGuard } from "./guards/admin.guard"
+import { DialogService } from './services/dialog.service';
 
 import { HomeModule }      from "./pages/home/home.module";
 import { NotesModule }     from "./pages/notes/notes.module";
@@ -26,7 +23,7 @@ import { ContactModule }   from "./pages/contact/contact.module";
 import { ProfileModule }   from "./pages/profile/profile.module";
 import { DashboardModule } from "./pages/dashboard/dashboard.module";
 
-import { SharedModule } from "./components/shared.module";
+import { SharedModule } from "./shared/shared.module";
 
 @NgModule({
   declarations: [ AppComponent ],
@@ -45,9 +42,7 @@ import { SharedModule } from "./components/shared.module";
   providers: [
     // globally available services at this top level
     EventService, AuthService, ApiService, 
-    MemberService,
-    // here are the custom route gaurds
-    AuthGuard, UserGuard, AdminGuard,
+    MemberService, DialogService,
     provideAuth({
         globalHeaders: [{"Content-type": "application/json"}],
         //newJwtError: true,
