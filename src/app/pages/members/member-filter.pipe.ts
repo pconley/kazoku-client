@@ -1,12 +1,12 @@
 import {  PipeTransform, Pipe } from '@angular/core';
-import { IMember } from '../../models/member';
+import { Member } from '../../models/member';
 
 @Pipe({
     name: 'memberFilter'
 })
 export class MemberFilterPipe implements PipeTransform {
 
-    transform(value: IMember[], args: string[]): IMember[] {
+    transform(value: Member[], args: string[]): Member[] {
 
         // WIERD... the args are not as advertised in the tutorial
         // that said args[0] would be the frst string; but each char
@@ -22,7 +22,7 @@ export class MemberFilterPipe implements PipeTransform {
         }
         let filter: string = str.toLocaleLowerCase();
         //console.log("memberFilter: "+filter);
-        let result = value.filter((member: IMember) => {
+        let result = value.filter((member: Member) => {
             let search_text = member.first_name + member.last_name;
             return search_text.toLocaleLowerCase().indexOf(filter) !== -1;
         });

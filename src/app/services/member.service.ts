@@ -11,18 +11,14 @@ import 'rxjs/add/operator/map';
 import { ApiService } from "./api.service";
 import { AuthService } from "./auth.service";
 
-import { IMember } from '../models/member';
+import { Event } from '../models/event';
+import { Member } from '../models/member';
 
 @Injectable()
 export class MemberService {
 
-    public membersCache: IMember[] = null;
-    public memberCache: IMember = {
-        id:0, key:'',starRating:0,selected:false,
-        first_name:'',last_name:'', description:'',
-        birth: {month:0, day: 0, year: 0, place: "" },
-        death: {month:0, day: 0, year: 0, place: "" }
-    };
+    public memberCache: Member = new Member({});
+    public membersCache: Member[] = null;
 
     constructor(
         private apiService: ApiService,
@@ -31,7 +27,7 @@ export class MemberService {
         console.log("*** MemberService#constructor");
     }
 
-    getMembers(force: boolean): Observable<IMember[]> {
+    getMembers(force: boolean): Observable<Member[]> {
         if( ! this.authService.authenticated() ) return this.authError();
         // if we are not forcing a reload, and there are already
         // members stored in the members cache... then use cache
@@ -43,14 +39,14 @@ export class MemberService {
         return this.loadRanges();
     }
 
-    saveMember(member: IMember){
+    saveMember(member: Member){
         console.log("*** MemberService#saveMember: member...",member);
         // WE ARE NOT YET SAVING THE CHANGES TO THE SERVER< WE
         // JUST REFLECT THE CHANGES IN THE CACHE FOR THE NEXT CALL
-        Object.assign(this.memberCache,member);
+        this.memberCache = new Member(member);
     }
 
-    getMember(id: number, force: boolean = false): Observable<IMember> {
+    getMember(id: number, force: boolean = false): Observable<Member> {
         console.log(`*** MemberService#getMember: id=${id}`);
         if( ! this.authService.authenticated() ) return this.authError();
         if( !force && this.memberCache.id == id ){
@@ -59,15 +55,15 @@ export class MemberService {
         }
         var action = `members/${id}`;
         return this.apiService.get(action)
-            .map((obj: any) => <IMember> obj) 
+            .map((obj: any) => <Member> obj) 
             .do(obj => { 
                 console.log("MemberService#getMember: obj...",obj); 
-                Object.assign(this.memberCache,obj);
+                this.memberCache = new Member(obj);
             })
             .catch(this.handleError);
     }
 
-    private loadRanges(): Observable<IMember[]> {
+    private loadRanges(): Observable<Member[]> {
         var that = this;
         that.membersCache =  [];
         console.log("MemberService#loadRanges:");
@@ -101,10 +97,10 @@ export class MemberService {
         });
     }
 
-    private loadRange(args): Observable<IMember[]> {
+    private loadRange(args): Observable<Member[]> {
         console.log("MemberService#loader. range...",args);
         return this.apiService.get("members",args)
-            .map((obj: any) => <IMember[]> obj) 
+            .map((obj: any) => <Member[]> obj) 
             .do(obj => { console.log("MemberService#loader: members = ",obj.length); })
             .catch(this.handleError);
     }

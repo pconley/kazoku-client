@@ -1,29 +1,4 @@
-export interface IMember {
-    id: number;
-    first_name: string;
-    last_name: string;
-    key: string;
-    starRating: number;
-    selected: boolean;
-    birth?: any;
-    death?: any;
-    description: string;
-    parents?: IMember[];
-}
-
-export class Event {
-    day: number;
-    month: number;
-    year: number;
-    location: string;
-
-    constructor(obj: any) {
-        this.day = obj && obj.day ? +obj.day : 0;
-        this.year = obj && obj.year ? +obj.year : 0;
-        this.month = obj && obj.month ? +obj.month : 0;
-        this.location = obj && obj.location ? obj.location : "";
-    }
-}
+import { Event } from './event';
 
 export class Member {
     id: number;
@@ -31,17 +6,39 @@ export class Member {
     first_name: string;
     last_name: string;
     description: string;
-    birth: any;
-    death: any;
-    parents: IMember[];
+    selected: boolean;
+    birth: Event;
+    death: Event;
+    parents: Member[];
+    spouses: Member[];
+    siblings: Member[];
+    children: Member[];
 
     constructor(obj: any) {
         this.id = obj.id;
         this.key = obj.key;
         this.last_name = obj.last_name;
         this.first_name = obj.first_name;
-        this.description = obj.description;
+        this.description = obj.description || "";
         this.birth = new Event(obj.birth);
         this.death = new Event(obj.death);
+        this.parents = this.build(obj.parents);
+        this.spouses = this.build(obj.spouses);
+        this.siblings = this.build(obj.siblings);
+        this.children = this.build(obj.children);
+    }
+
+    build(set) : Member[] {
+        let target: Member[] = []; 
+        if( set ) { for (let x of set) { target.push( new Member(x) ); }}
+        return target;
+    }
+
+    birth_string(){
+        return this.birth ? this.birth.to_string() : "";
+    }
+
+    death_string(){
+        return this.death ? this.death.to_string() : "";
     }
 }

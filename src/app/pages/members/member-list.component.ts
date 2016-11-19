@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from "../../services/auth.service";
 import { MemberService } from "../../services/member.service";
-import { IMember } from "../../models/member"
+import { Member } from "../../models/member"
 
 @Component({
     selector: "kz-members",
@@ -20,7 +20,7 @@ export class MemberListComponent implements OnInit {
     count: number = 0;
     status: string = '';
     loading: boolean = false;
-    members: IMember[] = [];
+    members: Member[] = [];
 
     isListView: boolean = true;
 
@@ -37,8 +37,8 @@ export class MemberListComponent implements OnInit {
         this.loader(false); // do not force re-load of members
     }
 
-    previousMember: IMember = null;
-    onSelect(member: IMember): void {
+    previousMember: Member = null;
+    onSelect(member: Member): void {
         var same = this.previousMember == member;
         console.log(">>> selected same="+same,member);
         if( same ) member.selected = !member.selected;

@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { MemberService } from "../../services/member.service";
-import { IMember } from "../../models/member";
+import { Member } from "../../models/member";
 
 @Component({
     selector: "kz-member-show",
@@ -11,16 +11,9 @@ import { IMember } from "../../models/member";
 })
 export class MemberShowComponent implements OnInit {
 
-    birth_string: string = null;
-    death_string: string = null;
-    member: IMember = {id:0, 
-        first_name:'',last_name:'',
-        key:'',starRating:0,selected:false,
-        description:'',
-        birth: {month:0, day: 0, year: 0, place: "" },
-        death: {month:0, day: 0, year: 0, place: "" }
-    };
-
+    // birth_string: string = null;
+    // death_string: string = null;
+    member: Member = new Member({});
 
     constructor(
         private route: ActivatedRoute,
@@ -37,18 +30,18 @@ export class MemberShowComponent implements OnInit {
                     .getMember(id)
                     .do(obj => { console.log("*** MemberShow#init: obj...",obj); })
                     .subscribe(m => {
-                        Object.assign(this.member,m); 
+                        this.member = new Member(m); 
                         console.log("birth...",this.member.birth);
-                        this.birth_string = this.to_string(this.member.birth);
-                        this.death_string = this.to_string(this.member.death);
+                        // this.birth_string = this.member.birth.to_string();
+                        // this.death_string = this.member.death.to_string();
                      });
             });
     }
 
-    to_string(event){
-        if( !event ) return "";
-        return event.month + "/" +event.day + "/" + event.year + " " + event.place;
-    }
+    // to_string(event){
+    //     if( !event ) return "";
+    //     return event.month + "/" +event.day + "/" + event.year + " " + event.place;
+    // }
 
     goto_edit(){
         // page action... navigate to the edit page for this user

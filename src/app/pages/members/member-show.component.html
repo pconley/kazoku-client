@@ -3,11 +3,11 @@
 <div *ngIf="member">
         <div id='birth_row' class="row">
                 <div class="col-sm-3">Born</div>
-                <div class="col-sm-9">{{birth_string}}</div>
+                <div class="col-sm-9">{{member.birth_string()}}</div>
         </div>
         <div id='death_row' class="row grayback">
                 <div class="col-sm-3">Died</div>
-                <div class="col-sm-9">{{death_string}}</div>
+                <div class="col-sm-9">{{member.death_string()}}</div>
         </div>
         <div id='parent_row' class="row">
                 <div class="col-sm-3">Parents</div>

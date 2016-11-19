@@ -27,8 +27,8 @@
           <md-hint class="error" *ngIf="!(byear.valid || byear.pristine)" align="start">Birth Year must...</md-hint>
       </md-input>
       <md-input maxlength="100" placeholder="Location" class="half-width"
-          name="birth_place" [(ngModel)]="member.birth.place" #bplace="ngModel">
-          <md-hint align="end">{{member.birth.place.length}} / 100</md-hint>
+          name="birth_place" [(ngModel)]="member.birth.location" #bplace="ngModel">
+          <md-hint align="end">{{member.birth.location.length}} / 100</md-hint>
       </md-input>
       
       <br> <!--death-->
@@ -46,8 +46,8 @@
           <md-hint class="error" *ngIf="!(dyear.valid || dyear.pristine)" align="start">Birth Year must...</md-hint>
       </md-input>
       <md-input maxlength="100" placeholder="Location" class="half-width"
-          name="death_place" [(ngModel)]="member.death.place" #dplace="ngModel">
-          <md-hint align="end">{{member.death.place.length}} / 100</md-hint>
+          name="death_place" [(ngModel)]="member.death.location" #dplace="ngModel">
+          <md-hint align="end">{{member.death.location.length}} / 100</md-hint>
       </md-input>
       <br>
       <!--description-->
