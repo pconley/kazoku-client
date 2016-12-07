@@ -4,6 +4,7 @@ import { CalendarModule }     from 'angular-calendar';
 import { SharedModule }       from "../../shared/shared.module";
 import { DashboardRouter }    from "./dashboard.routing";
 import { DashboardComponent } from "./dashboard.component";
+import { EventTodayPipe }     from "./event-today.pipe";
 
 @NgModule({
     imports: [ 
@@ -11,7 +12,7 @@ import { DashboardComponent } from "./dashboard.component";
         DashboardRouter,
         CalendarModule.forRoot()
     ],
-    declarations: [ DashboardComponent ],
+    declarations: [ DashboardComponent, EventTodayPipe ],
     bootstrap: [ DashboardComponent ]
 })
 export class DashboardModule { }

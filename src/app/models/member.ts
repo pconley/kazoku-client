@@ -13,6 +13,7 @@ export class Member {
     spouses: Member[];
     siblings: Member[];
     children: Member[];
+    range: string; // derived display range
 
     constructor(obj: any) {
         this.id = obj.id;
@@ -26,6 +27,7 @@ export class Member {
         this.spouses = this.build(obj.spouses);
         this.siblings = this.build(obj.siblings);
         this.children = this.build(obj.children);
+        this.range = "(1900-2020)"; // TODO: fix
     }
 
     build(set) : Member[] {

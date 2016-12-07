@@ -9,7 +9,7 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { IEvent } from '../models/event';
+import { Event } from '../models/event';
 
 @Injectable()
 export class EventService {
@@ -19,11 +19,11 @@ export class EventService {
     private eventUrl = this.baseUrl+'events/'; // add 1.json
     private eventsUrl = this.baseUrl+'events.json';
 
-    public eventsCache: IEvent[] = null;
+    public eventsCache: Event[] = null;
 
     constructor(private _http: Http, private _auth: AuthHttp) {}
 
-    getEvents(month: number, force: boolean = false): Observable<IEvent[]> {
+    getEvents(month: number, force: boolean = false): Observable<Event[]> {
         // if we are not forcing a reload, and there are already
         // events stored in the events cache... then use cache
         if( !force && this.eventsCache ){
@@ -34,20 +34,20 @@ export class EventService {
         return this.loadEvents(month);
     }
 
-    getEvent(id: number): Observable<IEvent> {
+    getEvent(id: number): Observable<Event> {
         var url = `${this.eventUrl}${id}.json`;
         console.log("EventService#getEvent: url="+url);
         return this._auth.get(url)
-            .map((response: Response) => <IEvent> response.json())
+            .map((response: Response) => <Event> response.json())
             .do(data => { console.log("EventService#getEvent: data...",data); })
             .catch(this.handleError);
     }
  
-    loadEvents(month: number): Observable<IEvent[]> {
+    loadEvents(month: number): Observable<Event[]> {
         var url = `${this.eventsUrl}?month=${month}`;
         console.log("EventService#loadEvents: url="+url);
         return this._auth.get(url)
-            .map((response: Response) => <IEvent[]> response.json())
+            .map((response: Response) => <Event[]> response.json())
             .do(data => { console.log("EventService#loadEvents: count = "+data.length); })
             .catch(this.handleError);
     }

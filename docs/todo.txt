@@ -1,6 +1,8 @@
 
 *** PENDING 
 
+-- RAILS: limit data sent on the member index
+
 -- what should the floating yellow check do?
 -- establish "proximity" beween members
 -- preload members in background after login?

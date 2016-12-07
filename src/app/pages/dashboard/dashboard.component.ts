@@ -8,6 +8,8 @@ import {
   //CalendarEventTimesChangedEvent
 } from 'angular-calendar'; 
 
+import { Event } from '../../models/event';
+import { CalendarItem } from '../../models/calendar_item';
 import { EventService } from '../../services/event.service';
 
 const colors: any = {
@@ -30,9 +32,8 @@ export class DashboardComponent implements OnInit {
     refresh: Subject<any> = new Subject();
     today_day: number = new Date().getDate();
 
-    items: any[] = [];
-    todays: any[] = [];
-    events: CalendarEvent[] = [];
+    items: CalendarItem[] = [];
+    calvents: CalendarEvent[] = [];
     holidays: CalendarEvent[] = [
         { start: new Date(2016,10,24), title: 'Thanksgiving', color: colors.holiday },
         { start: new Date(2016,11,25), title: 'Christmas', color: colors.holiday }
@@ -76,44 +77,35 @@ export class DashboardComponent implements OnInit {
     getEvents(date: Date){
         console.log("DashViewCalComponent#getEvents "+date);
         this.items.length = 0;
-        this.todays.length = 0;
-        this.events.length = 0; // clear out existing events
-        Array.prototype.push.apply(this.events, this.holidays);
+        this.calvents.length = 0; // clear out existing events
+        Array.prototype.push.apply(this.calvents, this.holidays);
         let display_year = date.getFullYear();
         this.EventService.getEvents(date.getMonth()+1)
             .subscribe(
-                (data) => { 
-                    //console.log(">>> loading. event count = "+data.length);
-                    for (let datum of data) {
-                        //console.log(">>> member...",datum['member']);
-                        let event_day = datum['day']+0;
-                        if( event_day == 0 ) continue; //skip zeros
-                        let event_year = datum['year']+0;
-                        let anniv = new Date(display_year,datum['month']-1,event_day);
-                        let fname = datum['member']['first_name'];
-                        let lname = datum['member']['last_name'];
-                        let range = datum['member']['display_range'];
-                        //let range = datum['member']['display_range'];
+                (events) => { 
+                    console.log(">>> getEvents#loading. event count = "+events.length);
+                    for (let event of events) {
+                        console.log(">>> getEvents#loading event...",event);
+                        if( event.day == 0 ) continue; //skip zero day events
+                        let fname = event.member.first_name;
+                        let lname = event.member.last_name;
+                        let range = event.member.range;
                         let title = `${fname} ${lname} ${range}`;
-                        let color = datum['kind'] == "death" ? colors.death : colors.birth;
-                        let ordstr = event_day+this.ordinal(event_day);
-                        let item = {day: event_day, 
-                            member_id: datum['member']['id'], 
-                            ordinal: ordstr, year: event_year,
-                            kind: datum['kind'], title: title};
-                        this.items.push(item);
-                        if( event_day == this.today_day ) this.todays.push(item);
-                        this.events.push({start: anniv, color: color, 
-                            title: title, actions: this.actions});
+                        let color = event.kind == "death" ? colors.death : colors.birth;
+                        let anniv = new Date(display_year,event.month,event.day);
+                        let len = this.calvents.push({start: anniv, color: color, title: title, actions: this.actions});
+                        let calvent = this.calvents[len-1]; // the calvent just added to the array
+                        console.log(">>> getEvents#buil calvent...",calvent);
+                        this.items.push( new CalendarItem({calvent: calvent, date: anniv, member_id: event.member.id, kind: event.kind}));
                     }
-                    console.log(">>> loading. first event = "+this.events[0].title);
+                    //console.log(">>> loading. first calvent = "+this.calvents[0].title);
                     //console.log(">>> loading. seventh event...",this.events[6]);
                     this.refresh.next(); // refresh the calendar view
                 },
                 (error: Error) => {
                     console.error(">>> DashViewCalComponent#getEvents error... ",error);
-                    this.events = [];
                     this.loading = false;
+                    this.calvents.length = 0;
                     this.status = "Error: "+error.message;
                 },
                 () => { 
@@ -126,6 +118,16 @@ export class DashboardComponent implements OnInit {
 
     increment(): void { this.change(+1); }
     decrement(): void { this.change(-1); }
+
+    build(event: Event, display_year: number): any {
+        let fname = event.member.first_name;
+        let lname = event.member.last_name;
+        let range = event.member.range;
+        let title = `${fname} ${lname} ${range}`;
+        let color = event.kind == "death" ? colors.death : colors.birth;
+        let anniv = new Date(display_year,event.month,event.day);
+        return {start: anniv, color: color, title: title, actions: this.actions};
+    }
  
     change(inc): void {
         var y = this.viewDate.getFullYear();
@@ -154,15 +156,4 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['/member', items[0].member_id]);
     }
 
-    ordinal(n: number){
-        // 11,12,13 are special cases, but it is
-        // more efficient to have the broadest range
-        // that includes these as the first test
-        if( n >= 4 && n <= 20 ) return "th";
-        var x = n % 10;
-        if( x == 1  ) return "st";
-        if( x == 2  ) return "nd";
-        if( x == 3  ) return "rd";
-        return "th";
-    }
 }
