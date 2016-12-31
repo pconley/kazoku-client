@@ -4,8 +4,8 @@
 
 <md-card>
     <h3>Today in Conley Family History</h3>
-    <div *ngFor='let item of items | eventToday '>
-                {{item.title}} {{item.kind=='birth'?"born":"died"}} in {{item.year}}
+    <div *ngFor='let item of items | eventToday | eventCustom '>
+                {{item.title}} {{item.event.kind=='birth'?"born":"died"}} in {{item.event.year}}
     </div>
 </md-card>
 
@@ -17,7 +17,7 @@
         {{ viewMonth }} {{viewDate.getFullYear()}}
     </h3>
     <mwl-calendar-month-view [viewDate]="viewDate"
-        [events]="calvents" 
+        [events]="items" 
         [refresh]="refresh"
         [activeDayIsOpen]="activeDayIsOpen"
         (eventClicked)="eventClicked($event)"
@@ -30,12 +30,12 @@
         <button class="app-icon-button" (click)="decrement()"><i class="material-icons">chevron_left</i></button>
         <button class="app-icon-button" (click)="today()"    ><i class="material-icons">today</i></button>
         <button class="app-icon-button" (click)="increment()"><i class="material-icons">chevron_right</i></button>
-        {{calvents.length}} Events in {{viewMonth}}
+        {{items.length}} Events in {{viewMonth}}
     </h3>
     <md-card>
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngFor='let item of items'>
-                {{item.ordinal}}: {{item.title}} {{item.kind=='birth'?"born":"died"}} in {{item.year}}
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngFor='let item of items | eventCustom '>
+                {{item.ordinal}}: {{item.title}} {{item.event.kind=='birth'?"born":"died"}} in {{item.event.year}}
         </div>
     </div>   
     </md-card>

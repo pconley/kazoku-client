@@ -9,9 +9,10 @@ export class CalendarItem {
     ordinal: string;  // 1st, 2nd, 3rd, ...
 
     constructor(obj: any) {
-        this.day = obj && obj.day ? +obj.day : 0;
-        this.year = obj && obj.year ? +obj.year : 0;
-        this.month = obj && obj.month ? +obj.month : 0;
+        this.day = obj && obj.event ? +obj.event.day : 0;
+        this.month = obj && obj.event ? +obj.event.month : 0;
+        this.year = obj && obj.event ? +obj.event.year : 0;
+
         this.member_id = +obj.member_id; // required
         this.kind = obj.kind; // required
         this.title = obj.title; // required

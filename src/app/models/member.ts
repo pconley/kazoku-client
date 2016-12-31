@@ -14,6 +14,7 @@ export class Member {
     siblings: Member[];
     children: Member[];
     range: string; // derived display range
+    display_range: string;
 
     constructor(obj: any) {
         this.id = obj.id;
