@@ -25,8 +25,7 @@
                 <div class="col-sm-3">Siblings</div>
                 <div class="col-sm-9">
                         <span *ngFor='let sib of member.siblings'>
-                                <a href="#" [routerLink]="['/member', sib.id]">{{sib.first_name}}</a>
-                                ; &nbsp;
+                                <a href="#" [routerLink]="['/member', sib.id]">{{sib.first_name}};</a>&nbsp;
                         </span>
                 </div>
         </div>
@@ -34,8 +33,7 @@
                 <div class="col-sm-3">Spouse(s)</div>
                 <div class="col-sm-9">
                         <span *ngFor='let spouse of member.spouses'>
-                                <a href="#" [routerLink]="['/member', spouse.id]">{{spouse.first_name}} {{spouse.last_name}}</a>
-                                ; &nbsp;
+                                <a href="#" [routerLink]="['/member', spouse.id]">{{spouse.first_name}} {{spouse.last_name}};</a>&nbsp;
                         </span>
                 </div>
         </div>
@@ -43,8 +41,7 @@
                 <div class="col-sm-3">Children</div>
                 <div class="col-sm-9">
                         <span *ngFor='let child of member.children'>
-                                <a href="#" [routerLink]="['/member', child.id]">{{child.first_name}}</a>
-                                ; &nbsp;
+                                <a href="#" [routerLink]="['/member', child.id]">{{child.first_name}};</a>&nbsp;
                         </span>
                 </div>
         </div>

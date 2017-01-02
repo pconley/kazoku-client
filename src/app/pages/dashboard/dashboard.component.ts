@@ -4,56 +4,19 @@ import { Subject } from 'rxjs/Subject';
 
 import {
   CalendarEvent,
-  CalendarEventAction,
+  //CalendarEventAction,
   //CalendarEventTimesChangedEvent
 } from 'angular-calendar'; 
 
 import { Event } from '../../models/event';
 import { EventService } from '../../services/event.service';
+import { CalendarItem } from './calendar_item';
 
 const colors: any = {
   death:   { primary: '#ad2121', secondary: '#FAE3E3' }, // red
   birth:   { primary: '#1e90ff', secondary: '#D1E8FF' }, // blue
   holiday: { primary: '#e3bc08', secondary: '#FDF1BA' }  // yellow
 };
-
-class CalendarItem implements CalendarEvent {
-
-    start: Date;
-    title: string;
-    color: any;
-
-    event: Event;
-
-    kind: string; // birth, death, etc.
-    ordinal: string;  // 1st, 2nd, 3rd, ...
-
-    constructor(year: number, event: any) {
-        this.event = event;
-        this.kind = event.kind ? event.kind : "holiday"; 
-        this.ordinal = event.day + this.suffix(event.day);
-
-        let fname = event.member.first_name;
-        let lname = event.member.last_name;
-        let range = event.member.display_range;
-        this.title = `${fname} ${lname} ${range}`;
-        this.color = event.kind == "death" ? colors.death : colors.birth;
-        this.start = new Date(year,event.month-1,event.day);
-    }
-
-    suffix(n: number){
-        // 11,12,13 are special cases, but it is
-        // more efficient to have the broadest range
-        // that includes these as the first test
-        if( n >= 4 && n <= 20 ) return "th";
-        var x = n % 10;
-        if( x == 1  ) return "st";
-        if( x == 2  ) return "nd";
-        if( x == 3  ) return "rd";
-        return "th";
-    }
-}
-
 
 @Component({
   selector: 'kz-dashboard-page',
@@ -75,20 +38,6 @@ export class DashboardComponent implements OnInit {
         { start: new Date(2016,11,25), title: 'Christmas',    color: colors.holiday },
         { start: new Date(2017, 1, 1), title: 'New Year Day', color: colors.holiday }
     ];
-
-    //actions: CalendarEventAction[] = [
-    // {   label: 'xxx',
-    //     onClick: ({event}: {event: CalendarEvent}): void => {
-    //         console.log('xxx event', event);
-    //     }
-    // }, 
-    // {   label: 'yyy',
-    //     onClick: ({event}: {event: CalendarEvent}): void => {
-    //         console.log('yyy event', event);
-    //         this.events = this.events.filter(iEvent => iEvent !== event);
-    //     }
-    // }
-    //];
 
     constructor( 
         private router : Router,
@@ -165,12 +114,14 @@ export class DashboardComponent implements OnInit {
 
     eventClicked(obj): void {
         console.log("--- event clicked. obj...",obj);
-        // var event = obj.event;
-        // console.log("--- event clicked. event...",event);
+        var item = obj.event;
+        console.log("--- event clicked. calendar item...",item);
+        var event = item.event;
+        console.log("--- event clicked. server event...",event);
         // console.log("--- event clicked with title="+event.title);
         // var items = this.items.filter( (item) => item.title == event.title );
         // console.log("--- the matching item is...",items[0]);
-        this.router.navigate(['/member', obj.member_id]);
+        this.router.navigate(['/member', event.member.id]);
     }
 
 }

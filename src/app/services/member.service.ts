@@ -54,6 +54,7 @@ export class MemberService {
             return Observable.of(this.memberCache);
         }
         var action = `members/${id}`;
+        console.log(`*** MemberService#getMember: action=${action}`);
         return this.apiService.get(action)
             .map((obj: any) => <Member> obj) 
             .do(obj => { 

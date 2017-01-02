@@ -1,8 +1,9 @@
 <md-sidenav-layout [class.m2app-dark]="isDarkTheme">
 
-  <md-sidenav #leftnav (open)="lcbutton.focus()">
+  <!--an example of a left nav-->
+  <!--<md-sidenav #leftnav (open)="lcbutton.focus()">
       Proto Sidebar<br><button md-button #lcbutton (click)="leftnav.close()">L-Close</button>
-  </md-sidenav>
+  </md-sidenav>-->
 
   <!--an example of the right nav-->
   <!--<md-sidenav #rightnav align="end" (open)="rcbutton.focus()">
@@ -11,9 +12,10 @@
 
   <md-toolbar color="primary">
 
-    <button class="app-icon-button" (click)="leftnav.toggle()">
+    <!--this is the button to activate the LEFT nav above-->
+    <!--<button class="app-icon-button" (click)="leftnav.toggle()">
       <i class="material-icons app-toolbar-menu">menu</i>
-    </button>
+    </button>-->
 
     <button md-raised-button color="primary" (click)="goto_home()">Kazoku!</button>
     <span *ngIf="UserGuard.canActivate()">

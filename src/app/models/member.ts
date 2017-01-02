@@ -17,6 +17,7 @@ export class Member {
     display_range: string;
 
     constructor(obj: any) {
+        //console.log("member constructor. obj...",obj);
         this.id = obj.id;
         this.key = obj.key;
         this.last_name = obj.last_name;
@@ -29,6 +30,7 @@ export class Member {
         this.siblings = this.build(obj.siblings);
         this.children = this.build(obj.children);
         this.range = "(1900-2020)"; // TODO: fix
+        //console.log("member constructor complete");
     }
 
     build(set) : Member[] {

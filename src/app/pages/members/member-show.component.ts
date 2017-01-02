@@ -13,7 +13,9 @@ export class MemberShowComponent implements OnInit {
 
     // birth_string: string = null;
     // death_string: string = null;
-    member: Member = new Member({});
+
+    // i think we need a dummy member while it loads
+    member: Member = new Member({}); 
 
     constructor(
         private route: ActivatedRoute,
