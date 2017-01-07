@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { DialogService } from "../../services/dialog.service";
 import { MemberService } from "../../services/member.service";
 import { Member } from "../../models/member";
-
+ 
 @Component({
     selector: "kz-member-edit",
     templateUrl: "./member-edit.component.html",

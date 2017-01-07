@@ -14,8 +14,11 @@ import { EventService } from "./services/event.service"
 import { MemberService } from "./services/member.service"
 import { DialogService } from './services/dialog.service';
 
+import { NewAuthService } from './services/newauth.service';
+
 import { HomeModule }      from "./pages/home/home.module";
 import { NotesModule }     from "./pages/notes/notes.module";
+import { LoginModule }     from "./pages/login/login.module";
 import { ErrorModule }     from "./pages/error/error.module";
 import { SampleModule }    from "./pages/sample/sample.module";
 import { MemberModule }    from "./pages/members/member.module";
@@ -25,13 +28,34 @@ import { DashboardModule } from "./pages/dashboard/dashboard.module";
 
 import { SharedModule } from "./shared/shared.module";
 
+import { AngularFireModule } from 'angularfire2';
+import { AuthProviders, AuthMethods } from 'angularfire2';
+
+// Must export the config
+export const firebaseConfig = {
+  apiKey: 'AIzaSyBX3w9-oLe2sk2bz-AQoQ99RfWIS9gA_zU',
+  authDomain: 'localhost',
+  //authDomain: 'material1-2ca42.firebaseapp.com',
+  databaseURL: '<your-database-URL>',
+  storageBucket: '<your-storage-bucket>',
+  //messagingSenderId: '<your-messaging-sender-id>'
+};
+
+const firebaseAuthConfig = {
+  provider: AuthProviders.Password,
+  method: AuthMethods.Password
+};
+
 @NgModule({
   declarations: [ AppComponent ],
   imports: [
     // core angular elements
     BrowserModule, FormsModule, HttpModule,
+    //
+    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
     // these are the page level modules
     HomeModule, ProfileModule, SampleModule, 
+    LoginModule,
     DashboardModule, ContactModule, ErrorModule,
     MemberModule, NotesModule,
     SharedModule,

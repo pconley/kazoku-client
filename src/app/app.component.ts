@@ -7,6 +7,8 @@ import { AuthGuard }  from './guards/auth.guard';
 import { UserGuard }  from './guards/user.guard';
 import { AdminGuard } from './guards/admin.guard';
 
+import { AngularFire } from 'angularfire2';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -21,15 +23,24 @@ export class AppComponent implements OnInit {
     private UserGuard: UserGuard, 
     private AdminGuard: AdminGuard, 
     private auth: AuthService, 
-    private router: Router 
+    private router: Router,
+    private af: AngularFire
   ) {
     console.log("AppComponent#constructor");
   }
+
 
   logout(){
     console.log("*** AppComponent#logout");
     this.goto('home'); // force to public
     this.auth.logout();
+  }
+
+  fire_login(){
+    this.af.auth
+      .login()
+      //.login({email: 'email@example.com',password: 'password'})
+      .catch(function(error) {console.log(error);});
   }
 
   goto_user(){

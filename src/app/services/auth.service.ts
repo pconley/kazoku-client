@@ -3,20 +3,34 @@ import { Router } from '@angular/router';
 import { ReplaySubject }    from 'rxjs/ReplaySubject';
 import { tokenNotExpired } from 'angular2-jwt';
 
-declare var Auth0Lock: any; // Avoids "name not found"" warnings
+import {AngularFire} from 'angularfire2';
+import { AuthProviders, AuthMethods } from 'angularfire2';
+
+declare var Auth0: any;     // avoids "name not found" warnings
+declare var Auth0Lock: any; // avoids "name not found" warnings
+  
+const AUTH0_DOMAIN = 'kazoku.auth0.com';
+const AUTH0_CLIENT_ID = '6VtNWmSNXVxLDCxiDQaE6xGbBAbs4Nkk';
 
 @Injectable()
 export class AuthService {
 
-  private lock = new Auth0Lock('6VtNWmSNXVxLDCxiDQaE6xGbBAbs4Nkk', 'kazoku.auth0.com', {});
+  private lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN, {});
+  private auth0 = new Auth0({ domain : AUTH0_DOMAIN, clientID: AUTH0_CLIENT_ID})
+
   private _userProfileCache;
+
   // Note: we are using the replay subject because the other watchers
   // are constructed after the auth service and need to see the login
   private _login_subject = new ReplaySubject<string>();
   login_observable = this._login_subject.asObservable();
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private af: AngularFire
+  ) {
     console.log('*** AuthService#constructor location=',location.href);
+    console.log("auth0 object...",this.auth0);
     // callback for lock `authenticated` event on the the 
     // auth0 lock object fires after a user logs in to system
     this.lock.on("authenticated", (authResult) => {
@@ -31,6 +45,34 @@ export class AuthService {
           return; 
         }
         this._userProfileCache = this.save_user_profile(profile);
+        // Set the options to retreive a firebase delegation token
+        var options = {
+          id_token : authResult.idToken,
+          api : 'firebase',
+          scope : 'openid name email displayName',
+          target: '6VtNWmSNXVxLDCxiDQaE6xGbBAbs4Nkk'
+        };
+        // Make a call to the Auth0 '/delegate' to get the delegate token
+        this.auth0.getDelegationToken(options, function(err, result) {
+            if( err ){
+                console.error("auth0.getDelegationToken failed. err...",err);
+                alert(err); 
+                return;  // user not logged into firebase... hmmm
+            }     
+            console.log("auth0.getDelegationToken result...",result);
+            // use the auth0 delegate token to login to firebase 
+            // anf get back the firebase auth token    
+            af.auth.login(result.id_token, {
+                provider: AuthProviders.Custom,
+                method: AuthMethods.CustomToken,
+            }).then(function(fb_auth_token){
+                // FINALLY!!! logged into both auth0 and firebase
+                console.log("af auth then: fb_auth_token...",fb_auth_token);
+            }).catch(function(error) {
+              console.error("login to firebase failed. error...",error);
+              alert(error); 
+            });
+        });
       });
     });
   }

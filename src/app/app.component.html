@@ -30,7 +30,7 @@
     <button md-raised-button color="primary" (click)="goto('contact')">Contact Us</button>
     &nbsp;&nbsp; <!-- spacer -->
     <button md-raised-button color="accent" *ngIf="!auth.authenticated()" (click)="auth.login()">Login</button>
-
+   
     <!-- 3 dot menu opens when trigger button is clicked -->
     <button md-icon-button [md-menu-trigger-for]="menu">
       <md-icon>more_vert</md-icon>
