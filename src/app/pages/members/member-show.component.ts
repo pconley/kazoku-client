@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
+import { FirememService } from "../../services/firemem.service";
 import { MemberService } from "../../services/member.service";
+import { AngularFire } from 'angularfire2';
 import { Member } from "../../models/member";
 
 @Component({
@@ -11,32 +13,31 @@ import { Member } from "../../models/member";
 })
 export class MemberShowComponent implements OnInit {
 
-    // birth_string: string = null;
-    // death_string: string = null;
-
     // i think we need a dummy member while it loads
-    member: Member = new Member({}); 
+    //public member: Member = new Member({}); 
+    public member = {}; 
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private MemberService: MemberService) {}
+        private af: AngularFire,
+
+        private MemberService: MemberService,
+        private FirememService: FirememService) {}
 
     ngOnInit() {
         console.log("*** MemberShowComponent#init route...",this.route);
 
         this.route.params
             .map(params => params['id'])
+            .do( id => console.log("--> member id = "+id))
             .subscribe((id) => {
-                this.MemberService
-                    .getMember(id)
-                    .do(obj => { console.log("*** MemberShow#init: obj...",obj); })
-                    .subscribe(m => {
-                        this.member = new Member(m); 
-                        console.log("birth...",this.member.birth);
-                        // this.birth_string = this.member.birth.to_string();
-                        // this.death_string = this.member.death.to_string();
-                     });
+                this.af.database
+                    .object('/members/'+id)
+                    .do( obj => console.log("--> firebase member object...",obj) )
+                    .subscribe( obj => {
+                        this.member = obj;
+                    })
             });
     }
 
@@ -47,7 +48,7 @@ export class MemberShowComponent implements OnInit {
 
     goto_edit(){
         // page action... navigate to the edit page for this user
-        console.log("*** Membershow#goto_edit: id = "+this.member.id);
-        this.router.navigate(['/member/edit', this.member.id]);
+        // console.log("*** Membershow#goto_edit: id = "+this.member.id);
+        // this.router.navigate(['/member/edit', this.member.id]);
     }
 }

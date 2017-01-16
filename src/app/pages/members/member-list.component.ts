@@ -1,8 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs/Observable';
+
 import { AuthService } from "../../services/auth.service";
 import { MemberService } from "../../services/member.service";
+import { FirememService } from "../../services/firemem.service";
+
 import { Member } from "../../models/member"
 
 @Component({
@@ -11,6 +15,8 @@ import { Member } from "../../models/member"
     styleUrls: [ "./member-list.component.css" ]
 })
 export class MemberListComponent implements OnInit {
+
+    public firemems :Observable<any[]>;
  
     imageWidth: number = 30;
     imageMargin: number = 2;
@@ -27,6 +33,7 @@ export class MemberListComponent implements OnInit {
     constructor(
         private router: Router, 
         private authService: AuthService,
+        private fms: FirememService,
         private memberService: MemberService
     ) {
         console.log("*** MemberListComponent#constructor")
@@ -35,6 +42,8 @@ export class MemberListComponent implements OnInit {
     ngOnInit(){ 
         console.log("*** MemberListComponent#OnInit")
         this.loader(false); // do not force re-load of members
+
+        this.firemems = this.fms.members;
     }
 
     previousMember: Member = null;
@@ -55,6 +64,7 @@ export class MemberListComponent implements OnInit {
 
     loader(force: boolean){
         console.log("--- MemberListComponent#loader force="+force);
+
         this.members = [];
         this.count = 0; 
         this.loading = true;

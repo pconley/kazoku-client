@@ -28,7 +28,8 @@ export class MemberService {
     }
 
     getMembers(force: boolean): Observable<Member[]> {
-        if( ! this.authService.authenticated() ) return this.authError();
+
+        if( ! this.authService.isAuthenticated ) return this.authError();
         // if we are not forcing a reload, and there are already
         // members stored in the members cache... then use cache
         if( !force && this.membersCache ){
@@ -48,7 +49,9 @@ export class MemberService {
 
     getMember(id: number, force: boolean = false): Observable<Member> {
         console.log(`*** MemberService#getMember: id=${id}`);
-        if( ! this.authService.authenticated() ) return this.authError();
+        //this.memberCache = { id:99, key:'skel' }
+        //return;
+        if( ! this.authService.isAuthenticated ) return this.authError();
         if( !force && this.memberCache.id == id ){
             console.log("*** MemberService#getMember: using cache data!");
             return Observable.of(this.memberCache);

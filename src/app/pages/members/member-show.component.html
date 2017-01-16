@@ -1,6 +1,25 @@
-<h4>{{member.first_name}} {{member.last_name}}</h4>
+<h3>{{ member | memberHeader | titleCase }} </h3>
 
-<div *ngIf="member">
+<div>Sex: {{ member.sex | uppercase }}</div>
+<div>Key: {{ member.key }}</div>
+
+<h4>Family</h4>
+<div>{{ member.famc }}</div>
+
+<h4>Families</h4>
+<div *ngFor='let k of member.fams'>{{ k }}</div>
+
+<h4>Events</h4>
+<ul>
+<li *ngFor='let event of member.events'>{{ event | event }}</li>
+</ul>
+<div *ngFor='let event of member.events'>{{ event | json }}</div>
+
+
+<h4>Raw Member Object</h4>
+<div>{{ member | json }}</div>
+
+<!--<div *ngIf="member">
         <div id='birth_row' class="row">
                 <div class="col-sm-3">Born</div>
                 <div class="col-sm-9">{{member.birth_string()}}</div>
@@ -51,4 +70,4 @@
         </div>
         <br>
         <button md-raised-button color="primary" (click)="goto_edit()">Edit</button>
-</div>
+</div>-->

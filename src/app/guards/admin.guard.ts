@@ -9,23 +9,21 @@ export class AdminGuard implements CanActivate {
   constructor(private authService: AuthService) {}
 
   canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ) {
-    let url: string = state.url;
-    if( !this.authService.authenticated() ){
-        console.error("AdminGuard. Not authenticated for "+url);
+    //let url: string = state.url;
+    //console.log("AdminGuard. url="+url);
+    if( !this.authService.isAuthenticated ){
+        //console.error("AdminGuard. cannot activate because not authenticated");
         return false; // deny access to the route
     }
-    var profile = this.authService.get_user_profile();
+    var profile = this.authService.profile;
     if( !profile ){
-        console.error("AdminGuard. No profile for "+url);
+        console.error("AdminGuard. cannot activate because no profile");
         return false; // deny access to the route
     }
-    let role: string = profile['role']
-    let isAdmin: boolean = role == 'admin';
-    if( !isAdmin ){
-        console.error("AdminGuard. Invalid role ("+role+") for "+url);
+    if( !profile.isUser && !profile.isAdmin ){
+        console.error("AdminGuard. cannot activate because invalid role",profile.isUser,profile.isAdmin);
         return false; // deny access to the route
     }
-    //console.log("UserGuard: can active? "+isAdmin);
-    return true;  // allow access to the rotue
+    return true;
   }
 }

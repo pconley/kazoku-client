@@ -18,7 +18,7 @@
     </button>-->
 
     <button md-raised-button color="primary" (click)="goto_home()">Kazoku!</button>
-    <span *ngIf="UserGuard.canActivate()">
+    <span *ngIf="af.auth | async">
         &nbsp;&nbsp; <!-- spacer -->
         <button md-raised-button color="accent" (click)="goto('members')">Members</button>
         &nbsp;&nbsp; <!-- spacer -->
@@ -29,7 +29,7 @@
 
     <button md-raised-button color="primary" (click)="goto('contact')">Contact Us</button>
     &nbsp;&nbsp; <!-- spacer -->
-    <button md-raised-button color="accent" *ngIf="!auth.authenticated()" (click)="auth.login()">Login</button>
+    <button md-raised-button color="accent" *ngIf="!(af.auth | async)" (click)="auth.login()">Login</button>
    
     <!-- 3 dot menu opens when trigger button is clicked -->
     <button md-icon-button [md-menu-trigger-for]="menu">
@@ -39,10 +39,10 @@
         <button md-menu-item (click)="goto('home')">
           <span><md-icon>home</md-icon>Home</span>
         </button>
-        <button md-menu-item (click)="goto('dashboard')" *ngIf="UserGuard.canActivate()">
+        <button md-menu-item (click)="goto('dashboard')" *ngIf="af.auth | async">
           <span><md-icon>dashboard</md-icon>Dashboard</span>
         </button>
-        <button md-menu-item (click)="goto('profile')" *ngIf="UserGuard.canActivate()">
+        <button md-menu-item (click)="goto('profile')" *ngIf="af.auth | async">
             <span><md-icon>perm_identity</md-icon>Profile</span>
         </button>
         <button md-menu-item disabled>
@@ -50,24 +50,27 @@
         </button>
 
         <hr>
-        <button md-menu-item (click)="goto('notes')" *ngIf="UserGuard.canActivate()">
+        <button md-menu-item (click)="goto('notes')" *ngIf="af.auth | async">
             <span><md-icon>info</md-icon>Release notes</span>
         </button>
         <!-- note this is an intentional error; using the wrong guard, the -->
         <!-- the route itself is protected by the admin guard, so throw error -->
-        <button md-menu-item (click)="goto('sample')" *ngIf="UserGuard.canActivate()">
+        <button md-menu-item (click)="goto('sample')" *ngIf="af.auth | async">
             <span><md-icon>new_releases</md-icon>Samples</span>
         </button>
         <button md-menu-item (click)="isDarkTheme = !isDarkTheme">
             <span><md-icon>swap_horiz</md-icon>Colors</span>
         </button>
 
-        <span *ngIf="auth.authenticated()">
+
+
+        <span *ngIf="af.auth | async">
         <hr>
         <button md-menu-item (click)="logout()">
             <span><md-icon>exit_to_app</md-icon>Logout</span>
         </button>
         </span>
+
     </md-menu>
 
     <!--this is the button to activate the right nav above-->

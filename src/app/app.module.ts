@@ -12,13 +12,11 @@ import { ApiService } from "./services/api.service"
 import { AuthService } from "./services/auth.service"
 import { EventService } from "./services/event.service"
 import { MemberService } from "./services/member.service"
+import { FirememService } from './services/firemem.service';
 import { DialogService } from './services/dialog.service';
-
-import { NewAuthService } from './services/newauth.service';
 
 import { HomeModule }      from "./pages/home/home.module";
 import { NotesModule }     from "./pages/notes/notes.module";
-import { LoginModule }     from "./pages/login/login.module";
 import { ErrorModule }     from "./pages/error/error.module";
 import { SampleModule }    from "./pages/sample/sample.module";
 import { MemberModule }    from "./pages/members/member.module";
@@ -36,7 +34,7 @@ export const firebaseConfig = {
   apiKey: 'AIzaSyBX3w9-oLe2sk2bz-AQoQ99RfWIS9gA_zU',
   authDomain: 'localhost',
   //authDomain: 'material1-2ca42.firebaseapp.com',
-  databaseURL: '<your-database-URL>',
+  databaseURL: 'material1-2ca42.firebaseio.com',
   storageBucket: '<your-storage-bucket>',
   //messagingSenderId: '<your-messaging-sender-id>'
 };
@@ -55,7 +53,6 @@ const firebaseAuthConfig = {
     AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
     // these are the page level modules
     HomeModule, ProfileModule, SampleModule, 
-    LoginModule,
     DashboardModule, ContactModule, ErrorModule,
     MemberModule, NotesModule,
     SharedModule,
@@ -66,7 +63,7 @@ const firebaseAuthConfig = {
   providers: [
     // globally available services at this top level
     EventService, AuthService, ApiService, 
-    MemberService, DialogService,
+    MemberService, DialogService, FirememService,
     provideAuth({
         globalHeaders: [{"Content-type": "application/json"}],
         //newJwtError: true,

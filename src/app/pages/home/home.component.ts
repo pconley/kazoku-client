@@ -1,18 +1,22 @@
 import { Component, OnInit } from "@angular/core";
+import { Observable } from 'rxjs/Observable';
 
-// import { ApiService } from "../../services/api.service";
-// import { EventService } from "../../services/event.service";
+import { FirememService } from "../../services/firemem.service";
 
 @Component({
     selector: "home",
     templateUrl: "./home.component.html"
 })
 export class HomeComponent implements OnInit {
-    // error: string;
-    // response: {};
+  
+    public firemems :Observable<any[]>;
 
-    constructor() {
+    constructor(
+        private ms: FirememService
+    ) {
         console.log("HomeComponent#constructor");
+
+        this.firemems = ms.members;
     }
 
     ngOnInit() {

@@ -1,3 +1,17 @@
+
+<md-card>
+books
+<ul>
+  <li class="text" *ngFor="let item of items | async">
+    {{item.title}} ({{item.author}})
+  </li>
+
+  <button md-raised-button color="accent" (click)="add_book()">Add Book</button>
+
+</ul>
+</md-card>
+
+
 <md-card>
       <button md-button>FLAT</button>
       <button md-raised-button md-tooltip="This is a tooltip!">RAISED</button>

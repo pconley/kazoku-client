@@ -21,6 +21,17 @@
     </button>
 </md-toolbar>
 
+<md-card>
+Firemems
+<ul>
+  <li class="text" *ngFor="let mem of firemems | async">
+      <a href="#" [routerLink]="['/member', mem.$key]">
+            {{mem.last}}, {{mem.first}} 
+      </a> {{mem.key}}
+  </li>
+</ul>
+</md-card>
+
 <kz-spinner *ngIf="loading"></kz-spinner>
 
 <table class="table table-striped" *ngIf='isListView'>

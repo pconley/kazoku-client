@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
     console.log("AppComponent#constructor");
   }
 
-
   logout(){
     console.log("*** AppComponent#logout");
     this.goto('home'); // force to public
@@ -44,14 +43,14 @@ export class AppComponent implements OnInit {
   }
 
   goto_user(){
-    var id = this.auth.get_user_profile()['member_id'];
-    console.log("*** AppComponent#goto member id = "+id);
+    var id = 0; //this.auth.get_user_profile()['member_id'];
+    //console.log("*** AppComponent#goto member id = "+id);
     // jump to the member page for the current user
     this.router.navigate(['/member', id]);
   }
 
   goto_home(){
-    let home = this.UserGuard.canActivate() ? 'dashboard' : 'home';
+    let home = this.af.auth ? 'dashboard' : 'home';
     this.goto(home);
   }
   goto(route){

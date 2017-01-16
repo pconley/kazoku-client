@@ -1,3 +1,13 @@
 <md-card>
 	<h1>Kazoku Home</h1>
 </md-card>
+
+<md-card>
+Firemems
+<ul>
+  <li class="text" *ngFor="let item of firemems | async">
+    {{item.last}}, {{item.first}} {{item.key}}
+  </li>
+</ul>
+</md-card>
+
