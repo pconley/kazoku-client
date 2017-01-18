@@ -82,7 +82,9 @@
 
   <div class="app-content">
 
-    <router-outlet></router-outlet>
+      <md-card>{{ auth.profile | json }}</md-card>
+
+      <router-outlet></router-outlet>
 
   </div>
 

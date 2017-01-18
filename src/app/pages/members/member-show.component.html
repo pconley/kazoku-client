@@ -3,11 +3,16 @@
 <div>Sex: {{ member.sex | uppercase }}</div>
 <div>Key: {{ member.key }}</div>
 
-<h4>Family</h4>
-<div>{{ member.famc }}</div>
+<h4>Parents</h4>
+<div>{{ family | familyParents }}</div>
 
-<h4>Families</h4>
-<div *ngFor='let k of member.fams'>{{ k }}</div>
+<h4>Siblings</h4>
+<ul>
+<li *ngFor='let sib of siblings'>{{ sib.first | titleCase }} {{ sib.key }}</li>
+</ul>
+
+<h4>Spouse(s)</h4>
+<div *ngFor='let k of member.fams'>{{ k }}: </div>
 
 <h4>Events</h4>
 <ul>

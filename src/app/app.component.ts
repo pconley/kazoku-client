@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
   }
 
   logout(){
-    console.log("*** AppComponent#logout");
+    console.log("AppComponent#logout");
     this.goto('home'); // force to public
     this.auth.logout();
   }
@@ -43,7 +43,8 @@ export class AppComponent implements OnInit {
   }
 
   goto_user(){
-    var id = 0; //this.auth.get_user_profile()['member_id'];
+    var id = this.auth.profile.id; // firebase id
+    console.log("AppComponent#goto_user id="+id);
     //console.log("*** AppComponent#goto member id = "+id);
     // jump to the member page for the current user
     this.router.navigate(['/member', id]);
@@ -53,8 +54,9 @@ export class AppComponent implements OnInit {
     let home = this.af.auth ? 'dashboard' : 'home';
     this.goto(home);
   }
+
   goto(route){
-    console.log("*** AppComponent#goto route="+route);
+    console.log("AppComponent#goto route="+route);
     this.router.navigate([route]);
   }
 

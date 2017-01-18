@@ -35,7 +35,7 @@ export class AuthService {
     public af: AngularFire
   ) {
     console.log('*** AuthService#constructor location=',location.href);
-    console.log("auth0 object...",this.auth0base);
+    //console.log("auth0 object...",this.auth0base);
 
     // subscribe to the firebase auth state so we can react as it changes
     // and get or set the profile from the associated firebase user record
@@ -70,7 +70,7 @@ export class AuthService {
           return; 
         }
         console.log("=====> PROFILE...",profile);
-        this._userProfileCache = this.save_user_profile(profile);
+        //this._userProfileCache = this.save_user_profile(profile);
         // Set the options to retreive a firebase delegation token
         var options = {
           id_token : authResult.idToken,
@@ -110,7 +110,6 @@ export class AuthService {
     this.auth0lock.show(); // display login popup window
   };
 
-  
   public logout() {
     console.log("*** AuthService#logout");
     // localStorage.removeItem('id_token');
@@ -120,49 +119,49 @@ export class AuthService {
     this._login_subject.next("the logout!");
   };
 
-  get_user_profile(){
+  // get_user_profile(){
 
-      //var user = this.af.auth.   //firebase.auth().currentUser;
+  //     //var user = this.af.auth.   //firebase.auth().currentUser;
 
-      var user_profile = {};
+  //     var user_profile = {};
 
-      // if (user != null) {
-      //   user.providerData.forEach(function (profile) {
-      //     user_profile = profile;
-      //     console.log("Sign-in provider: "+profile.providerId);
-      //     console.log("  Provider-specific UID: "+profile.uid);
-      //     console.log("  Name: "+profile.displayName);
-      //     console.log("  Email: "+profile.email);
-      //     console.log("  Photo URL: "+profile.photoURL);
-      //   });
-      // }
+  //     // if (user != null) {
+  //     //   user.providerData.forEach(function (profile) {
+  //     //     user_profile = profile;
+  //     //     console.log("Sign-in provider: "+profile.providerId);
+  //     //     console.log("  Provider-specific UID: "+profile.uid);
+  //     //     console.log("  Name: "+profile.displayName);
+  //     //     console.log("  Email: "+profile.email);
+  //     //     console.log("  Photo URL: "+profile.photoURL);
+  //     //   });
+  //     // }
 
-    //console.log("*** AuthService#get_user_profile");
-    //this._userProfileCache = this._userProfileCache || this.fetch_user_profile();
-    //return this._userProfileCache; // may still be null if no profile stored
+  //   //console.log("*** AuthService#get_user_profile");
+  //   //this._userProfileCache = this._userProfileCache || this.fetch_user_profile();
+  //   //return this._userProfileCache; // may still be null if no profile stored
 
-    return user_profile;
-   }
+  //   return user_profile;
+  //  }
 
-  fetch_user_profile(){
-    // the profile may have saved to local storage (along with 
-    // the token_id) at the time the user logged into the system
-    var json = localStorage.getItem('profile');
-    if( !json ) return null; // no profile exists
-    var profile = JSON.parse(json);
-    // enhance the profile with the create year attribute
-    var created_at = profile['created_at'];
-    profile['create_year'] = created_at.substring(0, 4);
-    console.log("AuthService#fetch_user_profile: profile...",profile); 
-    return profile;
-  }
+  // fetch_user_profile(){
+  //   // the profile may have saved to local storage (along with 
+  //   // the token_id) at the time the user logged into the system
+  //   var json = localStorage.getItem('profile');
+  //   if( !json ) return null; // no profile exists
+  //   var profile = JSON.parse(json);
+  //   // enhance the profile with the create year attribute
+  //   var created_at = profile['created_at'];
+  //   profile['create_year'] = created_at.substring(0, 4);
+  //   console.log("AuthService#fetch_user_profile: profile...",profile); 
+  //   return profile;
+  // }
 
-  save_user_profile(profile){
-    // the profile is saved to local storage (along with the
-    // token_id) at the time the user logged into the system
-    this._login_subject.next("saving profile to local storage");
-    // localStorage.setItem('profile', JSON.stringify(profile));
-    console.log("=== AuthService#get_user_profile: profile...",profile);
-    return profile;
-  }
+  // save_user_profile(profile){
+  //   // the profile is saved to local storage (along with the
+  //   // token_id) at the time the user logged into the system
+  //   this._login_subject.next("saving profile to local storage");
+  //   // localStorage.setItem('profile', JSON.stringify(profile));
+  //   console.log("=== AuthService#get_user_profile: profile...",profile);
+  //   return profile;
+  // }
 }

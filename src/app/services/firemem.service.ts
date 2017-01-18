@@ -19,7 +19,7 @@ export class FirememService {
         this.members = new Observable<any[]>();
         this.members = af.database.list('/members', {
         query: {
-            limitToLast: 10,
+            limitToFirst: 500,
             orderByKey: true
         }
         });
