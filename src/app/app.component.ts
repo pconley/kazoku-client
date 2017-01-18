@@ -7,7 +7,7 @@ import { AuthGuard }  from './guards/auth.guard';
 import { UserGuard }  from './guards/user.guard';
 import { AdminGuard } from './guards/admin.guard';
 
-import { AngularFire } from 'angularfire2';
+import { AngularFire, FirebaseAuthState } from 'angularfire2';
 
 @Component({
   selector: 'app-root',
@@ -20,8 +20,8 @@ export class AppComponent implements OnInit {
   isDarkTheme: boolean = false;
 
   constructor( 
-    private UserGuard: UserGuard, 
-    private AdminGuard: AdminGuard, 
+    //private UserGuard: UserGuard, 
+    //private AdminGuard: AdminGuard, 
     private auth: AuthService, 
     private router: Router,
     private af: AngularFire
@@ -33,13 +33,6 @@ export class AppComponent implements OnInit {
     console.log("AppComponent#logout");
     this.goto('home'); // force to public
     this.auth.logout();
-  }
-
-  fire_login(){
-    this.af.auth
-      .login()
-      //.login({email: 'email@example.com',password: 'password'})
-      .catch(function(error) {console.log(error);});
   }
 
   goto_user(){
@@ -62,10 +55,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit(){ 
     console.log("AppComponent#init");
-    // set up a global watcher of the authentication
-    // actions to redirect to the home page on logout
-    this.auth.login_observable.subscribe( x => { 
-      console.log(">>> watcher#login "+x); 
+    // this is an EXAMPLE of how a component can watch the
+    // the changing authentication state of the current user
+    this.af.auth.subscribe((state: FirebaseAuthState) => {
+        console.log("W: firebase auth state changed to...",state);
+        this.goto('home'); // redirect to public home page
     });
   }
 }

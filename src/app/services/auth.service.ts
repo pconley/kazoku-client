@@ -19,9 +19,6 @@ export class AuthService {
   private auth0lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN, {});
   private auth0base = new Auth0({ domain : AUTH0_DOMAIN, clientID: AUTH0_CLIENT_ID})
 
-  private _userProfileCache;
-
-  private authState;
   public isAuthenticated: boolean = false;
   public profile: any = {};
 
@@ -40,18 +37,16 @@ export class AuthService {
     // subscribe to the firebase auth state so we can react as it changes
     // and get or set the profile from the associated firebase user record
     af.auth.subscribe((state: FirebaseAuthState) => {
-        console.log(">>> firebase auth state...",state);
-        this.authState = state;
+        console.log("firebase auth state changed to...",state);
         this.isAuthenticated = !!state;
         this.profile = {}; // clear it 
         if( !!state ){
-          console.log(">>> firebase getting user profile");
           af.database
             .object('/users/'+state.auth.uid, { preserveSnapshot: true })
             .first()
             .subscribe(user => {
               this.profile = user.val();
-              console.log("<<< profile...",this.profile);
+              console.log("firebase user profile...",this.profile);
           });
         }
     });        
@@ -60,108 +55,63 @@ export class AuthService {
     // auth0 lock object fires after a user logs in to system
     this.auth0lock.on("authenticated", (authResult) => {
       console.log('*** AuthService#OnAuthenticated. authResult...',authResult);
-      console.log('>>> token = '+authResult.idToken);
-      // localStorage.setItem('id_token', authResult.idToken);
-      // retrieve the profile information from server
+
+      // use the auth0 results to authenticate with firebase
+      this.authenticate_to_firebase(authResult.idToken);
+
+      // retrieve the Auth0 profile information (not currently used)
       this.auth0lock.getProfile(authResult.idToken, (error, profile) => {
         if (error) { 
-          console.error("*** AuthService#OnAuthenticated: error retrieving the user profile");
+          console.error("auth0 error retrieving the user profile");
           alert(error); 
-          return; 
+        } else {
+          console.log("auth0 profile...",profile);
         }
-        console.log("=====> PROFILE...",profile);
-        //this._userProfileCache = this.save_user_profile(profile);
-        // Set the options to retreive a firebase delegation token
-        var options = {
-          id_token : authResult.idToken,
-          api : 'firebase',
-          scope : 'openid name email displayName',
-          target: '6VtNWmSNXVxLDCxiDQaE6xGbBAbs4Nkk'
-        };
-        // Make a call to the Auth0 '/delegate' to get the delegate token
-        this.auth0base.getDelegationToken(options, function(err, result) {
-            if( err ){
-                console.error("auth0.getDelegationToken failed. err...",err);
-                alert(err); 
-                return;  // user not logged into firebase... hmmm
-            }     
-            console.log("auth0.getDelegationToken result...",result);
-            // use the auth0 delegate token to login to firebase 
-            // anf get back the firebase auth token    
-            af.auth.login(result.id_token, {
-                provider: AuthProviders.Custom,
-                method: AuthMethods.CustomToken,
-            }).then(function(fb_auth_token){
-                // FINALLY!!! logged into both auth0 and firebase; but the 
-                console.log("af auth then: fb_auth_token...",fb_auth_token);
-            }).catch(function(error) {
-              console.error("login to firebase failed. error...",error);
-              alert(error); 
-            });
-        });
       });
+
     });
   }
 
+  private authenticate_to_firebase(id_token){
+      var that = this;
+      // first make a call to the Auth0 to get the "delegate token"
+      var options = {
+          id_token : id_token, api : 'firebase',
+          scope : 'openid name email displayName',
+          target: '6VtNWmSNXVxLDCxiDQaE6xGbBAbs4Nkk'
+      };
+      this.auth0base.getDelegationToken(options, function(err, result) {
+            if( err ){
+                console.error("auth0.getDelegationToken failed. err...",err);
+                alert(err); 
+                return;
+            }     
+            // console.log("auth0.getDelegationToken result...",result);
+            // then use the auth0 delegate token to login to firebase 
+            that.af.auth.login(result.id_token, {
+                provider: AuthProviders.Custom,
+                method: AuthMethods.CustomToken,
+            }).then(function(fb_auth_token){
+                // FINALLY!!! logged into both auth0 and firebase; but any action
+                // is taken in a subscription to the firebase authentication
+                //console.log("af auth then: fb_auth_token...",fb_auth_token);
+            }).catch(function(error) {
+                console.error("login to firebase failed. error...",error);
+                alert(error); 
+            });
+      });
+  }
+  
   public login() {
-    console.log("*** AuthService#login");
+    //console.log("AuthService#login");
     this.router.navigate(['home']);
     this._login_subject.next("open login window");
     this.auth0lock.show(); // display login popup window
   };
 
   public logout() {
-    console.log("*** AuthService#logout");
-    // localStorage.removeItem('id_token');
-    // localStorage.removeItem('profile');
+    //console.log("AuthService#logout");
     this.af.auth.logout();
-    this._userProfileCache = null;
     this._login_subject.next("the logout!");
   };
-
-  // get_user_profile(){
-
-  //     //var user = this.af.auth.   //firebase.auth().currentUser;
-
-  //     var user_profile = {};
-
-  //     // if (user != null) {
-  //     //   user.providerData.forEach(function (profile) {
-  //     //     user_profile = profile;
-  //     //     console.log("Sign-in provider: "+profile.providerId);
-  //     //     console.log("  Provider-specific UID: "+profile.uid);
-  //     //     console.log("  Name: "+profile.displayName);
-  //     //     console.log("  Email: "+profile.email);
-  //     //     console.log("  Photo URL: "+profile.photoURL);
-  //     //   });
-  //     // }
-
-  //   //console.log("*** AuthService#get_user_profile");
-  //   //this._userProfileCache = this._userProfileCache || this.fetch_user_profile();
-  //   //return this._userProfileCache; // may still be null if no profile stored
-
-  //   return user_profile;
-  //  }
-
-  // fetch_user_profile(){
-  //   // the profile may have saved to local storage (along with 
-  //   // the token_id) at the time the user logged into the system
-  //   var json = localStorage.getItem('profile');
-  //   if( !json ) return null; // no profile exists
-  //   var profile = JSON.parse(json);
-  //   // enhance the profile with the create year attribute
-  //   var created_at = profile['created_at'];
-  //   profile['create_year'] = created_at.substring(0, 4);
-  //   console.log("AuthService#fetch_user_profile: profile...",profile); 
-  //   return profile;
-  // }
-
-  // save_user_profile(profile){
-  //   // the profile is saved to local storage (along with the
-  //   // token_id) at the time the user logged into the system
-  //   this._login_subject.next("saving profile to local storage");
-  //   // localStorage.setItem('profile', JSON.stringify(profile));
-  //   console.log("=== AuthService#get_user_profile: profile...",profile);
-  //   return profile;
-  // }
 }
