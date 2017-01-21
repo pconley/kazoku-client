@@ -24,8 +24,8 @@ export class AuthService {
 
   // Note: we are using the replay subject because the other watchers
   // are constructed after the auth service and need to see the login
-  private _login_subject = new ReplaySubject<string>();
-  login_observable = this._login_subject.asObservable();
+  private _subject = new ReplaySubject<boolean>();
+  action = this._subject.asObservable();
 
   constructor(
     private router: Router,
@@ -39,15 +39,20 @@ export class AuthService {
     af.auth.subscribe((state: FirebaseAuthState) => {
         console.log("firebase auth state changed to...",state);
         this.isAuthenticated = !!state;
-        this.profile = {}; // clear it 
-        if( !!state ){
+        this.profile = {}; // always clear
+        if( this.isAuthenticated ){
           af.database
             .object('/users/'+state.auth.uid, { preserveSnapshot: true })
             .first()
             .subscribe(user => {
               this.profile = user.val();
               console.log("firebase user profile...",this.profile);
+              // we wait until we have a valid profile mostly for the 
+              // guards which seem to rely on a synch flag to be set
+              this._subject.next(true); // notify subscribers of login
           });
+        } else {
+          this._subject.next(false); // notify subscribers of logout
         }
     });        
     
@@ -104,14 +109,13 @@ export class AuthService {
   
   public login() {
     //console.log("AuthService#login");
-    this.router.navigate(['home']);
-    this._login_subject.next("open login window");
+    //this.router.navigate(['home']);
     this.auth0lock.show(); // display login popup window
   };
 
   public logout() {
     //console.log("AuthService#logout");
     this.af.auth.logout();
-    this._login_subject.next("the logout!");
+    //this._login_subject.next("the logout!");
   };
 }

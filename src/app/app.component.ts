@@ -20,19 +20,40 @@ export class AppComponent implements OnInit {
   isDarkTheme: boolean = false;
 
   constructor( 
-    //private UserGuard: UserGuard, 
-    //private AdminGuard: AdminGuard, 
     private auth: AuthService, 
     private router: Router,
-    private af: AngularFire
+    //private af: AngularFire
   ) {
     console.log("AppComponent#constructor");
   }
 
+  ngOnInit(){ 
+    console.log("AppComponent#init location="+location.href);
+
+    var parser = document.createElement('a');
+    parser.href = location.href;
+    var start_path = parser.pathname;
+    
+    // this is an EXAMPLE of how a component can watch the
+    // the changing authentication state of the current user
+    this.auth.action.subscribe((isAuthenticated: boolean) => {
+        console.log("AppComponent: firebase auth state changed to "+isAuthenticated);
+        // whenever the authentication state changes redirect 
+        var destination = isAuthenticated ? start_path : 'home' ;
+        this.router.navigate([destination]);
+    });
+  }
+
+  login(){
+    console.log("AppComponent#login");
+    this.auth.login();
+    //this.goto('dashboard');
+  }
+
   logout(){
     console.log("AppComponent#logout");
-    this.goto('home'); // force to public
     this.auth.logout();
+    //this.goto('home'); // force to public
   }
 
   goto_user(){
@@ -44,22 +65,12 @@ export class AppComponent implements OnInit {
   }
 
   goto_home(){
-    let home = this.af.auth ? 'dashboard' : 'home';
-    this.goto(home);
+    let destination = this.auth.isAuthenticated ? 'dashboard' : 'home';
+    this.goto(destination);
   }
 
   goto(route){
     console.log("AppComponent#goto route="+route);
     this.router.navigate([route]);
-  }
-
-  ngOnInit(){ 
-    console.log("AppComponent#init");
-    // this is an EXAMPLE of how a component can watch the
-    // the changing authentication state of the current user
-    this.af.auth.subscribe((state: FirebaseAuthState) => {
-        console.log("W: firebase auth state changed to...",state);
-        this.goto('home'); // redirect to public home page
-    });
   }
 }

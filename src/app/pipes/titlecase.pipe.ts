@@ -8,7 +8,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 export class TitleCasePipe implements PipeTransform {
     transform(input:string, length: number): string {
         //console.log("TitleCasePipe: input...",input);
-        if( !input ) return "error";
+        if( !input ) return "";
         return input.length > 0 ? input.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase() )) : '';
     }
 }
