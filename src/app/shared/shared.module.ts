@@ -1,4 +1,6 @@
 import { NgModule }            from '@angular/core';
+import { RouterModule } from '@angular/router';
+
 import { CommonModule }        from '@angular/common';
 import { FormsModule }         from '@angular/forms';
 import { MaterialModule }      from '@angular/material';
@@ -11,12 +13,10 @@ import { NoticeComponent }     from './notice.component';
 
 import { MemberListCardComponent } from './member-list-card.component';
 
-//import { TitleCasePipe } from '../pipes/titlecase.pipe';
-
-
 @NgModule({
   imports:      [ CommonModule, FormsModule, MaterialModule.forRoot(),
-                  PipesModule
+                  RouterModule,
+                  PipesModule // my custom pipes
    ],
   declarations: [ StarComponent, NoticeComponent, SpinnerComponent,
                   MemberListCardComponent,
@@ -25,20 +25,9 @@ import { MemberListCardComponent } from './member-list-card.component';
       // kz shared components
       StarComponent, NoticeComponent, SpinnerComponent,
       MemberListCardComponent,
-      // pipes used
-      //TitleCasePipe,
       // core 3rd party components
       CommonModule, FormsModule, MaterialModule
     ]
 
 })
 export class SharedModule { }
-
-
-// import { MemberHeaderPipe } from './member_header.pipe';
-// import { FamilyParentsPipe } from './family_parents.pipe';
-// @NgModule({
-//   imports:      [  ],
-//   declarations: [ EventPipe, TitleCasePipe, MemberHeaderPipe, FamilyParentsPipe ],
-//   exports:      [ EventPipe, TitleCasePipe, MemberHeaderPipe, FamilyParentsPipe ]
-// })

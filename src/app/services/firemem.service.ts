@@ -41,7 +41,8 @@ export class FirememService {
             //.do( arr => console.log("fms#get_mem_by_key: result...",arr) )
     }
     get_members( famkey ){
-        //console.log("fms#get_members: famkey = "+famkey);
+        console.log("fms#get_members: famkey = "+famkey);
+        if( !famkey ) return; // no action
         return this.af.database
             .list('/members',{query: {orderByChild: 'famc', equalTo: famkey}})
             .first()

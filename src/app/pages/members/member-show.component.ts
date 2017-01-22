@@ -1,10 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { AngularFire } from 'angularfire2';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 import { Member } from "../../models/member";
 import { FirememService } from "../../services/firemem.service";
+//import { PipesModule } from '../../pipes/pipes.module'
+
 
 @Component({
     selector: "kz-member-show",
@@ -12,6 +14,8 @@ import { FirememService } from "../../services/firemem.service";
     styleUrls: [ "./member-show.component.css" ]
 })
 export class MemberShowComponent implements OnInit {
+
+    private FMS;
 
     public member = {}; 
     public memkey = ""; 
@@ -21,7 +25,9 @@ export class MemberShowComponent implements OnInit {
     public parents = []; 
     public siblings = []; 
     public children = []; 
-    public spouses = []; // keys
+    public spouses = []; 
+
+    public spouse_ref: FirebaseListObservable<any[]>;
 
     constructor(
         private route: ActivatedRoute,
@@ -32,6 +38,7 @@ export class MemberShowComponent implements OnInit {
 
     ngOnInit() {
         console.log("*** MemberShowComponent#init route...",this.route);
+        this.FMS = this.fms;
         this.route.params
             .map(params => params['id'])
             .do( id => console.log("route changed to member id = "+id))
@@ -57,17 +64,10 @@ export class MemberShowComponent implements OnInit {
             .subscribe( obj => {
                 this.member = obj;
                 this.memkey = obj["key"];
-                if( obj.famc ){
+                //if( obj.famc ){
                     this.fms.get_members( obj.famc ).subscribe( array => { this.siblings = array; });
-                    this.fms.get_family( obj.famc ).subscribe( array => {
-                        var family = array[0]; 
-                        if( family ){ 
-                            console.log("getting parents for...",family);
-                            this.fms.get_mem_by_key( family['wife'] ).subscribe( arr => {this.mother = arr[0]} );
-                            this.fms.get_mem_by_key( family['husb'] ).subscribe( arr => {this.father = arr[0]} );
-                        }
-                    })
-                }
+                    this.fms.get_family( obj.famc ).subscribe( array => { this.load_parents(array[0]) });
+                 //}
 
                 if( obj.fams ){
                     obj.fams.forEach( key => {
@@ -76,30 +76,43 @@ export class MemberShowComponent implements OnInit {
                             this.children = this.children.concat(array); 
                         });
                         // spouses
-                        this.fms.get_family( key ).subscribe( array => {
-                            var fam = array[0];
-                            console.log("fam obj...",fam);
-                            if( fam ){
-                                if( this.memkey != fam['wife'] ) {
-                                    this.fms
-                                        .get_mem_by_key( fam['wife'] )
-                                        .subscribe( arr => {
-                                            this.spouses.push(arr[0]);
-                                        });
-                                }
-                                if( this.memkey != fam['husb'] ) {
-                                    this.fms
-                                        .get_mem_by_key( fam['husb'] )
-                                        .subscribe( arr => {
-                                            this.spouses.push(arr[0]);
-                                        });
-                                }
-                            }
-                        });
-
+                        this.spouse_ref = this.fms.get_family( key );
+                        this.spouse_ref.subscribe( arr => this.load_spouses(arr[0]) );
                     });
                 }
         })
+    }
+
+    load_parents(fam){
+        console.log("show#load_parents: fam...",fam);
+        if( !fam ) return; // no action
+        this.push_parent( fam['husb'] );
+        this.push_parent( fam['wife'] );
+    }
+
+    push_parent(key){
+        console.log("show#push_parent: key = " + key);
+        if( key == this.memkey ) return; // no action
+        this.fms
+            .get_mem_by_key( key )
+            //.do( arr => console.log(arr) )
+            .subscribe( arr => { this.parents.push(arr[0]); });
+    }
+
+    load_spouses(fam){
+        console.log("show#load_spouses: fam...",fam);
+        if( !fam ) return; // no action
+        this.push_spouse( fam['husb'] );
+        this.push_spouse( fam['wife'] );
+    }
+
+    push_spouse(key){
+        console.log("show#push_spouse: key = " + key);
+        if( key == this.memkey ) return; // no action
+        this.fms
+            .get_mem_by_key( key )
+            .do( arr => console.log(arr) )
+            .subscribe( arr => { this.spouses.push(arr[0]); });
     }
 
     //fireError(errmsg){ console.error("firebase error = "+errmsg); }

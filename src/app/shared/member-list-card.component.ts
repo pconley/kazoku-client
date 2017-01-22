@@ -1,30 +1,33 @@
-import { Component, Input } from '@angular/core';
-
+import { Component, OnChanges, Input } from '@angular/core';
 
 @Component({
   selector: 'kz-member-list-card',
   template: `<h4>{{title}}</h4>
             <ul>
             <li *ngFor='let mem of members'>
-                    {{mem.first | titleCase}} {{mem.middle | titleCase}} 
+                <a href="#" [routerLink]="['/member', mem.$key]">
+                    {{mem | memberHeader : withlast : true | titleCase }}
+                </a>
             </li>
             </ul>`
 })
 
-export class MemberListCardComponent {
+export class MemberListCardComponent implements OnChanges {
 
-    // used in the html to pass values
+    withlast: boolean = false;
+
     @Input() title: string;
     @Input() members: any[];
+    @Input() showlast: string;
 
     constructor() {}
+
+    ngOnChanges(): void {
+        //console.log("card: showlast = "+this.showlast);
+        var input = this.showlast.toUpperCase();
+        this.withlast = false; // default
+        this.withlast = input == "T" || input == "TRUE"  ;
+    }
+
 }
 
-
-// import { MemberHeaderPipe } from './member_header.pipe';
-// import { FamilyParentsPipe } from './family_parents.pipe';
-// @NgModule({
-//   imports:      [  ],
-//   declarations: [ EventPipe, TitleCasePipe, MemberHeaderPipe, FamilyParentsPipe ],
-//   exports:      [ EventPipe, TitleCasePipe, MemberHeaderPipe, FamilyParentsPipe ]
-// })

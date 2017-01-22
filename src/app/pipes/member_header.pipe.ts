@@ -1,18 +1,18 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
-// returns the header text for a member
+// returns the display text for a member
+// optionally with the lastname and birth year
 
 @Pipe({name: 'memberHeader', pure: false})
 export class MemberHeaderPipe implements PipeTransform {
-    transform(input:any, length: number): string {
-        //console.log("EventPipe: input...",input);
+    transform(input:any, showlast = true, showdate = false ): string {
         if( !input ) return "error";
         var text = '';
         if( input.first  ) text += " " + input.first;
         if( input.middle ) text += " " + input.middle;
-        if( input.last   ) text += " " + input.last;
-        text += "!";
-        return text
+        if( showlast && input.last ) text += " " + input.last;
+        if( showdate && input.year ) text += " ("+ input.year + ")";
+        return text.trim();
     }
 
     format(type: string,event: any){
