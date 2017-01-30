@@ -1,7 +1,7 @@
 import { Event } from './event';
 
 export class Member {
-    id: number;
+    id: string; 
     key: string;
     first_name: string;
     last_name: string;
@@ -9,28 +9,29 @@ export class Member {
     selected: boolean;
     birth: Event;
     death: Event;
-    parents: Member[];
-    spouses: Member[];
-    siblings: Member[];
-    children: Member[];
-    range: string; // derived display range
-    display_range: string;
 
     constructor(obj: any) {
-        //console.log("member constructor. obj...",obj);
+        if( !obj ) return; // no action
+
         this.id = obj.id;
         this.key = obj.key;
-        this.last_name = obj.last_name;
-        this.first_name = obj.first_name;
+        this.last_name = obj.last;
+        this.first_name = obj.first;
         this.description = obj.description || "";
-        this.birth = new Event(obj.birth);
-        this.death = new Event(obj.death);
-        this.parents = this.build(obj.parents);
-        this.spouses = this.build(obj.spouses);
-        this.siblings = this.build(obj.siblings);
-        this.children = this.build(obj.children);
-        this.range = "(1900-2020)"; // TODO: fix
-        //console.log("member constructor complete");
+
+        if( obj.birth ){ 
+            this.birth = new Event(obj.birth);
+            this.birth.kind = "birth";
+        }
+        if( obj.death ){
+            this.death = new Event(obj.death);
+            this.death.kind = "death";
+        }
+
+        if( obj.events ) obj.events.forEach( e => {
+            if( e.event == 'birt' ) this.birth = new Event(e);
+            if( e.event == 'deat' ) this.death = new Event(e);
+        });
     }
 
     build(set) : Member[] {
@@ -40,10 +41,11 @@ export class Member {
     }
 
     birth_string(){
-        return this.birth ? this.birth.to_string() : "";
+        return this.birth ? this.birth.as_date_string() : "";
     }
 
     death_string(){
-        return this.death ? this.death.to_string() : "";
+        return this.death ? this.death.as_date_string() : "";
     }
+
 }

@@ -47,7 +47,7 @@ export class MemberService {
         this.memberCache = new Member(member);
     }
 
-    getMember(id: number, force: boolean = false): Observable<Member> {
+    getMember(id: string, force: boolean = false): Observable<Member> {
         console.log(`*** MemberService#getMember: id=${id}`);
         //this.memberCache = { id:99, key:'skel' }
         //return;

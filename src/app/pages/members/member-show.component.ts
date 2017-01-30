@@ -60,38 +60,46 @@ export class MemberShowComponent implements OnInit {
  
     load_globals(id: string) {
         console.log("MemberShowComponent#load id="+id);
-        this.fms.get_member(id)
+        this.fms
+            .get_member(id)
+            .do( obj => console.log("member object...",obj) )
             .subscribe( obj => {
                 this.member = obj;
                 this.memkey = obj["key"];
-                //if( obj.famc ){
-                    this.fms.get_members( obj.famc ).subscribe( array => { this.siblings = array; });
-                    this.fms.get_family( obj.famc ).subscribe( array => { this.load_parents(array[0]) });
-                 //}
-
+                if( obj.famc ){
+                    // load siblings
+                    this.fms
+                        .get_members( obj.famc )
+                        .subscribe( array => { this.siblings = array; });
+                    // load parents
+                    this.fms
+                        .get_family( obj.famc )
+                        .subscribe( array => { this.load_parents(array[0]) });
+                 }
                 if( obj.fams ){
                     obj.fams.forEach( key => {
-                        // children
-                        this.fms.get_members( key ).subscribe( array => { 
-                            this.children = this.children.concat(array); 
-                        });
-                        // spouses
-                        this.spouse_ref = this.fms.get_family( key );
-                        this.spouse_ref.subscribe( arr => this.load_spouses(arr[0]) );
+                        // load children
+                        this.fms
+                            .get_members( key )
+                            .subscribe( array => { this.children = this.children.concat(array); });
+                        // load spouses
+                        this.fms
+                            .get_family( key )
+                            .subscribe( arr => this.load_spouses(arr[0]) );
                     });
                 }
         })
     }
 
     load_parents(fam){
-        console.log("show#load_parents: fam...",fam);
+        //console.log("show#load_parents: fam...",fam);
         if( !fam ) return; // no action
         this.push_parent( fam['husb'] );
         this.push_parent( fam['wife'] );
     }
 
     push_parent(key){
-        console.log("show#push_parent: key = " + key);
+        //console.log("show#push_parent: key = " + key);
         if( key == this.memkey ) return; // no action
         this.fms
             .get_mem_by_key( key )
@@ -100,14 +108,14 @@ export class MemberShowComponent implements OnInit {
     }
 
     load_spouses(fam){
-        console.log("show#load_spouses: fam...",fam);
+        //console.log("show#load_spouses: fam...",fam);
         if( !fam ) return; // no action
         this.push_spouse( fam['husb'] );
         this.push_spouse( fam['wife'] );
     }
 
     push_spouse(key){
-        console.log("show#push_spouse: key = " + key);
+        //console.log("show#push_spouse: key = " + key);
         if( key == this.memkey ) return; // no action
         this.fms
             .get_mem_by_key( key )

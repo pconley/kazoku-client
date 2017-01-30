@@ -43,7 +43,7 @@ export class AuthService {
         if( this.isAuthenticated ){
           af.database
             .object('/users/'+state.auth.uid, { preserveSnapshot: true })
-            .first()
+            //.first() // TODO: why is test failing on this
             .subscribe(user => {
               this.profile = user.val();
               console.log("firebase user profile...",this.profile);
