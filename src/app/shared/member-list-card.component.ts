@@ -1,4 +1,5 @@
 import { Component, OnChanges, Input } from '@angular/core';
+import { FirebaseListObservable } from 'angularfire2';
 
 @Component({
   selector: 'kz-member-list-card',
@@ -17,8 +18,10 @@ export class MemberListCardComponent implements OnChanges {
     withlast: boolean;
     withdate: boolean;
 
-    @Input() title: string;
-    @Input() members: any[];
+    @Input() title: string = "loading..";
+    @Input() members: any[] = [];
+    @Input() membersRef: FirebaseListObservable<any[]>;
+
     @Input() showlast: string = "F";
     @Input() showdate: string = "T";
 
@@ -30,6 +33,5 @@ export class MemberListCardComponent implements OnChanges {
         this.withlast = s_last == "T" || s_last == "TRUE"  ;
         const s_date = this.showdate.toUpperCase();
         this.withdate = s_date == "T" || s_date == "TRUE"  ;
-        console.log("wd = "+this.withdate);
     }
 }

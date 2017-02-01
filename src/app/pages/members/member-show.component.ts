@@ -2,11 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { Observable } from 'rxjs/Observable';
 
 import { Member } from "../../models/member";
 import { FirememService } from "../../services/firemem.service";
-//import { PipesModule } from '../../pipes/pipes.module'
-
 
 @Component({
     selector: "kz-member-show",
@@ -25,9 +24,7 @@ export class MemberShowComponent implements OnInit {
     public parents = []; 
     public siblings = []; 
     public children = []; 
-    public spouses = []; 
-
-    public spouse_ref: FirebaseListObservable<any[]>;
+    public spouses = [];
 
     constructor(
         private route: ActivatedRoute,
@@ -103,8 +100,11 @@ export class MemberShowComponent implements OnInit {
         if( key == this.memkey ) return; // no action
         this.fms
             .get_mem_by_key( key )
-            //.do( arr => console.log(arr) )
-            .subscribe( arr => { this.parents.push(arr[0]); });
+            //.first()
+            //.do( arr => console.log(key+' push parent arr...',arr) )
+            .subscribe( arr => { 
+                if( arr[0] ) this.parents.push(arr[0]); 
+            });
     }
 
     load_spouses(fam){
@@ -119,8 +119,10 @@ export class MemberShowComponent implements OnInit {
         if( key == this.memkey ) return; // no action
         this.fms
             .get_mem_by_key( key )
-            .do( arr => console.log(arr) )
-            .subscribe( arr => { this.spouses.push(arr[0]); });
+            //.do( arr => console.log(key+' push spouse arr...',arr) )
+            .subscribe( arr => { 
+                if( arr[0] ) this.spouses.push(arr[0]); 
+            });
     }
 
     //fireError(errmsg){ console.error("firebase error = "+errmsg); }

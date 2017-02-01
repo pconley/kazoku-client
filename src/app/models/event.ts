@@ -1,7 +1,7 @@
 import { Member } from './member';
 
 // our events can be approximate so they may have any
-// set of the dat, month and year values... but may also
+// set of the day, month and year values... but may also
 // simply have a string "around christmas"; where possible
 // we construct an actual date object (why?)
 

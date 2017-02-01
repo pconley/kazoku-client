@@ -13,8 +13,8 @@ export class MemberStringPipe implements PipeTransform {
 
         // TEST HACK
         var m = new Member(input);
-        console.log(input);
-        console.log(m);
+        //console.log(input);
+        //console.log(m);
 
         var text = this.name_string(m,showlast);
         if( showdate ) text += " (" + this.date_string(m) + ")";
