@@ -8,9 +8,9 @@ export class MemberHeaderPipe implements PipeTransform {
     transform(input:any, showlast = true, showdate = false ): string {
         if( !input ) return "error";
         var text = '';
-        if( input.first  ) text += " " + input.first;
-        if( input.middle ) text += " " + input.middle;
-        if( showlast && input.last ) text += " " + input.last;
+        if( input.first_name  ) text += " " + input.first_name;
+        if( input.middle_name ) text += " " + input.middle_name;
+        if( showlast && input.last_name ) text += " " + input.last_name;
         if( showdate && input.year ) text += " ("+ input.year + ")";
         return text.trim();
     }

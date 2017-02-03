@@ -2,22 +2,19 @@ import {Pipe, PipeTransform} from '@angular/core';
 
 import {Member} from '../models/member';
 
+//
 // returns the display text for a member
 // optionally with the lastname and birth year
+// usage:
+//
+//
 
 @Pipe({name: 'memberString', pure: false})
 export class MemberStringPipe implements PipeTransform {
     transform(input:any, showlast = true, showdate = false ): string {
         if( !input ) return "error";
-
-
-        // TEST HACK
-        var m = new Member(input);
-        //console.log(input);
-        //console.log(m);
-
-        var text = this.name_string(m,showlast);
-        if( showdate ) text += " (" + this.date_string(m) + ")";
+        var text = this.name_string(input,showlast);
+        if( showdate ) text += " (" + this.date_string(input) + ")";
         return text.trim();
     }
 

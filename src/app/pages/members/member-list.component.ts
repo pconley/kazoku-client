@@ -16,7 +16,7 @@ import { Member } from "../../models/member"
 })
 export class MemberListComponent implements OnInit {
 
-    public firemems :Observable<any[]>;
+    public firemems :Observable<Member[]>;
  
     imageWidth: number = 30;
     imageMargin: number = 2;

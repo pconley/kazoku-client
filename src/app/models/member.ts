@@ -3,20 +3,28 @@ import { Event } from './event';
 export class Member {
     id: string; 
     key: string;
-    first_name: string;
     last_name: string;
+    first_name: string;
+    middle_name: string;
     description: string;
     selected: boolean;
     birth: Event;
     death: Event;
+    sex: string;
+    famc: string;
+    fams: string[];
 
     constructor(obj: any) {
         if( !obj ) return; // no action
 
         this.id = obj.id;
         this.key = obj.key;
+        this.sex = obj.sex;
+        this.famc = obj.famc;
+        this.fams = obj.fams;
         this.last_name = obj.last;
         this.first_name = obj.first;
+        this.middle_name = obj.middle;
         this.description = obj.description || "";
 
         if( obj.birth ){ 

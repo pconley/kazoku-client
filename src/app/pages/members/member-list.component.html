@@ -26,7 +26,7 @@ Firemems
 <ul>
   <li class="text" *ngFor="let mem of firemems | async">
       <a href="#" [routerLink]="['/member', mem.$key]">
-            {{mem.last}}, {{mem.first}} 
+            {{mem.last_name}}, {{mem.first_name}} 
       </a> {{mem.key}}
   </li>
 </ul>

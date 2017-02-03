@@ -7,10 +7,9 @@
 <kz-member-list-card title="Siblings" [members]='siblings' showlast='False'></kz-member-list-card>
 <kz-member-list-card title="Children" [members]='children' showlast='False'></kz-member-list-card>
 
-<h4>Events</h4>
-<ul>
-<li *ngFor='let event of member.events'>{{ event | event }}</li>
-</ul>
+<kz-event-list-card title="Event List Card" [events]='member.events' ></kz-event-list-card>
+
+<h4>Raw Events</h4>
 <div *ngFor='let event of member.events'>{{ event | json }}</div>
 
 

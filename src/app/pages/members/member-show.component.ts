@@ -71,7 +71,7 @@ export class MemberShowComponent implements OnInit {
                     // load parents
                     this.fms
                         .get_family( obj.famc )
-                        .subscribe( array => { this.load_parents(array[0]) });
+                        .subscribe( obj => { this.load_parents(obj) });
                  }
                 if( obj.fams ){
                     obj.fams.forEach( key => {
@@ -82,7 +82,7 @@ export class MemberShowComponent implements OnInit {
                         // load spouses
                         this.fms
                             .get_family( key )
-                            .subscribe( arr => this.load_spouses(arr[0]) );
+                            .subscribe( obj => this.load_spouses(obj) );
                     });
                 }
         })
@@ -101,10 +101,8 @@ export class MemberShowComponent implements OnInit {
         this.fms
             .get_mem_by_key( key )
             //.first()
-            //.do( arr => console.log(key+' push parent arr...',arr) )
-            .subscribe( arr => { 
-                if( arr[0] ) this.parents.push(arr[0]); 
-            });
+            .do( mem => console.log(key+' push parent mem...',mem) )
+            .subscribe( mem => this.parents.push(mem) )
     }
 
     load_spouses(fam){
@@ -115,14 +113,12 @@ export class MemberShowComponent implements OnInit {
     }
 
     push_spouse(key){
-        //console.log("show#push_spouse: key = " + key);
+        console.log("show#push_spouse: key = " + key);
         if( key == this.memkey ) return; // no action
         this.fms
             .get_mem_by_key( key )
-            //.do( arr => console.log(key+' push spouse arr...',arr) )
-            .subscribe( arr => { 
-                if( arr[0] ) this.spouses.push(arr[0]); 
-            });
+            .do( mem => console.log(key+' push spouse mem...',mem) )
+            .subscribe( mem => this.spouses.push(mem) )
     }
 
     //fireError(errmsg){ console.error("firebase error = "+errmsg); }

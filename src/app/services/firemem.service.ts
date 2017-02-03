@@ -9,49 +9,55 @@ import { Member } from '../models/member';
 @Injectable()
 export class FirememService {
 
-    public members: Observable<any[]>;
-    public member: Observable<any>;
+    public members: Observable<Member[]>;
 
     constructor(
         private af: AngularFire
     ) {
-        console.log("*** FirememService#constructor");
+        //console.log("*** FirememService#constructor");
         this.members = new Observable<any[]>();
-        this.members = af.database.list('/members', {
-            query: { limitToFirst: 500, orderByKey: true }
-        });
-        console.log("members...",this.members)
-    }
+        this.members = af.database
+            .list('/members', {query: { limitToFirst: 500, orderByKey: true }})
+            .map( arr => arr.map( v => new Member(v)) )
 
-    // getMemberObservable(key: string): Observable<any>{
-    //     console.log("gmo: key = "+key);
-    //     return this.af.database.object('/members/'+key);
-    // }
+        //console.log("members...",this.members)
+    }
 
     get_member( id ){
         //console.log("fms#get_member: id = "+id);
         return this.af.database
             .object('/members/'+id)
             //.do( obj => console.log("fms#get_member. result...",obj) )
+            .map( obj => new Member(obj) )
+            //.do( obj => console.log("fms#get_member. convert...",obj) )
+
     }
     get_mem_by_key( key ){
         //console.log("fms#get_mem_by_key: key = "+key);
         return this.af.database
             .list('/members/',{query: {orderByChild: 'key', equalTo: key}})
             //.do( arr => console.log("fms#get_mem_by_key: result...",arr) )
+            .map( arr => arr[0] ) // should be unique so convert to object
+            .map( obj => new Member(obj) )
+            //.do( mem => console.log("fms#get_mem_by_key. mem...",mem) )
     }
     get_members( famkey ){
-        console.log("fms#get_members: famkey = "+famkey);
+        //console.log("fms#get_members: famkey = "+famkey);
         if( !famkey ) return; // no action
         return this.af.database
             .list('/members',{query: {orderByChild: 'famc', equalTo: famkey}})
             .first()
-            //.do( array => console.log("fms#get_members:  result...",array) )
+            //.do( array => console.log("fms#get_members:  obj array...",array) )
+            //.map<Member>( arr => this.convert(arr) )
+            .map( arr => arr.map( v => new Member(v)) )
+            //.do( memarr => console.log("fms#get_members:  mem array...",memarr) )
     }
     get_family( famkey ){
         //console.log("fms#get_family: famkey = "+famkey);
         return this.af.database
             .list('/families',{query: {orderByChild: 'key', equalTo: famkey}})
-            //.do( array => console.log("fms#get_family: result...",array) )
+            //.do( array => console.log("fms#get_family: array...",array) )
+            .map( arr => arr[0] ) // should be unique so convert to object
+            //.do( obj => console.log("fms#get_family: obj...",obj) )
     }
 }
