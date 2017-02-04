@@ -6,7 +6,7 @@ import { FirebaseListObservable } from 'angularfire2';
   template: `<h4>{{title}}</h4>
             <ul>
             <li *ngFor='let mem of members'>
-                <a href="#" [routerLink]="['/member', mem.$key]">
+                <a href="#" [routerLink]="['/member', mem.id]"> 
                     {{mem | memberString : withlast : withdate | titleCase }}
                 </a>
             </li>

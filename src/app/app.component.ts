@@ -24,11 +24,11 @@ export class AppComponent implements OnInit {
     private router: Router,
     //private af: AngularFire
   ) {
-    console.log("AppComponent#constructor");
+    //console.log("AppComponent#constructor");
   }
 
   ngOnInit(){ 
-    console.log("AppComponent#init location="+location.href);
+    //console.log("AppComponent#init location="+location.href);
 
     var parser = document.createElement('a');
     parser.href = location.href;
@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
     // this is an EXAMPLE of how a component can watch the
     // the changing authentication state of the current user
     this.auth.action.subscribe((isAuthenticated: boolean) => {
-        console.log("AppComponent: firebase auth state changed to "+isAuthenticated);
+        //console.log("AppComponent: firebase auth state changed to "+isAuthenticated);
         // whenever the authentication state changes redirect 
         var destination = isAuthenticated ? start_path : 'home' ;
         this.router.navigate([destination]);

@@ -34,7 +34,7 @@ export class MemberShowComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        console.log("*** MemberShowComponent#init route...",this.route);
+        //console.log("*** MemberShowComponent#init route...",this.route);
         this.FMS = this.fms;
         this.route.params
             .map(params => params['id'])
@@ -56,7 +56,7 @@ export class MemberShowComponent implements OnInit {
     }
  
     load_globals(id: string) {
-        console.log("MemberShowComponent#load id="+id);
+        //console.log("MemberShowComponent#load id="+id);
         this.fms
             .get_member(id)
             .do( obj => console.log("member object...",obj) )
@@ -67,7 +67,10 @@ export class MemberShowComponent implements OnInit {
                     // load siblings
                     this.fms
                         .get_members( obj.famc )
-                        .subscribe( array => { this.siblings = array; });
+                        .subscribe( array => { 
+                            // but, filter out the current member from sibling list
+                            this.siblings = array.filter( m => m.key != this.memkey ); 
+                        });
                     // load parents
                     this.fms
                         .get_family( obj.famc )
@@ -89,20 +92,21 @@ export class MemberShowComponent implements OnInit {
     }
 
     load_parents(fam){
-        //console.log("show#load_parents: fam...",fam);
+        console.log("show#load_parents: fam...",fam);
         if( !fam ) return; // no action
         this.push_parent( fam['husb'] );
         this.push_parent( fam['wife'] );
     }
 
     push_parent(key){
-        //console.log("show#push_parent: key = " + key);
+        console.log("show#push_parent: key = " + key);
         if( key == this.memkey ) return; // no action
         this.fms
             .get_mem_by_key( key )
-            //.first()
             .do( mem => console.log(key+' push parent mem...',mem) )
-            .subscribe( mem => this.parents.push(mem) )
+            .subscribe( mem => {
+                if( mem.key ) this.parents.push(mem);
+            });
     }
 
     load_spouses(fam){
@@ -113,12 +117,15 @@ export class MemberShowComponent implements OnInit {
     }
 
     push_spouse(key){
-        console.log("show#push_spouse: key = " + key);
+        // console.log("show#push_spouse: key = " + key);
         if( key == this.memkey ) return; // no action
         this.fms
             .get_mem_by_key( key )
-            .do( mem => console.log(key+' push spouse mem...',mem) )
-            .subscribe( mem => this.spouses.push(mem) )
+            //.do( mem => console.log(key+' push spouse mem...',mem) )
+            //.subscribe( mem => { if(mem && mem.key) this.spouses.push(mem)} )
+            .subscribe( mem => {
+                if( mem.key) this.spouses.push(mem);
+            })
     }
 
     //fireError(errmsg){ console.error("firebase error = "+errmsg); }

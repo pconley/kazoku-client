@@ -7,17 +7,21 @@ export class Member {
     first_name: string;
     middle_name: string;
     description: string;
+    events: Event[];
     selected: boolean;
     birth: Event;
     death: Event;
     sex: string;
     famc: string;
     fams: string[];
+    raw: string; // the raw json used to create this object
 
     constructor(obj: any) {
         if( !obj ) return; // no action
 
-        this.id = obj.id;
+        this.raw = JSON.stringify(obj);
+
+        this.id = obj.$key;
         this.key = obj.key;
         this.sex = obj.sex;
         this.famc = obj.famc;
@@ -26,6 +30,8 @@ export class Member {
         this.first_name = obj.first;
         this.middle_name = obj.middle;
         this.description = obj.description || "";
+
+        this.events = obj.events.map( v => new Event(v) );
 
         if( obj.birth ){ 
             this.birth = new Event(obj.birth);

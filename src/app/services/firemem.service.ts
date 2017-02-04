@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AngularFire } from 'angularfire2';
 
-import { Event } from '../models/event';
+//import { Event } from '../models/event';
 import { Member } from '../models/member';
 
 @Injectable()
@@ -27,6 +27,7 @@ export class FirememService {
         //console.log("fms#get_member: id = "+id);
         return this.af.database
             .object('/members/'+id)
+            //.filter( obj => !obj.key )
             //.do( obj => console.log("fms#get_member. result...",obj) )
             .map( obj => new Member(obj) )
             //.do( obj => console.log("fms#get_member. convert...",obj) )
@@ -48,7 +49,6 @@ export class FirememService {
             .list('/members',{query: {orderByChild: 'famc', equalTo: famkey}})
             .first()
             //.do( array => console.log("fms#get_members:  obj array...",array) )
-            //.map<Member>( arr => this.convert(arr) )
             .map( arr => arr.map( v => new Member(v)) )
             //.do( memarr => console.log("fms#get_members:  mem array...",memarr) )
     }

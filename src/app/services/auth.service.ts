@@ -31,13 +31,13 @@ export class AuthService {
     private router: Router,
     public af: AngularFire
   ) {
-    console.log('*** AuthService#constructor location=',location.href);
+    //console.log('*** AuthService#constructor location=',location.href);
     //console.log("auth0 object...",this.auth0base);
 
     // subscribe to the firebase auth state so we can react as it changes
     // and get or set the profile from the associated firebase user record
     af.auth.subscribe((state: FirebaseAuthState) => {
-        console.log("firebase auth state changed to...",state);
+        //console.log("firebase auth state changed to...",state);
         this.isAuthenticated = !!state;
         this.profile = {}; // always clear
         if( this.isAuthenticated ){
@@ -46,7 +46,7 @@ export class AuthService {
             //.first() // TODO: why is test failing on this
             .subscribe(user => {
               this.profile = user.val();
-              console.log("firebase user profile...",this.profile);
+              //console.log("firebase user profile...",this.profile);
               // we wait until we have a valid profile mostly for the 
               // guards which seem to rely on a synch flag to be set
               this._subject.next(true); // notify subscribers of login
@@ -59,7 +59,7 @@ export class AuthService {
     // callback for auth0lock `authenticated` event on the the 
     // auth0 lock object fires after a user logs in to system
     this.auth0lock.on("authenticated", (authResult) => {
-      console.log('*** AuthService#OnAuthenticated. authResult...',authResult);
+      //console.log('*** AuthService#OnAuthenticated. authResult...',authResult);
 
       // use the auth0 results to authenticate with firebase
       this.authenticate_to_firebase(authResult.idToken);

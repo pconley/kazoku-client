@@ -1,7 +1,7 @@
 //
 // displays a list of events as a card with a title
 // usage: 
-//      <kz-event-list-card title="Event List Card" [events]='member.events' ></kz-event-list-card>
+//      <kz-event-list-card title="Event" [events]='member.events' ></kz-event-list-card>
 //
 
 import { Component, OnChanges, Input } from '@angular/core';
