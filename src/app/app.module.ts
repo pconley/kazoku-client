@@ -63,7 +63,8 @@ const firebaseAuthConfig = {
   providers: [
     // globally available services at this top level
     EventService, AuthService, ApiService, 
-    MemberService, DialogService, FirememService,
+    MemberService, 
+    DialogService, FirememService,
     provideAuth({
         globalHeaders: [{"Content-type": "application/json"}],
         //newJwtError: true,

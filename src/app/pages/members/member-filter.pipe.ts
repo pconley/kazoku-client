@@ -9,10 +9,11 @@ export class MemberFilterPipe implements PipeTransform {
     transform(value: Member[], args: string[]): Member[] {
 
         // WIERD... the args are not as advertised in the tutorial
-        // that said args[0] would be the frst string; but each char
+        // that said args[0] would be the first string; but each char
         // is coming over as a separate string
 
-        //console.log(args);
+        //console.log("member filter pipe args",args[0]);
+        
         if( !args ) return value; // no filter
         if( !args[0] ) return value; // no filter
         let str: string = args[0];

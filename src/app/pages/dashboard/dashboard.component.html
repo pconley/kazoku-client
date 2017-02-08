@@ -2,19 +2,21 @@
 
 <div *ngIf="!loading">
 
+<!--<ul><li *ngFor='let item of items'>{{item.start}} : {{item.title}}</li></ul>-->
+
 <md-card>
     <h3>Today in Conley Family History</h3>
     <div *ngFor='let item of items | eventToday | eventCustom '>
-                {{item.title}} {{item.event.kind=='birth'?"born":"died"}} in {{item.event.year}}
+                {{item.title}} {{item.event.kind=='birt'?"born":"died"}} in {{item.event.year}}
     </div>
 </md-card>
 
 <md-card >
     <h3>
-        <button class="app-icon-button" (click)="decrement()"><i class="material-icons">chevron_left</i></button>
-        <button class="app-icon-button" (click)="today()"    ><i class="material-icons">today</i></button>
-        <button class="app-icon-button" (click)="increment()"><i class="material-icons">chevron_right</i></button>
-        {{ viewMonth }} {{viewDate.getFullYear()}}
+        <button class="app-icon-button" (click)="changeViewMonth(-1)"><i class="material-icons">chevron_left</i></button>
+        <button class="app-icon-button" (click)="setViewThisMonth()"><i class="material-icons">today</i></button>
+        <button class="app-icon-button" (click)="changeViewMonth(+1)"><i class="material-icons">chevron_right</i></button>
+        {{ viewMonthStr }} {{viewDate.getFullYear()}}
     </h3>
     <mwl-calendar-month-view [viewDate]="viewDate"
         [events]="items" 
@@ -27,15 +29,15 @@
 
 <md-card>
     <h3>
-        <button class="app-icon-button" (click)="decrement()"><i class="material-icons">chevron_left</i></button>
-        <button class="app-icon-button" (click)="today()"    ><i class="material-icons">today</i></button>
-        <button class="app-icon-button" (click)="increment()"><i class="material-icons">chevron_right</i></button>
-        {{items.length}} Events in {{viewMonth}}
+        <button class="app-icon-button" (click)="changeViewMonth(-1)"><i class="material-icons">chevron_left</i></button>
+        <button class="app-icon-button" (click)="setViewThisMonth()"><i class="material-icons">today</i></button>
+        <button class="app-icon-button" (click)="changeViewMonth(+1)"><i class="material-icons">chevron_right</i></button>
+        {{filteredItems.length}} Events in {{viewMonthStr}}
     </h3>
     <md-card>
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngFor='let item of items | eventCustom '>
-                {{item.ordinal}}: {{item.title}} {{item.event.kind=='birth'?"born":"died"}} in {{item.event.year}}
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngFor='let item of filteredItems | eventCustom '>
+                {{item.ordinal}}: {{item.title}} {{item.event.kind=='birt'?"born":"died"}} in {{item.event.year}}
         </div>
     </div>   
     </md-card>

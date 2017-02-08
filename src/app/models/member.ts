@@ -31,9 +31,7 @@ export class Member {
         this.middle_name = obj.middle;
         this.description = obj.description || "";
 
-        this.events = obj.events.map( v => new Event(v) );
-
-        if( obj.birth ){ 
+        if( obj.birth ){
             this.birth = new Event(obj.birth);
             this.birth.kind = "birth";
         }
@@ -42,10 +40,14 @@ export class Member {
             this.death.kind = "death";
         }
 
-        if( obj.events ) obj.events.forEach( e => {
-            if( e.event == 'birt' ) this.birth = new Event(e);
-            if( e.event == 'deat' ) this.death = new Event(e);
-        });
+        this.events = [];
+        if( obj.events ){
+            this.events = obj.events.map( v => new Event(v) );
+            obj.events.forEach( e => {
+                if( e.event == 'birt' ) this.birth = new Event(e);
+                if( e.event == 'deat' ) this.death = new Event(e);
+            });
+        }
     }
 
     build(set) : Member[] {

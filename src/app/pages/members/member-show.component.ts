@@ -92,18 +92,18 @@ export class MemberShowComponent implements OnInit {
     }
 
     load_parents(fam){
-        console.log("show#load_parents: fam...",fam);
+        //console.log("show#load_parents: fam...",fam);
         if( !fam ) return; // no action
         this.push_parent( fam['husb'] );
         this.push_parent( fam['wife'] );
     }
 
     push_parent(key){
-        console.log("show#push_parent: key = " + key);
+        //console.log("show#push_parent: key = " + key);
         if( key == this.memkey ) return; // no action
         this.fms
             .get_mem_by_key( key )
-            .do( mem => console.log(key+' push parent mem...',mem) )
+            //.do( mem => console.log(key+' push parent mem...',mem) )
             .subscribe( mem => {
                 if( mem.key ) this.parents.push(mem);
             });
@@ -122,7 +122,6 @@ export class MemberShowComponent implements OnInit {
         this.fms
             .get_mem_by_key( key )
             //.do( mem => console.log(key+' push spouse mem...',mem) )
-            //.subscribe( mem => { if(mem && mem.key) this.spouses.push(mem)} )
             .subscribe( mem => {
                 if( mem.key) this.spouses.push(mem);
             })

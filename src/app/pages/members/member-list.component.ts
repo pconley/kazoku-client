@@ -16,7 +16,7 @@ import { Member } from "../../models/member"
 })
 export class MemberListComponent implements OnInit {
 
-    public firemems :Observable<Member[]>;
+    public members :Observable<Member[]>;
  
     imageWidth: number = 30;
     imageMargin: number = 2;
@@ -26,7 +26,6 @@ export class MemberListComponent implements OnInit {
     count: number = 0;
     status: string = '';
     loading: boolean = false;
-    members: Member[] = [];
 
     isListView: boolean = true;
 
@@ -41,9 +40,9 @@ export class MemberListComponent implements OnInit {
 
     ngOnInit(){ 
         console.log("*** MemberListComponent#OnInit")
-        this.loader(false); // do not force re-load of members
+        //this.loader(false); // do not force re-load of members
 
-        this.firemems = this.fms.members;
+        this.members = this.fms.members;
     }
 
     previousMember: Member = null;
@@ -65,7 +64,6 @@ export class MemberListComponent implements OnInit {
     loader(force: boolean){
         console.log("--- MemberListComponent#loader force="+force);
 
-        this.members = [];
         this.count = 0; 
         this.loading = true;
         this.status = "Loading";
@@ -77,12 +75,11 @@ export class MemberListComponent implements OnInit {
                 (data) => { 
                     //console.log("*** loading. records = "+data.length);
                     Array.prototype.push.apply(this.members,data);
-                    this.count = this.members.length;
+                    //this.count = this.members.length;
                 },
                 (error: Error) => {
                     console.log("*** error");
                     this.count = 0;
-                    this.members = [];
                     this.loading = false;
                     this.status = "Error: "+error.message;
                 },

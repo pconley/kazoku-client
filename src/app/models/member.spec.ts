@@ -19,21 +19,10 @@ describe('member.spec', () => {
         expect(member.first_name).toBe("patrick");
     });
     it('should include key and id values',() => {
-        let params = {key: 'thekey', id: 33, last_name: "conley",first_name: "patrick", dummy: "dummy"}
+        let params = {key: 'thekey', '$key': '33', last_name: "conley",first_name: "patrick", dummy: "dummy"}
         let member = new Member(params)
         expect(member.key).toBe("thekey");
-        expect(member.id).toBe(33);
-    });
-    it('should not convert string id to numeric',() => {
-        let params = {key: 'thekey', id: '33' }
-        let member = new Member(params)
         expect(member.id).toBe('33');
-    });
-    it('should not have empty events',() => {
-        let params = {key: 'thekey', id: '33' }
-        let member = new Member(params)
-        expect(member.birth).toBeUndefined();
-        expect(member.death).toBe(undefined);
     });
     it('should construct the birth',() => {
         let birth = {day:1, year:1955, month:3}

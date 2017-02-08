@@ -3,25 +3,40 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AngularFire } from 'angularfire2';
 
-//import { Event } from '../models/event';
+import { Event } from '../models/event';
 import { Member } from '../models/member';
 
 @Injectable()
 export class FirememService {
 
+    //public events: Event[] = [];
     public members: Observable<Member[]>;
 
     constructor(
         private af: AngularFire
     ) {
-        //console.log("*** FirememService#constructor");
+        console.log("*** FirememService#constructor");
+        //this.events = [];
         this.members = new Observable<any[]>();
         this.members = af.database
             .list('/members', {query: { limitToFirst: 500, orderByKey: true }})
             .map( arr => arr.map( v => new Member(v)) )
+            //.do( this.extract_events )
 
         //console.log("members...",this.members)
     }
+
+    // extract_events( members: Member[] ){
+    //     var that = this;
+    //     that.events = [];
+    //     console.log("extract events. member count = "+members.length);
+    //     members.forEach( member => {
+    //         if( member.events ){ 
+    //             let [birth] = member.events.filter( event => event.kind == 'birt' );
+    //             if( birth ) that.events.push( birth )
+    //         }
+    //     });
+    // }
 
     get_member( id ){
         //console.log("fms#get_member: id = "+id);
