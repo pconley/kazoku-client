@@ -4,8 +4,9 @@ import { CalendarModule }     from 'angular-calendar';
 import { SharedModule }       from "../../shared/shared.module";
 import { DashboardRouter }    from "./dashboard.routing";
 import { DashboardComponent } from "./dashboard.component";
-import { EventTodayPipe }     from "./event-today.pipe";
-import { EventCustomPipe }    from "./event-custom.pipe";
+
+import { ItemCardComponent        } from "./item-card.component";
+import { CalendarButtonsComponent } from "./calendar-buttons.component";
 
 @NgModule({
     imports: [ 
@@ -13,7 +14,7 @@ import { EventCustomPipe }    from "./event-custom.pipe";
         DashboardRouter,
         CalendarModule.forRoot()
     ],
-    declarations: [ DashboardComponent, EventTodayPipe, EventCustomPipe ],
+    declarations: [ DashboardComponent, ItemCardComponent, CalendarButtonsComponent ],
     bootstrap: [ DashboardComponent ]
 })
 export class DashboardModule { }

@@ -26,7 +26,7 @@ export class CalendarItem implements CalendarEvent {
     // our item needs the year of the display calendar, not the actual date of the event 
     // so that it will display in the current calendar... really the anniversary
 
-    constructor(private year: number, private event: Event, private member: Member) {
+    constructor(private year: number, public event: Event, private member: Member) {
 
         this.kind = event.kind ? event.kind : "holiday"; 
         this.ordinal = event.day + this.suffix(event.day);
@@ -39,6 +39,7 @@ export class CalendarItem implements CalendarEvent {
 
         this.title = `${fname} ${lname} ${range}`;
         this.color = event.kind == "deat" ? this.colors.death : this.colors.birth;
+
         this.start = new Date(year,event.month-1,event.day);
         //if( event.month == 2 ) console.log("CI Constructor",this.title,year,event.month,event.day,this.start);
     }

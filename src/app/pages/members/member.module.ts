@@ -9,7 +9,7 @@ import { MemberChangeGuard } from "./member-change.guard";
 
 import { PipesModule } from "../../pipes/pipes.module";
 import { SharedModule } from "../../shared/shared.module";
- 
+
 @NgModule({
     imports: [ SharedModule, PipesModule, MemberRouter ],
     declarations: [ 
