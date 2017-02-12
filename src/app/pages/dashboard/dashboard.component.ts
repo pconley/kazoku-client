@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
 import {
@@ -11,7 +12,6 @@ import {
 
 import { Event          } from '../../models/event';
 import { Member         } from '../../models/member';
-//import { EventService   } from '../../services/event.service';
 import { FirememService } from '../../services/firemem.service';
 import { CalendarItem   } from './calendar_item';
 
@@ -27,11 +27,13 @@ const colors: any = {
 })
 export class DashboardComponent implements OnInit {
 
-    viewDate: Date = new Date();
+    vDate : Subject<Date> = new Subject<Date>();
+
+    viewDate : Date = new Date();
     viewYear : number = 2010;
-    viewMonthStr: string = "";
-    activeDayIsOpen: boolean = false;
-    refresh: Subject<any> = new Subject();
+    viewMonthStr : string = "";
+    activeDayIsOpen : boolean = false;
+    refresh : Subject<any> = new Subject<any>();
 
     items       : CalendarItem[] = []; // all for the calendar element
     itemsCustom : CalendarItem[] = []; // without any holidays
@@ -45,11 +47,13 @@ export class DashboardComponent implements OnInit {
     ) {}
 
     ngOnInit() { 
-        //var that = this;
         console.log("DashViewCalComponent#init");
         const today = (new Date);
         const day   = today.getDate();
         const month = today.getMonth();
+
+        this.vDate.subscribe( d => this.setViewDate(d) );
+
         this.FMS
             .members
             .do( members => console.log("init. members count = "+members.length) )
@@ -61,20 +65,24 @@ export class DashboardComponent implements OnInit {
                     .filter( this.forDay( day ) )
                     .filter( this.forMonth( month ) );
                 Array.prototype.push.apply(this.items, this.get_holidays(2017));
-                this.setViewThisMonth();      // start display on current month
+                this.vDate.next( today );
+                //this.setViewDate( today );
+                //this.setViewThisMonth();      // start display on current month
             }, this.onError, this.onDone );
     }
     setViewThisMonth(): void { 
         var temp = new Date();
         temp.setDate(1);
-        this.setViewDate( temp ); 
+        this.vDate.next( temp );
+        //this.setViewDate( temp );
         this.activeDayIsOpen = true;
     }
     setViewDate(in_date: Date){
+        console.log(">>> set view date to ",in_date);
+
         const in_year = in_date.getFullYear();
         const in_month = in_date.getMonth();
 
-        console.log(">>> set view date to ",in_date);
         this.viewDate = in_date;
         this.viewMonthStr = in_date.toLocaleString("en-us", { month: "long" });
         if( this.viewYear != in_year ){
@@ -89,8 +97,6 @@ export class DashboardComponent implements OnInit {
 
         this.itemsMonth = this.itemsCustom.filter( this.forMonth(in_month) );
 
-
-        //console.log("filtered items...",this.filteredItems);
         this.refresh.next();
     }
     isCustom(item: CalendarItem){
@@ -125,14 +131,16 @@ export class DashboardComponent implements OnInit {
         var month = temp.getMonth()+inc;
         temp.setDate( 1 );
         temp.setMonth( month );
-        this.setViewDate( temp );
+        this.vDate.next( temp );
+        //this.setViewDate( temp );
         this.activeDayIsOpen = false;
     }
     dayClicked({date, events}: {date: Date, events: CalendarEvent[]}): void {
         console.log("--- day clicked  date = "+date+" events...",events);
         // we only need to take action if the month is changing
         if( date.getMonth() != this.viewDate.getMonth() ) return;
-        this.setViewDate( date );
+        this.vDate.next( date );
+        //this.setViewDate( date );
         this.activeDayIsOpen = true;
     }
     eventClicked(obj): void {

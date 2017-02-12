@@ -21,6 +21,7 @@ export class FirememService {
         this.members = af.database
             .list('/members', {query: { limitToFirst: 500, orderByKey: true }})
             .map( arr => arr.map( v => new Member(v)) )
+            .first()
             //.do( this.extract_events )
 
         //console.log("members...",this.members)
