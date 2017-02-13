@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { DialogService } from "../../services/dialog.service";
-import { MemberService } from "../../services/member.service";
+//import { MemberService } from "../../services/member.service";
 import { Member } from "../../models/member";
  
 @Component({
@@ -21,24 +21,24 @@ export class MemberEditComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private MemberService: MemberService,
+        //private MemberService: MemberService,
         public dialogService: DialogService) {}
 
     ngOnInit() {
         console.log("*** MemberEditComponent#init");
         this.isLoading = true;
-        this.route.params
-            .map(params => params['id'])
-            .subscribe((id) => {
-                this.MemberService
-                    .getMember(id)
-                    .do(obj => { console.log("*** MemberEditComponent#init: obj...",obj); })
-                    .subscribe(m => {
-                        this.member = new Member(m);
-                        this.original = new Member(m);
-                        this.isLoading = false;
-                    });
-            });
+        // this.route.params
+        //     .map(params => params['id'])
+        //     .subscribe((id) => {
+        //         this.MemberService
+        //             .getMember(id)
+        //             .do(obj => { console.log("*** MemberEditComponent#init: obj...",obj); })
+        //             .subscribe(m => {
+        //                 this.member = new Member(m);
+        //                 this.original = new Member(m);
+        //                 this.isLoading = false;
+        //             });
+        //     });
     }
 
     hasChanged(){
@@ -66,12 +66,12 @@ export class MemberEditComponent implements OnInit {
         console.log("*** MemberEditComponent#submit");
         // note that this.member already has all the form changes
         // becasue we use the ngModel to link form to memeber
-        if(form.valid) {
-            this.MemberService.saveMember(this.member);
-            this.goto_show();
-        } else {
-            alert("Member Edit Form Not Valid");
-        }
+        // if(form.valid) {
+        //     this.MemberService.saveMember(this.member);
+        //     this.goto_show();
+        // } else {
+        //     alert("Member Edit Form Not Valid");
+        // }
     }
 
 }

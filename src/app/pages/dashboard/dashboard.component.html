@@ -1,13 +1,15 @@
 <md-card>
     <h3>Today in Conley Family History</h3>
     <div *ngFor='let item of itemsToday '>
-        {{item.title}} {{item.event.kind}} in {{item.event.year}}
+        {{item.title | titleCase }} 
+        {{item.event.kind == "birt" ? "born" : "died" }}  
+        in {{item.event.year}}
     </div>
 </md-card>
 
 <md-card >
-    <h3><kz-calendar-buttons></kz-calendar-buttons>{{ viewMonthStr }} {{viewDate.getFullYear()}}</h3>
-    <mwl-calendar-month-view [viewDate]="viewDate"
+    <h3><kz-calendar-buttons></kz-calendar-buttons>{{ currMonthStr }} {{currentDate.getFullYear()}}</h3>
+    <mwl-calendar-month-view [viewDate]="currentDate"
         [events]="items" 
         [refresh]="refresh"
         [activeDayIsOpen]="activeDayIsOpen"
@@ -17,7 +19,7 @@
 </md-card>
 
 <md-card>
-    <h3><kz-calendar-buttons></kz-calendar-buttons>{{itemsMonth.length}} Events in {{viewMonthStr}}</h3>
+    <h3><kz-calendar-buttons></kz-calendar-buttons>{{itemsMonth.length}} Events in {{currMonthStr}}</h3>
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngFor='let item of itemsMonth'>
             <kz-item-card [item]=item></kz-item-card>

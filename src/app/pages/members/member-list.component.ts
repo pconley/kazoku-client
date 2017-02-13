@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 import { AuthService } from "../../services/auth.service";
-import { MemberService } from "../../services/member.service";
+//import { MemberService } from "../../services/member.service";
 import { FirememService } from "../../services/firemem.service";
 
 import { Member } from "../../models/member"
@@ -33,7 +33,7 @@ export class MemberListComponent implements OnInit {
         private router: Router, 
         private authService: AuthService,
         private fms: FirememService,
-        private memberService: MemberService
+        //private memberService: MemberService
     ) {
         console.log("*** MemberListComponent#constructor")
     }
@@ -70,25 +70,25 @@ export class MemberListComponent implements OnInit {
         // NOTE: getMembers will use the cached results (if they exist)
         // unless we set the forced argument (passed in from above); also
         // getMembers might return all the data in one emit or over several
-        this.memberService.getMembers(force)
-            .subscribe(
-                (data) => { 
-                    //console.log("*** loading. records = "+data.length);
-                    Array.prototype.push.apply(this.members,data);
-                    //this.count = this.members.length;
-                },
-                (error: Error) => {
-                    console.log("*** error");
-                    this.count = 0;
-                    this.loading = false;
-                    this.status = "Error: "+error.message;
-                },
-                () => { 
-                    console.log("*** done");
-                    this.loading = false;
-                    this.status = "Done";
-                }
-            );
+        // this.memberService.getMembers(force)
+        //     .subscribe(
+        //         (data) => { 
+        //             //console.log("*** loading. records = "+data.length);
+        //             Array.prototype.push.apply(this.members,data);
+        //             //this.count = this.members.length;
+        //         },
+        //         (error: Error) => {
+        //             console.log("*** error");
+        //             this.count = 0;
+        //             this.loading = false;
+        //             this.status = "Error: "+error.message;
+        //         },
+        //         () => { 
+        //             console.log("*** done");
+        //             this.loading = false;
+        //             this.status = "Done";
+        //         }
+        //     );
     }
 
     toggleImage(): void {

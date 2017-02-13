@@ -11,7 +11,7 @@ import { AppRouting } from "./app.routing";
 import { ApiService } from "./services/api.service"
 import { AuthService } from "./services/auth.service"
 import { EventService } from "./services/event.service"
-import { MemberService } from "./services/member.service"
+//import { MemberService } from "./services/member.service"
 import { FirememService } from './services/firemem.service';
 import { DialogService } from './services/dialog.service';
 
@@ -63,7 +63,7 @@ const firebaseAuthConfig = {
   providers: [
     // globally available services at this top level
     EventService, AuthService, ApiService, 
-    MemberService, 
+    //MemberService, 
     DialogService, FirememService,
     provideAuth({
         globalHeaders: [{"Content-type": "application/json"}],

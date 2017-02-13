@@ -3,7 +3,11 @@ import { CalendarItem } from './calendar_item';
 
 @Component({
   selector: 'kz-item-card',
-  template: `<md-card>{{item.ordinal}}: {{item.title}}</md-card>`
+  template: `<md-card>
+                {{item.ordinal}}: {{item.title | titleCase }} 
+                {{item.event.kind == "birt" ? "born" : "died" }} 
+                in {{item.event.year}}
+            </md-card>`
 })
 
 export class ItemCardComponent implements OnChanges {
@@ -13,13 +17,5 @@ export class ItemCardComponent implements OnChanges {
 
     constructor() {}
 
-    ngOnChanges(): void {
-
-
-        //console.log("card: showlast = "+this.showlast);
-        // const s_last = this.showlast.toUpperCase();
-        // this.withlast = s_last == "T" || s_last == "TRUE"  ;
-        // const s_date = this.showdate.toUpperCase();
-        // this.withdate = s_date == "T" || s_date == "TRUE"  ;
-    }
+    ngOnChanges(): void {}
 }
