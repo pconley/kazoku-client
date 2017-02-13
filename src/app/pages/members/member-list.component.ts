@@ -1,8 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs/Observable';
+
 import { AuthService } from "../../services/auth.service";
-import { MemberService } from "../../services/member.service";
+//import { MemberService } from "../../services/member.service";
+import { FirememService } from "../../services/firemem.service";
+
 import { Member } from "../../models/member"
 
 @Component({
@@ -11,6 +15,8 @@ import { Member } from "../../models/member"
     styleUrls: [ "./member-list.component.css" ]
 })
 export class MemberListComponent implements OnInit {
+
+    public members :Observable<Member[]>;
  
     imageWidth: number = 30;
     imageMargin: number = 2;
@@ -20,21 +26,23 @@ export class MemberListComponent implements OnInit {
     count: number = 0;
     status: string = '';
     loading: boolean = false;
-    members: Member[] = [];
 
     isListView: boolean = true;
 
     constructor(
         private router: Router, 
         private authService: AuthService,
-        private memberService: MemberService
+        private fms: FirememService,
+        //private memberService: MemberService
     ) {
         console.log("*** MemberListComponent#constructor")
     }
 
     ngOnInit(){ 
         console.log("*** MemberListComponent#OnInit")
-        this.loader(false); // do not force re-load of members
+        //this.loader(false); // do not force re-load of members
+
+        this.members = this.fms.members;
     }
 
     previousMember: Member = null;
@@ -55,33 +63,32 @@ export class MemberListComponent implements OnInit {
 
     loader(force: boolean){
         console.log("--- MemberListComponent#loader force="+force);
-        this.members = [];
+
         this.count = 0; 
         this.loading = true;
         this.status = "Loading";
         // NOTE: getMembers will use the cached results (if they exist)
         // unless we set the forced argument (passed in from above); also
         // getMembers might return all the data in one emit or over several
-        this.memberService.getMembers(force)
-            .subscribe(
-                (data) => { 
-                    //console.log("*** loading. records = "+data.length);
-                    Array.prototype.push.apply(this.members,data);
-                    this.count = this.members.length;
-                },
-                (error: Error) => {
-                    console.log("*** error");
-                    this.count = 0;
-                    this.members = [];
-                    this.loading = false;
-                    this.status = "Error: "+error.message;
-                },
-                () => { 
-                    console.log("*** done");
-                    this.loading = false;
-                    this.status = "Done";
-                }
-            );
+        // this.memberService.getMembers(force)
+        //     .subscribe(
+        //         (data) => { 
+        //             //console.log("*** loading. records = "+data.length);
+        //             Array.prototype.push.apply(this.members,data);
+        //             //this.count = this.members.length;
+        //         },
+        //         (error: Error) => {
+        //             console.log("*** error");
+        //             this.count = 0;
+        //             this.loading = false;
+        //             this.status = "Error: "+error.message;
+        //         },
+        //         () => { 
+        //             console.log("*** done");
+        //             this.loading = false;
+        //             this.status = "Done";
+        //         }
+        //     );
     }
 
     toggleImage(): void {

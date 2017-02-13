@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { provideAuth } from "angular2-jwt";
 import { HttpModule } from '@angular/http';
@@ -11,7 +11,8 @@ import { AppRouting } from "./app.routing";
 import { ApiService } from "./services/api.service"
 import { AuthService } from "./services/auth.service"
 import { EventService } from "./services/event.service"
-import { MemberService } from "./services/member.service"
+//import { MemberService } from "./services/member.service"
+import { FirememService } from './services/firemem.service';
 import { DialogService } from './services/dialog.service';
 
 import { HomeModule }      from "./pages/home/home.module";
@@ -25,11 +26,31 @@ import { DashboardModule } from "./pages/dashboard/dashboard.module";
 
 import { SharedModule } from "./shared/shared.module";
 
+import { AngularFireModule } from 'angularfire2';
+import { AuthProviders, AuthMethods } from 'angularfire2';
+
+// Must export the config
+export const firebaseConfig = {
+  apiKey: 'AIzaSyBX3w9-oLe2sk2bz-AQoQ99RfWIS9gA_zU',
+  authDomain: 'localhost',
+  //authDomain: 'material1-2ca42.firebaseapp.com',
+  databaseURL: 'material1-2ca42.firebaseio.com',
+  storageBucket: '<your-storage-bucket>',
+  //messagingSenderId: '<your-messaging-sender-id>'
+};
+
+const firebaseAuthConfig = {
+  provider: AuthProviders.Password,
+  method: AuthMethods.Password
+};
+
 @NgModule({
   declarations: [ AppComponent ],
   imports: [
     // core angular elements
     BrowserModule, FormsModule, HttpModule,
+    //
+    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
     // these are the page level modules
     HomeModule, ProfileModule, SampleModule, 
     DashboardModule, ContactModule, ErrorModule,
@@ -42,13 +63,15 @@ import { SharedModule } from "./shared/shared.module";
   providers: [
     // globally available services at this top level
     EventService, AuthService, ApiService, 
-    MemberService, DialogService,
+    //MemberService, 
+    DialogService, FirememService,
     provideAuth({
         globalHeaders: [{"Content-type": "application/json"}],
         //newJwtError: true,
         noTokenScheme: true
     })
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

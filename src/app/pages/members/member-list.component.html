@@ -23,25 +23,8 @@
 
 <kz-spinner *ngIf="loading"></kz-spinner>
 
-<table class="table table-striped" *ngIf='isListView'>
-  <thead>
-      <td>Name</td>
-      <td>Gender</td>
-      <td>Born</td>
-      <td>At</td>
-  </thead>
-  <tr *ngFor='let member of members | memberFilter:listFilter :3' (click)="onSelect(member)">
-      <td>{{ member.first_name | titleCase }} {{member.last_name | uppercase }}</td>
-      <td>{{ member.gender}}</td>
-      <td>{{ member.birth ?  member.birth.year : "?" }}</td>
-      <td>{{ member.birth ?  member.birth.place : "?" }}</td>
-  </tr>
-</table>
-
-<div class="row" *ngIf="members && !isListView">
-
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngFor='let member of members | memberFilter:listFilter :3'>
-
+<div class="row" *ngIf="!isListView">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngFor='let member of members | async | memberFilter: listFilter'>
         <md-card class="kz-mem-card">
             <md-card-title-group>
                 <md-card-title>{{ member.first_name}} {{member.last_name}}</md-card-title>
@@ -54,3 +37,18 @@
         </md-card>
     </div>
 </div>
+
+<table class="table table-striped" *ngIf='isListView'>
+  <thead><td>Name</td><td>Gender</td><td>Born</td><td>At</td></thead>
+  <tr *ngFor='let member of members | async | memberFilter : listFilter' (click)="onSelect(member)">
+      <td>
+            <a href="#" [routerLink]="['/member', member.id]">
+                {{member.last_name | titleCase}}, {{member.first_name | titleCase}}
+            </a> 
+      </td>
+      <td>{{ member.sex | titleCase }}</td>
+      <td>{{ member.birth ?  member.birth.year : "?" }}</td>
+      <td>{{ (member.birth ?  member.birth.place : "?") | titleCase }}</td>
+  </tr>
+</table>
+

@@ -8,7 +8,7 @@ import { Component, OnChanges, Input,
 })
 export class StarComponent implements OnChanges {
 
-    starWidth: number;
+    starWidth: number; 
 
     // this is used in the html to pass a value in
     @Input() rating: number;

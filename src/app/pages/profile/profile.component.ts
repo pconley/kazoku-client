@@ -17,7 +17,7 @@ export class ProfileComponent implements OnInit {
     constructor( private AuthService: AuthService ) {}
 
     ngOnInit() {
-        this.profile = this.profile || this.AuthService.get_user_profile();
+        this.profile = this.profile || this.AuthService.profile;
         console.log("*** ProfileComponent#init profile...",this.profile);
         this.usermeta = this.profile.user_metadata || {};
         this.friends = this.usermeta.friends || null;

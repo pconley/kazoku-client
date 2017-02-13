@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { AuthService } from '../services/auth.service';
 
@@ -8,25 +8,22 @@ export class UserGuard implements CanActivate {
 
   constructor(private authService: AuthService) {}
 
-  canActivate() {
-    var authenticated = this.authService.authenticated();
-    if( !authenticated ){
-        //console.log("UserGuard. cannot activate because not authenticated");
+  canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ) {
+    if( state ) console.log("UserGuard# url="+state.url);
+
+    if( !this.authService.isAuthenticated ){
+        console.error("UserGuard. cannot activate because not authenticated");
         return false; // deny access to the route
     }
-    var profile = this.authService.get_user_profile();
+    var profile = this.authService.profile;
     if( !profile ){
-        //console.log("UserGuard. cannot activate because no profile");
+        console.error("UserGuard. cannot activate because no profile");
         return false; // deny access to the route
     }
-    var currentRole = profile['role']
-    var index = ['admin','user'].indexOf(currentRole);
-    var isUserOrAdmin = (index != -1);
-    if( !isUserOrAdmin ){
-        //console.log("UserGuard. cannot activate because invalid role = "+currentRole);
+    if( !profile.isUser && !profile.isAdmin ){
+        console.error("UserGuard. cannot activate because invalid role",profile.isUser,profile.isAdmin);
         return false; // deny access to the route
     }
-    //console.log("UserGuard: can active? "+isUserOrAdmin);
-    return isUserOrAdmin;
+    return true;
   }
 }

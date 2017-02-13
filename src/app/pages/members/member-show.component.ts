@@ -1,8 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { MemberService } from "../../services/member.service";
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { Observable } from 'rxjs/Observable';
+
 import { Member } from "../../models/member";
+import { FirememService } from "../../services/firemem.service";
 
 @Component({
     selector: "kz-member-show",
@@ -11,43 +14,124 @@ import { Member } from "../../models/member";
 })
 export class MemberShowComponent implements OnInit {
 
-    // birth_string: string = null;
-    // death_string: string = null;
+    private FMS;
 
-    // i think we need a dummy member while it loads
-    member: Member = new Member({}); 
+    public member = {}; 
+    public memkey = ""; 
+    public father = {}; 
+    public example = {};
+    public mother = {}; 
+    public parents = []; 
+    public siblings = []; 
+    public children = []; 
+    public spouses = [];
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private MemberService: MemberService) {}
+        private af: AngularFire,
+        private fms: FirememService
+    ) {}
 
     ngOnInit() {
-        console.log("*** MemberShowComponent#init route...",this.route);
-
+        //console.log("*** MemberShowComponent#init route...",this.route);
+        this.FMS = this.fms;
         this.route.params
             .map(params => params['id'])
-            .subscribe((id) => {
-                this.MemberService
-                    .getMember(id)
-                    .do(obj => { console.log("*** MemberShow#init: obj...",obj); })
-                    .subscribe(m => {
-                        this.member = new Member(m); 
-                        console.log("birth...",this.member.birth);
-                        // this.birth_string = this.member.birth.to_string();
-                        // this.death_string = this.member.death.to_string();
-                     });
+            .do( id => console.log("route changed to member id = "+id))
+            .do( id => this.clear_globals() )
+            .subscribe( id => this.load_globals(id) );
+    }
+
+    clear_globals() {
+        //console.log("#clear");
+        this.member = {};
+        this.memkey = "";
+        this.father = null;
+        this.mother = {};
+        this.parents = [];
+        this.children = [];
+        this.siblings = [];
+        this.spouses = [];
+    }
+ 
+    load_globals(id: string) {
+        //console.log("MemberShowComponent#load id="+id);
+        this.fms
+            .get_member(id)
+            .do( obj => console.log("member object...",obj) )
+            .subscribe( obj => {
+                this.member = obj;
+                this.memkey = obj["key"];
+                if( obj.famc ){
+                    // load siblings
+                    this.fms
+                        .get_members( obj.famc )
+                        .subscribe( array => { 
+                            // but, filter out the current member from sibling list
+                            this.siblings = array.filter( m => m.key != this.memkey ); 
+                        });
+                    // load parents
+                    this.fms
+                        .get_family( obj.famc )
+                        .subscribe( obj => { this.load_parents(obj) });
+                 }
+                if( obj.fams ){
+                    obj.fams.forEach( key => {
+                        // load children
+                        this.fms
+                            .get_members( key )
+                            .subscribe( array => { this.children = this.children.concat(array); });
+                        // load spouses
+                        this.fms
+                            .get_family( key )
+                            .subscribe( obj => this.load_spouses(obj) );
+                    });
+                }
+        })
+    }
+
+    load_parents(fam){
+        //console.log("show#load_parents: fam...",fam);
+        if( !fam ) return; // no action
+        this.push_parent( fam['husb'] );
+        this.push_parent( fam['wife'] );
+    }
+
+    push_parent(key){
+        //console.log("show#push_parent: key = " + key);
+        if( key == this.memkey ) return; // no action
+        this.fms
+            .get_mem_by_key( key )
+            //.do( mem => console.log(key+' push parent mem...',mem) )
+            .subscribe( mem => {
+                if( mem.key ) this.parents.push(mem);
             });
     }
 
-    // to_string(event){
-    //     if( !event ) return "";
-    //     return event.month + "/" +event.day + "/" + event.year + " " + event.place;
-    // }
+    load_spouses(fam){
+        //console.log("show#load_spouses: fam...",fam);
+        if( !fam ) return; // no action
+        this.push_spouse( fam['husb'] );
+        this.push_spouse( fam['wife'] );
+    }
+
+    push_spouse(key){
+        // console.log("show#push_spouse: key = " + key);
+        if( key == this.memkey ) return; // no action
+        this.fms
+            .get_mem_by_key( key )
+            //.do( mem => console.log(key+' push spouse mem...',mem) )
+            .subscribe( mem => {
+                if( mem.key) this.spouses.push(mem);
+            })
+    }
+
+    //fireError(errmsg){ console.error("firebase error = "+errmsg); }
 
     goto_edit(){
         // page action... navigate to the edit page for this user
-        console.log("*** Membershow#goto_edit: id = "+this.member.id);
-        this.router.navigate(['/member/edit', this.member.id]);
+        // console.log("*** Membershow#goto_edit: id = "+this.member.id);
+        // this.router.navigate(['/member/edit', this.member.id]);
     }
 }

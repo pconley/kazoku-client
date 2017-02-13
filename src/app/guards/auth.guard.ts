@@ -8,9 +8,6 @@ export class AuthGuard implements CanActivate {
   constructor(private AuthService: AuthService) {}
 
   canActivate() {
-    var allowed = this.AuthService.authenticated();
-    //console.log("can active? "+allowed);
-    //if( !allowed ) console.error("cannot activate authorized route!");
-    return allowed;
+    return this.AuthService.isAuthenticated;
   }
 }

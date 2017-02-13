@@ -1,10 +1,11 @@
 // we are using a 3rd party calendar that uses the "CalendarEvent", but
 // we have extended that object/interface with our own calendar item so
-// that we can include additional info ... promarily the memeber id so 
+// that we can include additional info ... primarily the memeber id so 
 // that we can use the id to jump to the person when the event is clicked
 // note that we also use addtional info in the secondary list display
 
-import { Event } from '../../models/event';
+import { Event         } from '../../models/event';
+import { Member        } from '../../models/member';
 import { CalendarEvent } from 'angular-calendar'; 
 
 export class CalendarItem implements CalendarEvent {
@@ -13,7 +14,6 @@ export class CalendarItem implements CalendarEvent {
     title: string;
     color: any;
     // the remainder are custom props
-    event: Event;     // Server Event
     kind: string;     // birth, death, etc.
     ordinal: string;  // 1st, 2nd, 3rd, ...
 
@@ -23,21 +23,25 @@ export class CalendarItem implements CalendarEvent {
         holiday: { primary: '#e3bc08', secondary: '#FDF1BA' }  // yellow
     };
 
-    // our item needs the year of the display calendar, not the
-    // actual date of the event so it will display... really the
-    // anniversary of the event!
+    // our item needs the year of the display calendar, not the actual date of the event 
+    // so that it will display in the current calendar... really the anniversary
 
-    constructor(year: number, event: any) {
-        this.event = event;
+    constructor(private year: number, public event: Event, private member: Member) {
+
         this.kind = event.kind ? event.kind : "holiday"; 
         this.ordinal = event.day + this.suffix(event.day);
 
-        let fname = event.member.first_name;
-        let lname = event.member.last_name;
-        let range = event.member.display_range;
+        const fname = member.first_name;
+        const lname = member.last_name;
+        const b_part = member.birth ? member.birth.year : "?";
+        const d_part = member.death ? " - "+member.death.year : "";
+        let range = "("+b_part+d_part+")";
+
         this.title = `${fname} ${lname} ${range}`;
-        this.color = event.kind == "death" ? this.colors.death : this.colors.birth;
+        this.color = event.kind == "deat" ? this.colors.death : this.colors.birth;
+
         this.start = new Date(year,event.month-1,event.day);
+        //if( event.month == 2 ) console.log("CI Constructor",this.title,year,event.month,event.day,this.start);
     }
 
     suffix(n: number){

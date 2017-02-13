@@ -20,7 +20,7 @@ import { SharedModule } from "../../shared/shared.module";
     ],
     bootstrap: [ MemberListComponent ],
     providers: [ MemberChangeGuard ],
-    schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+    schemas: [ CUSTOM_ELEMENTS_SCHEMA ] 
 })
 
 export class MemberModule { }
