@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
+import { Observable } from 'rxjs/Observable';
 
+//import { FirememService } from "../../services/firemem.service";
 import { DialogService } from "../../services/dialog.service";
-//import { MemberService } from "../../services/member.service";
 import { Member } from "../../models/member";
  
 @Component({
@@ -12,66 +14,60 @@ import { Member } from "../../models/member";
 })
 export class MemberEditComponent implements OnInit {
 
-    isLoading: boolean = false;
-    //isAuthorized: boolean = false;
+    gender = "Female";
+    genders = ["Male","Female"];
 
-    member: Member;
-    original: Member;
-
+    memberObj: FirebaseObjectObservable<Member>;
+    memberObs: Observable<Member>;
+    member: Member = null; // for the form
+    
     constructor(
+        private af: AngularFire,
         private route: ActivatedRoute,
         private router: Router,
-        //private MemberService: MemberService,
         public dialogService: DialogService) {}
 
     ngOnInit() {
         console.log("*** MemberEditComponent#init");
-        this.isLoading = true;
-        // this.route.params
-        //     .map(params => params['id'])
-        //     .subscribe((id) => {
-        //         this.MemberService
-        //             .getMember(id)
-        //             .do(obj => { console.log("*** MemberEditComponent#init: obj...",obj); })
-        //             .subscribe(m => {
-        //                 this.member = new Member(m);
-        //                 this.original = new Member(m);
-        //                 this.isLoading = false;
-        //             });
-        //     });
-    }
+        this.route.params
+            .map(params => params['id'])
+            .do( id => console.log("route changed to edit member id = "+id))
+            .subscribe( id => {
+                this.memberObj = this.af.database
+                    .object('/members/'+id);
+                this.memberObs = this.memberObj
+                    .map( obj => new Member(obj) )
+                    .do( mem => console.log("edit member",mem) )
+                    .do( mem => this.member = mem )
+                    .do( mem => this.gender = mem.sex=="m" ? "Male" : "Female" )
+                    //.subscribe( console.log );
+            });
+   }
 
-    hasChanged(){
-        if ( this.different( this.original,       this.member      ) ) return true;
-        if ( this.different( this.original.birth, this.member.birth) ) return true;
-        if ( this.different( this.original.death, this.member.death) ) return true;
-        return false; // has not changed
-    }
-
-    different(obj1,obj2){
-        let j1: string = JSON.stringify(obj1);
-        let j2: string = JSON.stringify(obj2);
-        console.log("j1 = "+j1);
-        console.log("j2 = "+j2);
-        return j1 !== j2;
-    }
-
-    goto_show(){
-        // page action... navigate to the show page for this user
-        console.log("*** MemberEditComponent#goto_show: id = "+this.member.id);
+    onCancel(){
+        // page action... navigate back to the show page for this user
         this.router.navigate(['/member', this.member.id]);
     }
 
     onSubmit(form) { 
-        console.log("*** MemberEditComponent#submit");
-        // note that this.member already has all the form changes
-        // becasue we use the ngModel to link form to memeber
-        // if(form.valid) {
-        //     this.MemberService.saveMember(this.member);
-        //     this.goto_show();
-        // } else {
-        //     alert("Member Edit Form Not Valid");
-        // }
+        console.log("*** MemberEditComponent#submit",form);
+        var sex = this.gender === "Male" ? "m" : "f";
+        this.memberObj.update({ 
+            sex: sex, // converted
+            last: this.member.last_name, 
+            first: this.member.first_name, 
+            middle: this.member.middle_name, 
+            description: this.member.description 
+        });
+        //return false; // ???
     }
-
+    // save(newName: string) {
+    //     // saves an entire new objec... be careful!!!
+    //     //this.memberObj.set({ name: newName });
+    // }
+    // update() {
+    //     console.log("*** MemberEditComponent#update");
+    //     // use changes in member to update the firebase object
+    //     this.memberObj.update({ description: this.member.description });
+    // }
 }

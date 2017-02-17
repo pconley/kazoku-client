@@ -1,7 +1,21 @@
-import { Component, OnInit } from "@angular/core";
+// import { Component, Inject } from '@angular/core';
+
+// @Component({
+//   template: '<p>testing</p>'
+// })
+// export class AnyComponent {
+
+//   constructor(@Inject(FirebaseApp) firebaseApp: any) {
+//     const storageRef = firebaseApp.storage().ref().child('images/image.png');
+//     storageRef.getDownloadURL().then(url => this.image = url);
+//   }
+// }
+
+import { Component, OnInit, Inject } from "@angular/core";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { FirebaseApp } from 'angularfire2';
 import { Observable } from 'rxjs/Observable';
 
 import { Member } from "../../models/member";
@@ -15,6 +29,9 @@ import { FirememService } from "../../services/firemem.service";
 export class MemberShowComponent implements OnInit {
 
     private FMS;
+
+    public id;
+    public source;
 
     public member = {}; 
     public memkey = ""; 
@@ -30,6 +47,8 @@ export class MemberShowComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private af: AngularFire,
+        //private fba: FirebaseApp,
+        @Inject(FirebaseApp) private FBA,
         private fms: FirememService
     ) {}
 
@@ -40,6 +59,7 @@ export class MemberShowComponent implements OnInit {
             .map(params => params['id'])
             .do( id => console.log("route changed to member id = "+id))
             .do( id => this.clear_globals() )
+            .do( id => this.id = id )
             .subscribe( id => this.load_globals(id) );
     }
 
@@ -56,7 +76,18 @@ export class MemberShowComponent implements OnInit {
     }
  
     load_globals(id: string) {
-        //console.log("MemberShowComponent#load id="+id);
+        console.log("MemberShowComponent#load_globals id="+id);
+
+        // experiment with profile photos
+        this.source = null; // immediately
+        if( id == "265" ){  // slowly load
+            const storageRef = this.FBA.storage().ref().child('photos/conley_sample2.JPG');            
+            storageRef.getDownloadURL().then(url => {
+                console.log(url);
+                this.source = url;
+            });
+        }
+
         this.fms
             .get_member(id)
             .do( obj => console.log("member object...",obj) )
@@ -89,6 +120,10 @@ export class MemberShowComponent implements OnInit {
                     });
                 }
         })
+    }
+
+    load_image(){
+        
     }
 
     load_parents(fam){
@@ -132,6 +167,6 @@ export class MemberShowComponent implements OnInit {
     goto_edit(){
         // page action... navigate to the edit page for this user
         // console.log("*** Membershow#goto_edit: id = "+this.member.id);
-        // this.router.navigate(['/member/edit', this.member.id]);
+        this.router.navigate(['/member/edit', this.id]);
     }
 }

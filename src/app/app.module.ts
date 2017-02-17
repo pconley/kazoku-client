@@ -10,8 +10,6 @@ import { AppRouting } from "./app.routing";
 
 import { ApiService } from "./services/api.service"
 import { AuthService } from "./services/auth.service"
-import { EventService } from "./services/event.service"
-//import { MemberService } from "./services/member.service"
 import { FirememService } from './services/firemem.service';
 import { DialogService } from './services/dialog.service';
 
@@ -35,7 +33,7 @@ export const firebaseConfig = {
   authDomain: 'localhost',
   //authDomain: 'material1-2ca42.firebaseapp.com',
   databaseURL: 'material1-2ca42.firebaseio.com',
-  storageBucket: '<your-storage-bucket>',
+  storageBucket: 'gs://material1-2ca42.appspot.com',
   //messagingSenderId: '<your-messaging-sender-id>'
 };
 
@@ -62,8 +60,7 @@ const firebaseAuthConfig = {
   ],
   providers: [
     // globally available services at this top level
-    EventService, AuthService, ApiService, 
-    //MemberService, 
+    AuthService, ApiService, 
     DialogService, FirememService,
     provideAuth({
         globalHeaders: [{"Content-type": "application/json"}],

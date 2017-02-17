@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 import { AuthService } from "../../services/auth.service";
-//import { MemberService } from "../../services/member.service";
 import { FirememService } from "../../services/firemem.service";
 
 import { Member } from "../../models/member"
@@ -33,7 +32,6 @@ export class MemberListComponent implements OnInit {
         private router: Router, 
         private authService: AuthService,
         private fms: FirememService,
-        //private memberService: MemberService
     ) {
         console.log("*** MemberListComponent#constructor")
     }
@@ -70,7 +68,7 @@ export class MemberListComponent implements OnInit {
         // NOTE: getMembers will use the cached results (if they exist)
         // unless we set the forced argument (passed in from above); also
         // getMembers might return all the data in one emit or over several
-        // this.memberService.getMembers(force)
+        // this.xemberService.getMembers(force)
         //     .subscribe(
         //         (data) => { 
         //             //console.log("*** loading. records = "+data.length);

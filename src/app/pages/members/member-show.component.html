@@ -1,5 +1,10 @@
 <h3>{{ member | memberHeader | titleCase }} </h3>
 
+<img  class="thumbnail-image" src={{source}}  alt="profile"
+      onError="this.src='./assets/images/male-silhouette.jpg';"  />
+
+<button md-raised-button color="accent" (click)="goto_edit()" >edit</button>
+
 <div>Sex: {{ member.sex | uppercase }}</div><br>
 
 <kz-member-list-card title="Parents"  [members]='parents'  showlast='True'></kz-member-list-card>
