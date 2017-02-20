@@ -1,47 +1,15 @@
 <md-card>
+    <div>{{ messages[state | async] }}</div>
 
-    <form *ngIf="!item?.isUploading" ng-submit="uploadFile()">
-        <input type="file" name="file" class="inputimg" id="nameImg" (change)="onChange($event)" accept="image/*">
-        <button *ngIf="show_upload_button" md-raised-button color="accent" (click)="upload()" >Upload {{item.file.name}}</button>
-
-        <img *ngIf="show_upload_button" md-card-md-image src={{item.source}}>
-
-    </form>
-
-    <div *ngIf="item?.isUploading">Upload in progress...</div>
-
+    <!-- a file was selected OR upload in progress -->
+    <div *ngIf="(state|async)==1 || (state|async)==2">
+        <br><img md-card-md-image src={{item.source}} />
+    </div>
+    <!-- a file was selected, but upload not in progress -->
+    <div *ngIf="(state|async)==1">
+        <br><button md-raised-button color="accent" (click)="upload()" >Upload</button>
+    </div>
+    
+    <!-- there is no upload in progress... allow selection -->
+    <br><input *ngIf="(state|async)!=2" type="file" name="file" class="inputimg" id="nameImg" (change)="onChange($event)" accept="image/*">
 </md-card>
-
-<!--<div class="col-md-9" style="margin-bottom: 40px">
-
-    <h3>Upload Files</h3>
-
-    <button type="button" class="btn btn-success" (click)="uploadImagesToFirebase()" [disabled]="files?.length == 0 || !isEnabledUpload">
-        <span class="glyphicon glyphicon-upload"></span> Upload files to Firebase
-    </button>
-    <button type="button" class="btn btn-danger" (click)="clearFiles()">
-        <span class="glyphicon glyphicon-trash"></span> Clear files
-    </button>
-
-    <table class="table" *ngIf="files.length > 0">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Size</th>
-                <th>Progress</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of files">
-                <td [ngClass]="{'text-green': item.isUploading}"><strong>{{ item?.file?.name }}</strong></td>
-                <td nowrap>{{ item?.file?.size / 1024 / 1024 | number:'.2' }} MB</td>
-                <td>
-                    <div class="progress" style="margin-bottom: 0;">
-                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-                      
-</div>-->

@@ -12,6 +12,7 @@ export class Member {
     birth: Event;
     death: Event;
     sex: string;
+    image: string;
     famc: string;
     fams: string[];
     raw: string; // the raw json used to create this object
@@ -26,6 +27,7 @@ export class Member {
         this.sex = obj.sex;
         this.famc = obj.famc;
         this.fams = obj.fams;
+        this.image = obj.image;
         this.last_name = obj.last;
         this.first_name = obj.first;
         this.middle_name = obj.middle;

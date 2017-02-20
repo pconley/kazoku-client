@@ -28,7 +28,7 @@ import { FirememService } from "../../services/firemem.service";
 })
 export class MemberShowComponent implements OnInit {
 
-    private FMS;
+    //private FMS;
 
     public id;
     public source;
@@ -43,6 +43,8 @@ export class MemberShowComponent implements OnInit {
     public children = []; 
     public spouses = [];
 
+    
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -54,7 +56,7 @@ export class MemberShowComponent implements OnInit {
 
     ngOnInit() {
         //console.log("*** MemberShowComponent#init route...",this.route);
-        this.FMS = this.fms;
+        //this.FMS = this.fms;
         this.route.params
             .map(params => params['id'])
             .do( id => console.log("route changed to member id = "+id))
@@ -77,38 +79,32 @@ export class MemberShowComponent implements OnInit {
  
     load_globals(id: string) {
         console.log("MemberShowComponent#load_globals id="+id);
-
-        // experiment with profile photos
-        this.source = null; // immediately
-        if( id == "265" ){  // slowly load
-            const storageRef = this.FBA.storage().ref().child('photos/conley_sample2.JPG');            
-            storageRef.getDownloadURL().then(url => {
-                console.log(url);
-                this.source = url;
-            });
-        }
+        this.source = './assets/images/male-two-tone.png';
 
         this.fms
             .get_member(id)
-            .do( obj => console.log("member object...",obj) )
-            .subscribe( obj => {
-                this.member = obj;
-                this.memkey = obj["key"];
-                if( obj.famc ){
+            .do( mem => console.log("member...",mem) )
+            .subscribe( mem => {
+                this.member = mem;
+                this.memkey = mem["key"];
+                let gen = mem['sex'] === 'm' ? 'male' : 'female';
+                this.source = `./assets/images/${gen}-two-tone.png`;
+                this.load_image(mem.image);
+                if( mem.famc ){
                     // load siblings
                     this.fms
-                        .get_members( obj.famc )
+                        .get_members( mem.famc )
                         .subscribe( array => { 
                             // but, filter out the current member from sibling list
                             this.siblings = array.filter( m => m.key != this.memkey ); 
                         });
                     // load parents
                     this.fms
-                        .get_family( obj.famc )
+                        .get_family( mem.famc )
                         .subscribe( obj => { this.load_parents(obj) });
                  }
-                if( obj.fams ){
-                    obj.fams.forEach( key => {
+                if( mem.fams ){
+                    mem.fams.forEach( key => {
                         // load children
                         this.fms
                             .get_members( key )
@@ -122,8 +118,15 @@ export class MemberShowComponent implements OnInit {
         })
     }
 
-    load_image(){
-        
+    load_image(filename){
+        console.log('load image',filename);
+        if( !filename ) return; 
+        const image_url = `images/${filename}`;
+        const storageRef = this.FBA.storage().ref().child(image_url);            
+        storageRef.getDownloadURL().then(url => {
+                console.log("source url",url);
+                this.source = url;
+        });
     }
 
     load_parents(fam){
