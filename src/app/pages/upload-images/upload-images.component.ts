@@ -9,43 +9,30 @@ import { UploadImagesService } from '../../services/upload-images.service';
 })
 export class UploadImagesComponent {
 
-    isDropZoneOver : boolean = false;
-    isEnabledUpload : boolean = true;
-    files : FileList;
+    show_upload_button : boolean = false;
     item : FileItem;
 
     constructor(public uploadImagesService: UploadImagesService) {
     }
 
-    public fileOverDropZone(e:any):void {
-        this.isDropZoneOver = e;
-    }
-
-    xonChange(event) {
-        console.log("event...",event);
-        console.log("target...",event.target);
-        var files = event.srcElement.files;
-        console.log("files...",files);
-    }
-
-
     onChange(event: EventTarget) {
+        var that = this;
         let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
         let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
-        let files: FileList = target.files;
-        this.item = new FileItem(files.item(0));
-        console.log("on change, item...",this.item);
+        this.item = new FileItem(target.files.item(0));
+        this.show_upload_button = true;
+
+        var reader = new FileReader();
+        reader.onloadend = function() {
+             that.item.source = reader.result;
+        }
+        reader.readAsDataURL(this.item.file);
     }
 
-    uploadImagesToFirebase() {
+    upload() {
         console.log("upload. file item...",this.item);
-        this.isEnabledUpload = false;
         this.uploadImagesService.uploadImageToFirebase(this.item);
+        this.show_upload_button = false;
     }
-
-    // clearFiles() {
-    //     this.files = [];
-    //     this.isEnabledUpload = true;
-    // }
 
 }

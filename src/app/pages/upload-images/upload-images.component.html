@@ -1,22 +1,16 @@
-<div class="col-md-3">
+<md-card>
 
-    <form ng-submit="uploadFile()">
+    <form *ngIf="!item?.isUploading" ng-submit="uploadFile()">
         <input type="file" name="file" class="inputimg" id="nameImg" (change)="onChange($event)" accept="image/*">
-        <button md-raised-button color="accent" (click)="uploadImagesToFirebase()" >Upload</button>
+        <button *ngIf="show_upload_button" md-raised-button color="accent" (click)="upload()" >Upload {{item.file.name}}</button>
+
+        <img *ngIf="show_upload_button" md-card-md-image src={{item.source}}>
+
     </form>
 
-    <!--<h3>Select files</h3>-->
+    <div *ngIf="item?.isUploading">Upload in progress...</div>
 
-    <!--<kz-drop-files
-          [ngClass]="{'file-over': isDropZoneOver}"
-          (fileOver)="fileOverDropZone($event)"
-          [files]="files"
-          class="well drop-zone">
-        <h4>Drop your files here</h4>
-        <img src="/assets/images/drop-images.png"/>
-    </kz-drop-files>-->
-
-</div>
+</md-card>
 
 <!--<div class="col-md-9" style="margin-bottom: 40px">
 
