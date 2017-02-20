@@ -12,6 +12,7 @@ import { ApiService } from "./services/api.service"
 import { AuthService } from "./services/auth.service"
 import { FirememService } from './services/firemem.service';
 import { DialogService } from './services/dialog.service';
+import { UploadImagesService } from './services/upload-images.service';
 
 import { HomeModule }      from "./pages/home/home.module";
 import { NotesModule }     from "./pages/notes/notes.module";
@@ -21,6 +22,8 @@ import { MemberModule }    from "./pages/members/member.module";
 import { ContactModule }   from "./pages/contact/contact.module";
 import { ProfileModule }   from "./pages/profile/profile.module";
 import { DashboardModule } from "./pages/dashboard/dashboard.module";
+
+import { UploadImagesModule } from "./pages/upload-images/upload-images.module";
 
 import { SharedModule } from "./shared/shared.module";
 
@@ -53,6 +56,7 @@ const firebaseAuthConfig = {
     HomeModule, ProfileModule, SampleModule, 
     DashboardModule, ContactModule, ErrorModule,
     MemberModule, NotesModule,
+    UploadImagesModule,
     SharedModule,
     // core material elements
     MaterialModule.forRoot(),
@@ -62,9 +66,10 @@ const firebaseAuthConfig = {
     // globally available services at this top level
     AuthService, ApiService, 
     DialogService, FirememService,
+    UploadImagesService,
     provideAuth({
         globalHeaders: [{"Content-type": "application/json"}],
-        //newJwtError: true,
+        //newJwtError: ,true,
         noTokenScheme: true
     })
   ],
