@@ -45,7 +45,7 @@ export class FirememService {
             .object('/members/'+id)
             //.filter( obj => !obj.key )
             //.do( obj => console.log("fms#get_member. result...",obj) )
-            .map( obj => new Member(obj) )
+            //.map( obj => new Member(obj) )
             //.do( obj => console.log("fms#get_member. convert...",obj) )
 
     }

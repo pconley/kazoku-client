@@ -5,6 +5,7 @@
 
 <button md-raised-button color="accent" (click)="goto_edit()" >edit</button>
 
+<div><a href="#" [routerLink]="['/upload', member.id]">Change Image</a></div>
 <div>Sex: {{ member.sex | uppercase }}</div><br>
 
 <kz-member-list-card title="Parents"  [members]='parents'  showlast='True'></kz-member-list-card>

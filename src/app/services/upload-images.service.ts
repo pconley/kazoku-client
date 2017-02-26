@@ -10,12 +10,12 @@ export class UploadImagesService {
     @Inject(FirebaseApp) private FBA
   ) { }
 
-  uploadImageToFirebase(item: FileItem ) : BehaviorSubject<boolean> {
-      console.log("upload service. file item...",item);
+  uploadImageToFirebase(id: string, item: FileItem ) : BehaviorSubject<boolean> {
+      console.log("upload service. file item...",id,item);
 
       var subject = new BehaviorSubject<boolean>(false);
 
-      let url : string = `images/${item.file.name}`;
+      let url : string = `images/${id}/${item.file.name}`;
       let storageRef = this.FBA.storage().ref();
       let uploadTask: firebase.storage.UploadTask = storageRef.child(url).put(item.file);
       

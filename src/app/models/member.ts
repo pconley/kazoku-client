@@ -65,5 +65,4 @@ export class Member {
     death_string(){
         return this.death ? this.death.as_date_string() : "";
     }
-
 }

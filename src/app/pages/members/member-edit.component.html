@@ -1,10 +1,10 @@
-<h3>{{ memberObs | async | memberHeader | titleCase }} </h3>
+<h3>{{ member | memberHeader | titleCase }} </h3>
 
 <md-card *ngIf="member">
     
     <form (ngSubmit)="onSubmit(theForm)" #theForm="ngForm">  
 
-        <md-input maxlength="50" required placeholder="Last Name"
+        <md-input maxlength="50" required placeholder="Last Name" (change)="changed=true"
             name="lastname" [(ngModel)]="member.last_name" #lname="ngModel">
             <md-hint class="error" *ngIf="!(lname.valid || lname.pristine)" align="start">Last Name is required</md-hint>
         </md-input>
@@ -30,7 +30,7 @@
                     [disabled]="theForm.form.pristine">Save</button>
 
         <button md-raised-button color="accent" 
-                     (click)="onCancel()">Cancel</button>
+                     (click)="onCancel(theForm.form.pristine)">Cancel</button>
 
     </form>
 
@@ -43,10 +43,10 @@
 
 </md-card>
 
-<kz-notice>
+<!--<kz-notice>
       This Member Update Page does not really update the database at the server! But it will record the changes 
       locally.  The will be lost the next time you load the application (web page) from the server.
-</kz-notice>
+</kz-notice>-->
 
-<div>{{ gender }}
-<div>{{ memberObs | async | json }}</div>
+<h4>Raw Data</h4>
+<div>{{ memberFOO | async | json }}</div>

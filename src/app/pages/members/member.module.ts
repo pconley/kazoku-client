@@ -5,7 +5,6 @@ import { MemberFilterPipe } from "./member-filter.pipe";
 import { MemberListComponent } from "./member-list.component";
 import { MemberShowComponent } from "./member-show.component";
 import { MemberEditComponent } from "./member-edit.component";
-import { MemberChangeGuard } from "./member-change.guard";
 
 import { PipesModule } from "../../pipes/pipes.module";
 import { SharedModule } from "../../shared/shared.module";
@@ -19,7 +18,7 @@ import { SharedModule } from "../../shared/shared.module";
         MemberFilterPipe 
     ],
     bootstrap: [ MemberListComponent ],
-    providers: [ MemberChangeGuard ],
+    providers: [ ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ] 
 })
 

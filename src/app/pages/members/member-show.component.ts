@@ -1,16 +1,3 @@
-// import { Component, Inject } from '@angular/core';
-
-// @Component({
-//   template: '<p>testing</p>'
-// })
-// export class AnyComponent {
-
-//   constructor(@Inject(FirebaseApp) firebaseApp: any) {
-//     const storageRef = firebaseApp.storage().ref().child('images/image.png');
-//     storageRef.getDownloadURL().then(url => this.image = url);
-//   }
-// }
-
 import { Component, OnInit, Inject } from "@angular/core";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
@@ -42,8 +29,6 @@ export class MemberShowComponent implements OnInit {
     public siblings = []; 
     public children = []; 
     public spouses = [];
-
-    
 
     constructor(
         private route: ActivatedRoute,
@@ -83,13 +68,14 @@ export class MemberShowComponent implements OnInit {
 
         this.fms
             .get_member(id)
+            .map( foo => new Member(foo) )
             .do( mem => console.log("member...",mem) )
             .subscribe( mem => {
                 this.member = mem;
                 this.memkey = mem["key"];
                 let gen = mem['sex'] === 'm' ? 'male' : 'female';
                 this.source = `./assets/images/${gen}-two-tone.png`;
-                this.load_image(mem.image);
+                this.load_image(mem.id,mem.image);
                 if( mem.famc ){
                     // load siblings
                     this.fms
@@ -118,10 +104,10 @@ export class MemberShowComponent implements OnInit {
         })
     }
 
-    load_image(filename){
+    load_image(id,filename){
         console.log('load image',filename);
         if( !filename ) return; 
-        const image_url = `images/${filename}`;
+        const image_url = `images/${id}/${filename}`;
         const storageRef = this.FBA.storage().ref().child(image_url);            
         storageRef.getDownloadURL().then(url => {
                 console.log("source url",url);
@@ -164,8 +150,6 @@ export class MemberShowComponent implements OnInit {
                 if( mem.key) this.spouses.push(mem);
             })
     }
-
-    //fireError(errmsg){ console.error("firebase error = "+errmsg); }
 
     goto_edit(){
         // page action... navigate to the edit page for this user

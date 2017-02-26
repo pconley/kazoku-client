@@ -6,7 +6,7 @@ import { UploadImagesComponent } from './upload-images.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'upload',  component: UploadImagesComponent, canActivate: [UserGuard] },
+      { path: 'upload/:id',  component: UploadImagesComponent, canActivate: [UserGuard] },
     ])
   ],
   exports: [ RouterModule ]

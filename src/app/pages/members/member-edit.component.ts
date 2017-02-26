@@ -16,9 +16,9 @@ export class MemberEditComponent implements OnInit {
 
     gender = "Female";
     genders = ["Male","Female"];
-
-    memberObj: FirebaseObjectObservable<Member>;
-    memberObs: Observable<Member>;
+    //wasSubmitted = false;
+    memberFOO: FirebaseObjectObservable<Member>;
+    //memberObs: Observable<Member>;
     member: Member = null; // for the form
     
     constructor(
@@ -33,33 +33,43 @@ export class MemberEditComponent implements OnInit {
             .map(params => params['id'])
             .do( id => console.log("route changed to edit member id = "+id))
             .subscribe( id => {
-                this.memberObj = this.af.database
+                this.memberFOO = this.af.database
                     .object('/members/'+id);
-                this.memberObs = this.memberObj
-                    .map( obj => new Member(obj) )
-                    .do( mem => console.log("edit member",mem) )
-                    .do( mem => this.member = mem )
-                    .do( mem => this.gender = mem.sex=="m" ? "Male" : "Female" )
-                    //.subscribe( console.log );
+                this.memberFOO
+                    //.do( foo => console.log(typeof(foo),foo) )
+                    .map<Member>( foo => new Member(foo) )
+                    .subscribe( mem => {
+                        console.log("edit member",mem);
+                        this.member = mem;
+                        this.gender = mem.sex=="m" ? "Male" : "Female"
+                    });
             });
    }
 
-    onCancel(){
+    onCancel(pristine){
+        console.log("pristine",pristine);
+        if( pristine === false ){
+            // there were changes made on the page, so...
+            let answer = this.dialogService.check('Discard Member Changes?');
+            if( answer === false ) return; // no action
+        }
         // page action... navigate back to the show page for this user
         this.router.navigate(['/member', this.member.id]);
     }
 
-    onSubmit(form) { 
-        console.log("*** MemberEditComponent#submit",form);
+    onSubmit(group) { 
+        let form = group.form;
+        console.log("*** onSUBMIT. form...",form,form.getRawValue());
         var sex = this.gender === "Male" ? "m" : "f";
-        this.memberObj.update({ 
+        var data = { 
             sex: sex, // converted
             last: this.member.last_name, 
             first: this.member.first_name, 
             middle: this.member.middle_name, 
             description: this.member.description 
-        });
-        //return false; // ???
+        }
+        this.memberFOO.update(data);
+        form.markAsPristine();
     }
     // save(newName: string) {
     //     // saves an entire new objec... be careful!!!
