@@ -1,12 +1,13 @@
 <h3>{{ member | memberHeader | titleCase }} </h3>
 
-<img  class="thumbnail-image" src={{source}}  alt="profile" />
-      <!--onError="this.src='./assets/images/male-silhouette.jpg';"  />-->
-
-<button md-raised-button color="accent" (click)="goto_edit()" >edit</button>
-
-<div><a href="#" [routerLink]="['/upload', member.id]">Change Image</a></div>
-<div>Sex: {{ member.sex | uppercase }}</div><br>
+<md-card>
+      <img  class="thumbnail-image" src={{source}}  alt="profile" />
+      <button md-raised-button color="accent" (click)="goto_edit()" >edit</button>
+      <div><a href="#" [routerLink]="['/upload', member.id]">Change Image</a></div>
+      <div>Sex: {{ member.sex | uppercase }}</div>
+      <div>Name: {{ member | memberHeader | titleCase }}</div>
+      <div>Description: {{ member.description }}</div>
+</md-card>
 
 <kz-member-list-card title="Parents"  [members]='parents'  showlast='True'></kz-member-list-card>
 <kz-member-list-card title="Spouse"   [members]='spouses'  showlast='True'></kz-member-list-card>
