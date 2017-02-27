@@ -6,3 +6,31 @@
     width: 100px;
     height: 100px;
 }
+
+.yellow { background-color: yellow }
+.red { background-color: red }
+.green { background-color: green }
+
+.con1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.container {
+    display: flex; /* or inline-flex */
+    flex-direction: row; /* row | row-reverse | column | column-reverse; */
+    justify-content:  flex-start; /* flex-start | flex-end | center | space-between | space-around; */
+}
+
+.item1 {
+  order: 1;
+}
+.item2 {
+  order: 2;
+}
+.itemLast {
+  order: 20;
+  align-self: flex-end; /* auto | flex-start | flex-end | center | baseline | stretch; */
+}

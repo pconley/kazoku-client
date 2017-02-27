@@ -1,20 +1,37 @@
 <h3>{{ member | memberHeader | titleCase }} </h3>
 
-<md-card>
-      <img  class="thumbnail-image" src={{source}}  alt="profile" />
-      <button md-raised-button color="accent" (click)="goto_edit()" >edit</button>
-      <div><a href="#" [routerLink]="['/upload', member.id]">Change Image</a></div>
-      <div>Sex: {{ member.sex | uppercase }}</div>
-      <div>Name: {{ member | memberHeader | titleCase }}</div>
-      <div>Description: {{ member.description }}</div>
+<md-card class="con1">
+      <span >
+            <div class="container">
+                  <span>
+                        <img class="thumbnail-image" src={{source}}  alt="profile" /><br>
+                        <a href="#" [routerLink]="['/upload', member.id]">Change Pic</a>
+                  </span>
+                  <span>&nbsp;&nbsp;</span>
+                  <span>
+                        <div>{{ member | memberHeader | titleCase }} ({{ member.sex | uppercase }})</div>
+                        <div *ngIf="member.birth">{{ member.birth | event }}</div>
+                        <div *ngIf="member.death">{{ member.death | event }}</div>
+                        <div><i>{{ member.description }}</i></div>
+                  </span>
+            </div>
+      </span>
+
+      <span ><button md-raised-button color="accent" (click)="goto_edit()" >edit</button></span>
+
 </md-card>
+
+<kz-event-list-card title="Events" [events]='member.events' ></kz-event-list-card>
 
 <kz-member-list-card title="Parents"  [members]='parents'  showlast='True'></kz-member-list-card>
 <kz-member-list-card title="Spouse"   [members]='spouses'  showlast='True'></kz-member-list-card>
 <kz-member-list-card title="Siblings" [members]='siblings' showlast='False'></kz-member-list-card>
 <kz-member-list-card title="Children" [members]='children' showlast='False'></kz-member-list-card>
 
-<kz-event-list-card title="Events" [events]='member.events' ></kz-event-list-card>
+<!--
+<h4>Member JSON Data</h4>
+<div>{{ omit(member,'raw') | json }}</div>
 
-<h4>Ancestry Source Data</h4>
+<h4>Server Source Data</h4>
 <div>{{ member.raw }}</div>
+-->

@@ -9,7 +9,17 @@ import { Component, OnChanges, Input } from '@angular/core';
 
 @Component({
   selector: 'kz-event-list-card',
-  template: `<h4>{{title}}</h4><ul><li *ngFor='let event of events'>{{event | event }}</li></ul>`
+  template: `<md-card>
+    <h4>{{title}}</h4>
+    <ul>
+        <li *ngFor='let event of events'>
+            {{event | event }}  
+            <a href="#" (click)="onEventClick()">edit</a>  
+            <a href="#" (click)="onEventClick()">delete</a>  
+        </li>
+    </ul>
+    <a href="#" (click)="onEventClick()" >add event</a>  
+    </md-card>`
 })
 
 export class EventListCardComponent implements OnChanges {
@@ -26,4 +36,7 @@ export class EventListCardComponent implements OnChanges {
         // const s_date = this.showdate.toUpperCase();
         // this.withdate = s_date == "T" || s_date == "TRUE"  ;
     }
+
+    onEventClick(){ alert("not yet implemented"); return false; }
+
 }

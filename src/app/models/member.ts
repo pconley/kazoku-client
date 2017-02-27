@@ -46,6 +46,7 @@ export class Member {
         if( obj.events ){
             this.events = obj.events.map( v => new Event(v) );
             obj.events.forEach( e => {
+                //console.log('event',e.event);
                 if( e.event == 'birt' ) this.birth = new Event(e);
                 if( e.event == 'deat' ) this.death = new Event(e);
             });

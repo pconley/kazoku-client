@@ -156,4 +156,14 @@ export class MemberShowComponent implements OnInit {
         // console.log("*** Membershow#goto_edit: id = "+this.member.id);
         this.router.navigate(['/member/edit', this.id]);
     }
+
+    onEventClick(){ alert("not yet implemented");  }
+
+    public omit(obj, omitKey) {
+        return Object.keys(obj).reduce((result, key) => {
+            if(key !== omitKey) result[key] = obj[key];
+            return result;
+        }, {});
+    }
+
 }

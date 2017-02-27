@@ -25,6 +25,6 @@ export class EventPipe implements PipeTransform {
     }
 
     format_date(day, month, year){
-        return day+ "/" +month+"/"+year;
+        return month+ "/" +day+"/"+year;
     }
 }
