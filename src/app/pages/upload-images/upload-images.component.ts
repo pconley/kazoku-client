@@ -34,7 +34,8 @@ export class UploadImagesComponent implements OnInit {
     constructor(
         public uploadImagesService: UploadImagesService,
         private FMS: FirememService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private router: Router
     ) {}
 
     ngOnInit(){
@@ -82,8 +83,12 @@ export class UploadImagesComponent implements OnInit {
             this.uploadImagesService
                 .uploadImageToFirebase(this.member.id,this.item)
                 .subscribe( b => this.state.next(UploadState.Loaded) );
-
-            this.fooMember.update({ image: this.item });
+            // at the same time, update the name to the main data 
+            this.fooMember.update({ image: this.item.file.name });
         //}, 3000);
+    }
+
+    goto_show() {
+        this.router.navigate(['/member', this.member.id]);
     }
 }

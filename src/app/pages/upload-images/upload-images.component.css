@@ -2,3 +2,10 @@
 .file-over { border: dotted 3px dodgerblue; }
 .table { margin-top: 30px; }
 .text-green { color: green }
+
+.action-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+

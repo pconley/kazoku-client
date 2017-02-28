@@ -1,15 +1,21 @@
-<md-card>
-    <div>{{ messages[state | async] }}</div>
+<md-card class="action-card">
+    <!-- the main body of the card -->
+      <span >
+            <div>{{ messages[state | async] }}</div> 
 
-    <!-- a file was selected OR upload in progress -->
-    <div *ngIf="(state|async)==1 || (state|async)==2">
-        <br><img md-card-md-image src={{item.source}} />
-    </div>
-    <!-- a file was selected, but upload not in progress -->
-    <div *ngIf="(state|async)==1">
-        <br><button md-raised-button color="accent" (click)="upload()" >Upload</button>
-    </div>
-    
-    <!-- there is no upload in progress... allow selection -->
-    <br><input *ngIf="(state|async)!=2" type="file" name="file" class="inputimg" id="nameImg" (change)="onChange($event)" accept="image/*">
+            <!-- a file was selected OR upload in progress -->
+            <div *ngIf="(state|async)==1 || (state|async)==2">
+                <br><img md-card-md-image src={{item.source}} />
+            </div>
+            <!-- a file was selected, but upload not in progress -->
+            <div *ngIf="(state|async)==1">
+                <br><button md-raised-button color="accent" (click)="upload()" >Upload</button>
+            </div>
+            
+            <!-- there is no upload in progress... allow selection -->
+            <br><input *ngIf="(state|async)!=2" type="file" name="file" class="inputimg" id="nameImg" (change)="onChange($event)" accept="image/*">
+      </span>
+      <!-- the action button -->
+      <span ><button md-raised-button color="accent" (click)="goto_show()" >cancel</button></span>
+
 </md-card>
