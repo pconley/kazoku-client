@@ -10,21 +10,40 @@ export class UploadImagesService {
     @Inject(FirebaseApp) private FBA
   ) { }
 
-  uploadImageToFirebase(id: string, item: FileItem ) : BehaviorSubject<boolean> {
-      console.log("upload service. file item...",id,item);
-
-      var subject = new BehaviorSubject<boolean>(false);
-
-      let url : string = `images/${id}/${item.file.name}`;
+  uploadImageToFirebase(id: string, name: string, source: string ) : BehaviorSubject<boolean> {
+      console.log("upload service",id,name);
+      let blob = this.b64_to_blob(source);
+      let imageUrl : string = `images/${id}/${name}`;
       let storageRef = this.FBA.storage().ref();
-      let uploadTask: firebase.storage.UploadTask = storageRef.child(url).put(item.file);
-      
+      let result = new BehaviorSubject<boolean>(false);
+      let uploadTask: firebase.storage.UploadTask = storageRef.child(imageUrl).put(blob);
       uploadTask.on('state_changed', 
-        (snapshot) => item.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
+        (snapshot) => {
+          //let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          //console.log("progress",progress);
+        },
         (error) => { console.error("image uploadTask failed: "+error); },
-        () => { subject.next(true) } // on upload completion
+        () => { result.next(true) } // on upload completion
       );
-
-      return subject;
+      return result;
   }
+
+  b64_to_blob(source:any, content_type?:string) : Blob {
+        content_type = content_type || '';
+        let [prefex,data] = source.split(',');
+        var byte_characters = atob(data);
+        var slice_size = 512;
+        var byte_arrays = [];
+        for(var offset = 0; offset < byte_characters.length; offset += slice_size) {
+            var slice = byte_characters.slice(offset, offset + slice_size);
+            var byte_numbers = new Array(slice.length);
+            for(var i = 0; i < slice.length; i++) {
+                byte_numbers[i] = slice.charCodeAt(i);
+            }
+            var byte_array = new Uint8Array(byte_numbers);
+            byte_arrays.push(byte_array);
+        }
+        var blob = new Blob(byte_arrays, {type: content_type});
+        return blob;
+    }
 }

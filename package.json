@@ -38,6 +38,7 @@
     "inherits": "^2.0.3",
     "json3": "^3.3.2",
     "ms": "^0.7.2",
+    "ng2-img-cropper": "^0.8.0",
     "postcss-discard-comments": "^2.0.4",
     "querystringify": "0.0.4",
     "requires-port": "^1.0.0",
