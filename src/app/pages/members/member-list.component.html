@@ -1,3 +1,4 @@
+<span id="kz-members-list-page"></span>
 <md-toolbar>
     <span>Members</span>
 
@@ -38,9 +39,10 @@
     </div>
 </div>
 
-<table class="table table-striped" *ngIf='isListView'>
+<table id="kz-members-list-table" class="table table-striped" *ngIf='isListView'>
   <thead><td>Name</td><td>Gender</td><td>Born</td><td>At</td></thead>
-  <tr *ngFor='let member of members | async | memberFilter : listFilter' (click)="onSelect(member)">
+  <tr *ngFor='let member of members | async | memberFilter : listFilter' 
+    class="kz-members-list-row" (click)="onSelect(member)">
       <td>
             <a href="#" [routerLink]="['/member', member.id]">
                 {{member.last_name | titleCase}}, {{member.first_name | titleCase}}

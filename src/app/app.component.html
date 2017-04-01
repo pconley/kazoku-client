@@ -20,30 +20,29 @@
     <button md-raised-button color="primary" (click)="goto_home()">Kazoku!</button>
     <span *ngIf="auth.action | async">
         &nbsp;&nbsp; <!-- spacer -->
-        <button md-raised-button color="accent" (click)="goto('members')">Members</button>
+        <button id="members-button" md-raised-button color="accent" (click)="goto('members')">Members</button>
         &nbsp;&nbsp; <!-- spacer -->
-        <button md-raised-button color="accent" (click)="goto_user()" >You!</button>
+        <button *ngIf="profile && profile.id" md-raised-button color="accent" (click)="goto_user()" >You!</button>
+        <span *ngIf="!profile || !profile.id" >Guest</span>
+
     </span>
 
     <span class="app-toolbar-filler"></span>
 
     <button md-raised-button color="primary" (click)="goto('contact')">Contact Us</button>
     &nbsp;&nbsp; <!-- spacer -->
-    <button md-raised-button color="accent" *ngIf="!(auth.action | async)" (click)="login()">Login</button>
+    <button id="login-button" md-raised-button color="accent" *ngIf="!(auth.action | async)" (click)="login()">Login</button>
    
     <!-- 3 dot menu opens when trigger button is clicked -->
-    <button md-icon-button [md-menu-trigger-for]="menu">
-    <!--<button md-icon-button [mdMenuTriggerFor]="menu">-->
-
-    
-      <md-icon>more_vert</md-icon>
+    <button id="menu-button" md-icon-button [md-menu-trigger-for]="menu">
+        <md-icon>more_vert</md-icon>
     </button>
     <md-menu x-position="before" #menu="mdMenu">
         <button md-menu-item (click)="goto('home')">
-          <span><md-icon>home</md-icon>Home</span>
+            <span><md-icon>home</md-icon>Home</span>
         </button>
-        <button md-menu-item (click)="goto('dashboard')" *ngIf="auth.action | async">
-          <span><md-icon>dashboard</md-icon>Dashboard</span>
+        <button id="dashboard-button" md-menu-item (click)="goto('dashboard')" *ngIf="auth.action | async">
+            <span><md-icon>dashboard</md-icon>Dashboard</span>
         </button>
         <button md-menu-item (click)="goto('profile')" *ngIf="auth.action | async">
             <span><md-icon>perm_identity</md-icon>Profile</span>
@@ -65,11 +64,9 @@
             <span><md-icon>swap_horiz</md-icon>Colors</span>
         </button>
 
-
-
         <span *ngIf="auth.action | async">
         <hr>
-        <button md-menu-item (click)="logout()">
+        <button id="logout-button" md-menu-item (click)="logout()">
             <span><md-icon>exit_to_app</md-icon>Logout</span>
         </button>
         </span>

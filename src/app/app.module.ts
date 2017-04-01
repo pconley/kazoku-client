@@ -29,6 +29,9 @@ import { SharedModule } from "./shared/shared.module";
 
 import { AngularFireModule } from 'angularfire2';
 import { AuthProviders, AuthMethods } from 'angularfire2';
+import { WindowLocation } from "angularfire2";
+
+import { trace       } from './utilities/trace';
 
 // Must export the config
 export const firebaseConfig = {
@@ -62,11 +65,17 @@ const firebaseAuthConfig = {
     MaterialModule.forRoot(),
     AppRouting
   ],
+
   providers: [
     // globally available services at this top level
     AuthService, ApiService, 
     DialogService, FirememService,
     UploadImagesService,
+    // added this strange hack to get working with selenium webdriver
+    // before this got an error... 
+    {provide: WindowLocation, useValue: {
+         protocol: 'https' // Change to HTTP if you prefer.
+    }},
     provideAuth({
         globalHeaders: [{"Content-type": "application/json"}],
         //newJwtError: ,true,

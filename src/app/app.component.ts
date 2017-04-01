@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AngularFire, FirebaseAuthState } from 'angularfire2';
 
 import { AuthService } from './services/auth.service';
 
@@ -7,7 +8,8 @@ import { AuthGuard }  from './guards/auth.guard';
 import { UserGuard }  from './guards/user.guard';
 import { AdminGuard } from './guards/admin.guard';
 
-import { AngularFire, FirebaseAuthState } from 'angularfire2';
+import { trace, TraceLevel } from './utilities/trace';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -15,51 +17,45 @@ import { AngularFire, FirebaseAuthState } from 'angularfire2';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'KazokuClient';
+  //title = 'KazokuClient';
+  //href = "";
 
   isDarkTheme: boolean = false;
 
   constructor( 
     private auth: AuthService, 
     private router: Router,
-    //private af: AngularFire
-  ) {
-    //console.log("AppComponent#constructor");
-  }
+    private route: ActivatedRoute
+  ) {}
 
-  ngOnInit(){ 
-    //console.log("AppComponent#init location="+location.href);
-
-    var parser = document.createElement('a');
-    parser.href = location.href;
-    var start_path = parser.pathname;
-    
-    // this is an EXAMPLE of how a component can watch the
-    // the changing authentication state of the current user
+  ngOnInit(){
+    trace.set(environment.trace_level);
+    trace.warn('AppComponent#init. environment...', environment);
+    const start_url = location.pathname + location.search;
+    trace.log("AppComponent#init start url = ",start_url);
+    // watch the changing authentication state of the current user
     this.auth.action.subscribe((isAuthenticated: boolean) => {
-        //console.log("AppComponent: firebase auth state changed to "+isAuthenticated);
-        // whenever the authentication state changes redirect 
-        var destination = isAuthenticated ? start_path : 'home' ;
-        this.router.navigate([destination]);
+        trace.log("AppComponent: firebase auth state changed to "+isAuthenticated);
+        // redirect to the original URL or to the public home page
+        var destination = isAuthenticated ? start_url : '/home' ;
+        this.router.navigateByUrl(destination);
     });
   }
 
   login(){
-    console.log("AppComponent#login");
+    trace.log("AppComponent#login");
     this.auth.login();
-    //this.goto('dashboard');
   }
 
   logout(){
-    console.log("AppComponent#logout");
+    trace.log("AppComponent#logout");
     this.auth.logout();
-    //this.goto('home'); // force to public
   }
 
   goto_user(){
     var id = this.auth.profile.id; // firebase id
-    console.log("AppComponent#goto_user id="+id);
-    //console.log("*** AppComponent#goto member id = "+id);
+    trace.log("AppComponent#goto_user id="+id);
+    //trace.log("*** AppComponent#goto member id = "+id);
     // jump to the member page for the current user
     this.router.navigate(['/member', id]);
   }
@@ -70,7 +66,7 @@ export class AppComponent implements OnInit {
   }
 
   goto(route){
-    console.log("AppComponent#goto route="+route);
+    trace.log("AppComponent#goto route="+route);
     this.router.navigate([route]);
   }
 }

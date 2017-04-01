@@ -10,7 +10,7 @@ import { AdminGuard } from "./guards/admin.guard"
     RouterModule.forRoot([
         { path: '',  redirectTo: 'home', pathMatch: 'full' },
         { path: "access_token", redirectTo: 'dashboard' },
-        { path: "**", redirectTo: 'error' }
+        { path: "**", redirectTo: 'dashboard' }
     ])
   ],
   exports: [ RouterModule ],

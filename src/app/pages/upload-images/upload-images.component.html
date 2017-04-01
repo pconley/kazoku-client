@@ -1,19 +1,23 @@
+<h3>{{ member | memberHeader | titleCase }} </h3>
+
 <md-card class="action-card">
       <!-- the main body of the card -->
       <span>
             <div>{{ messages[state | async] }}</div> 
 
+            <img *ngIf="cropperData.image" class="thumbnail-image" [src]="cropperData.image">
+
+            <div *ngIf="(state|async)==1"> <!-- ready state -->
+                <br><button md-raised-button color="accent" (click)="upload()" >Upload</button>
+            </div>
+
             <img-cropper [image]="cropperData" [settings]="cropperSettings" 
+                    (change)="onChange($event)" 
+                    (onCrop)="onCropped($event)"
                     accept="image/*" >
             </img-cropper>
             
-            <div class="result" *ngIf="cropperData.image" >
-                    <img [src]="cropperData.image" width="100" height="100" >
-            </div>
-            <!-- a file was selected, but upload not in progress -->
-            <div *ngIf="(state|async)==1">
-                <br><button md-raised-button color="accent" (click)="upload()" >Upload</button>
-            </div>
+
        </span>
       <!-- the action button fro the action card -->
       <span ><button md-raised-button color="accent" (click)="goto_show()" >cancel</button></span>

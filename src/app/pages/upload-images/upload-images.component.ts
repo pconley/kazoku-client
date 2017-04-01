@@ -22,8 +22,7 @@ enum UploadState { Start, Ready, Loading, Loaded }
 export class UploadImagesComponent implements OnInit {
 
     member: Member;
-    fooMember: FirebaseObjectObservable<Member>;
-    item : FileItem;
+    memberFOO: FirebaseObjectObservable<Member>;
     state : BehaviorSubject<UploadState>;
     messages : string[] = [
       "Select an image file to upload.",
@@ -34,7 +33,6 @@ export class UploadImagesComponent implements OnInit {
 
     cropperData:any;
     cropperSettings: CropperSettings;
-    //@ViewChild('cropper', undefined) cropper:ImageCropperComponent;
 
     constructor(
         public uploadImagesService: UploadImagesService,
@@ -42,7 +40,6 @@ export class UploadImagesComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router
     ) {
-      //this.name = 'Angular2'
       this.cropperSettings = new CropperSettings();
       this.cropperSettings.width = 200;
       this.cropperSettings.height = 200;
@@ -62,10 +59,11 @@ export class UploadImagesComponent implements OnInit {
       this.cropperSettings.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
       this.cropperSettings.cropperDrawSettings.strokeWidth = 2;
 
-      this.cropperData = {};
+    //   this.cropperData = {};
     } 
 
     ngOnInit(){
+        this.cropperData = {};
         this.state = new BehaviorSubject(UploadState.Start);
 
         this.route.params
@@ -73,11 +71,14 @@ export class UploadImagesComponent implements OnInit {
             .subscribe( id => {
                 console.log("route changed to upload image id = "+id);
                 this.state.next(UploadState.Start);
-                this.fooMember = this.FMS.get_member(id);
-                this.fooMember
+                this.cropperData = {};
+                this.memberFOO = this.FMS.get_member(id);
+                this.memberFOO
                     .map( foo => new Member(foo) )
-                    .do( mem => console.log("upload image. member...",mem) )
-                    .subscribe( mem => this.member = mem )
+                    .subscribe( mem => {
+                        console.log("upload image. member...",mem);
+                        this.member = mem;
+                    })
                 });
 
         var texts = ["Start","Ready","Loading","Loaded"];
@@ -89,18 +90,15 @@ export class UploadImagesComponent implements OnInit {
     }
 
     onChange(event: EventTarget) {
-        let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
-        let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
-        this.item = new FileItem(target.files.item(0));
+        // the user changed or uploaded the picture indicating
+        // it may  ready to be uploaded
+        this.state.next(UploadState.Ready);
+    }
 
-        var reader = new FileReader();
-        reader.onloadend = () => {
-            this.item.source = reader.result
-            console.log('source',this.item.source);
-            this.state.next(UploadState.Ready);
-        };
-        // now we initiate the read of the file
-        reader.readAsDataURL(this.item.file);
+    onCropped(bounds:Bounds) {
+        // the user cropped the picture indicating it may be changed
+        // and therefore ready to be uploaded
+        this.state.next(UploadState.Ready);
     }
 
     upload() {
@@ -113,7 +111,7 @@ export class UploadImagesComponent implements OnInit {
                 .uploadImageToFirebase(this.member.id,image_name,this.cropperData.image)
                 .subscribe( b => this.state.next(UploadState.Loaded) );
             // at the same time, update the name to the main data 
-            this.fooMember.update({ image: image_name });
+            this.memberFOO.update({ image: image_name });
         //}, 3000);
     }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -14,6 +14,8 @@ import { Event          } from '../../models/event';
 import { Member         } from '../../models/member';
 import { FirememService } from '../../services/firemem.service';
 import { CalendarItem   } from './calendar_item';
+import { environment    } from '../../../environments/environment';
+import { trace          } from '../../utilities/trace';
 
 const colors: any = {
   death:   { primary: '#ad2121', secondary: '#FAE3E3' }, // red
@@ -29,6 +31,7 @@ export class DashboardComponent implements OnInit {
 
     viewDateSubject : Subject<Date> = new Subject<Date>();
 
+    today : Date = new Date; // can be overridden
     currentDate : Date = new Date(2010,1,1);
     currMonthStr : string = "";
     activeDayIsOpen : boolean = false;
@@ -40,19 +43,34 @@ export class DashboardComponent implements OnInit {
     
     constructor( 
         private router : Router,
+        private route: ActivatedRoute,
         private FMS: FirememService,
     ) {}
 
     ngOnInit() { 
-        console.log("DashViewCalComponent#init");
-        this.viewDateSubject.subscribe( d => this.onViewDateChanged(d) );
-        this.FMS.members.subscribe( members => this.onLoad(members), this.onError, this.onDone );
+        trace.log("DashViewCalComponent#init today =", environment.today);
+        // this technique was depricated in favor of using the environment
+        // varibale; but should be retained as an example of using params
+        // this.route
+        //     .queryParams
+        //     .subscribe(params => {
+        //         // for testing we can override "today" to a known date
+        //         if( params['today'] ){
+        //             this.today = new Date(2017,2,1);
+        //             console.warn("dashboard. today set to ",this.today);
+        //         }
+        //     });
+        this.today = environment.today || new Date();
+        this.viewDateSubject
+            .subscribe( d => this.onViewDateChanged(d) );
+        this.FMS
+            .members
+            .subscribe( members => this.onLoad(members), this.onError, this.onDone );
     }
     onLoad(members){
-        console.log("dashboard. onLoad. members count = "+members.length)
-        const today = (new Date);
-        const day   = today.getDate();
-        const month = today.getMonth();
+        trace.log("dashboard. onLoad. members count = "+members.length)
+        const day   = this.today.getDate();
+        const month = this.today.getMonth();
 
         let items = this.extractItems(members);
         this.items.length = 0; // clear items; to set
@@ -61,22 +79,22 @@ export class DashboardComponent implements OnInit {
         this.itemsToday = this.items
             .filter( this.forDay( day ) )
             .filter( this.forMonth( month ) );
-        this.viewDateSubject.next( today );
+        this.viewDateSubject.next( this.today );
     }    
     onError(error: Error){
-        console.error("dashboard. onError",error);
+        trace.error("dashboard. onError",error);
         this.items.length = 0;
     }
     onDone(){
-        console.error("dashboard. onDone");
+        trace.log("dashboard. onDone");
     }
     onViewDateChanged(new_date: Date){
-        console.log(">>> view date changed",this.currentDate,new_date);
+        trace.log("view date changed",this.currentDate,new_date);
         const new_year = new_date.getFullYear();
         const new_month = new_date.getMonth();
 
         if( this.currentDate.getFullYear() != new_year ){
-            console.log(">>> year changed",this.currentDate.getFullYear(),new_year)
+            trace.log("year changed",this.currentDate.getFullYear(),new_year)
             // the year is changing, so adjust all items to have the
             // new year since the items are really the anniveries of events
             // also, we need to reset the floating holidays to match the new year
@@ -117,7 +135,7 @@ export class DashboardComponent implements OnInit {
             Array.prototype.push.apply(acc,xs);
             return acc;
         }, []);
-        console.log("extract",items);
+        //trace.log("extract",items);
         return items;
     }
     //
@@ -142,21 +160,21 @@ export class DashboardComponent implements OnInit {
         return new Date(year,month,1);
     }
     dayClicked({date, events}: {date: Date, events: CalendarEvent[]}): void {
-        console.log("--- day clicked  date = "+date+" events...",events);
+        trace.log("--- day clicked  date = "+date+" events...",events);
         // we only need to take action if the month is changing
         if( date.getMonth() != this.currentDate.getMonth() ) return;
         this.viewDateSubject.next( date );
         this.activeDayIsOpen = true;
     }
     eventClicked(obj): void {
-        console.log("--- event clicked. obj...",obj);
+        trace.log("--- event clicked. obj...",obj);
         var item = obj.event;
-        //console.log("--- event clicked. calendar item...",item);
+        //trace.log("--- event clicked. calendar item...",item);
         //var event = item.event;
-        //console.log("--- event clicked. server event...",event);
-        // console.log("--- event clicked with title="+event.title);
+        //trace.log("--- event clicked. server event...",event);
+        // trace.log("--- event clicked with title="+event.title);
         // var items = this.items.filter( (item) => item.title == event.title );
-        // console.log("--- the matching item is...",items[0]);
+        // trace.log("--- the matching item is...",items[0]);
         this.router.navigate(['/member', item.member.id]);
     }
     get_holidays(date : Date){
@@ -181,7 +199,7 @@ export class DashboardComponent implements OnInit {
         let i = 22;
         // first Thursday on or affter the 22n of November
         while( (date = new Date(year,10,i++)).getDay() != 4 );
-        console.log("turkey day",date);
+        trace.log("turkey day = ",date);
         return date;
     }
 }

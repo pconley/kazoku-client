@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from 'rxjs/Observable';
+import { trace } from '../../utilities/trace';
 
 @Component({
     selector: "home",
@@ -8,10 +9,10 @@ import { Observable } from 'rxjs/Observable';
 export class HomeComponent implements OnInit {
   
     constructor() {
-        console.log("HomeComponent#constructor");
+        trace.log("HomeComponent#constructor");
     }
 
     ngOnInit() {
-        console.log("HomeComponent#init: ");
+        trace.log("HomeComponent#init: ");
     }
 }

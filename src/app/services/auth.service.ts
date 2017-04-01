@@ -4,8 +4,10 @@ import { ReplaySubject }    from 'rxjs/ReplaySubject';
 import { tokenNotExpired } from 'angular2-jwt';
 
 import { Observable } from 'rxjs/Observable';
-import { AngularFire, FirebaseAuthState } from 'angularfire2';
-import { AuthProviders, AuthMethods } from 'angularfire2';
+import { AngularFire, FirebaseListObservable, FirebaseAuthState } from 'angularfire2';
+import { AuthProviders, AuthMethods, FirebaseObjectObservable } from 'angularfire2';
+
+import { trace } from '../utilities/trace';
 
 declare var Auth0: any;     // avoids "name not found" warnings
 declare var Auth0Lock: any; // avoids "name not found" warnings
@@ -20,6 +22,7 @@ export class AuthService {
   private auth0base = new Auth0({ domain : AUTH0_DOMAIN, clientID: AUTH0_CLIENT_ID})
 
   public isAuthenticated: boolean = false;
+
   public profile: any = {};
 
   // Note: we are using the replay subject because the other watchers
@@ -31,27 +34,29 @@ export class AuthService {
     private router: Router,
     public af: AngularFire
   ) {
-    //console.log('*** AuthService#constructor location=',location.href);
-    //console.log("auth0 object...",this.auth0base);
+    //trace.log('*** AuthService#constructor location=',location.href);
+    //trace.log("auth0 object...",this.auth0base);
 
     // subscribe to the firebase auth state so we can react as it changes
     // and get or set the profile from the associated firebase user record
-    af.auth.subscribe((state: FirebaseAuthState) => {
-        //console.log("firebase auth state changed to...",state);
-        this.isAuthenticated = !!state;
-        this.profile = {}; // always clear
+    af.auth.subscribe((auth_state: FirebaseAuthState) => {
+        this.isAuthenticated = !!auth_state;
+        trace.log("firebase auth state changed to ",this.isAuthenticated);
+        this.profile = { isAdmin: false }; // always clear to an empty profile
         if( this.isAuthenticated ){
-          af.database
-            .object('/users/'+state.auth.uid, { preserveSnapshot: true })
-            //.first() // TODO: why is test failing on this
-            .subscribe(user => {
-              this.profile = user.val();
-              //console.log("firebase user profile...",this.profile);
+          trace.log("firebase auth state id...",auth_state.auth.uid);
+          let foo = af.database.object('/users/'+auth_state.auth.uid, { preserveSnapshot: true })
+          foo.subscribe((snapshot) => {
+              trace.log("firebase user key...",snapshot.key);
+              let profile = snapshot.val() // may be null
+              this.profile = profile || { isAdmin: false } ;
+              trace.log("firebase user profile...",this.profile);
               // we wait until we have a valid profile mostly for the 
               // guards which seem to rely on a synch flag to be set
               this._subject.next(true); // notify subscribers of login
           });
         } else {
+          trace.log("else not authenticated");
           this._subject.next(false); // notify subscribers of logout
         }
     });        
@@ -59,7 +64,7 @@ export class AuthService {
     // callback for auth0lock `authenticated` event on the the 
     // auth0 lock object fires after a user logs in to system
     this.auth0lock.on("authenticated", (authResult) => {
-      //console.log('*** AuthService#OnAuthenticated. authResult...',authResult);
+      //trace.log('*** AuthService#OnAuthenticated. authResult...',authResult);
 
       // use the auth0 results to authenticate with firebase
       this.authenticate_to_firebase(authResult.idToken);
@@ -70,7 +75,7 @@ export class AuthService {
           console.error("auth0 error retrieving the user profile");
           alert(error); 
         } else {
-          console.log("auth0 profile...",profile);
+          trace.log("auth0 profile...",profile);
         }
       });
 
@@ -91,7 +96,7 @@ export class AuthService {
                 alert(err); 
                 return;
             }     
-            // console.log("auth0.getDelegationToken result...",result);
+            // trace.log("auth0.getDelegationToken result...",result);
             // then use the auth0 delegate token to login to firebase 
             that.af.auth.login(result.id_token, {
                 provider: AuthProviders.Custom,
@@ -99,7 +104,7 @@ export class AuthService {
             }).then(function(fb_auth_token){
                 // FINALLY!!! logged into both auth0 and firebase; but any action
                 // is taken in a subscription to the firebase authentication
-                //console.log("af auth then: fb_auth_token...",fb_auth_token);
+                trace.log("af auth then: fb_auth_token...",fb_auth_token);
             }).catch(function(error) {
                 console.error("login to firebase failed. error...",error);
                 alert(error); 
@@ -108,13 +113,13 @@ export class AuthService {
   }
   
   public login() {
-    //console.log("AuthService#login");
+    trace.log("AuthService#login");
     //this.router.navigate(['home']);
     this.auth0lock.show(); // display login popup window
   };
 
   public logout() {
-    //console.log("AuthService#logout");
+    trace.log("AuthService#logout");
     this.af.auth.logout();
     //this._login_subject.next("the logout!");
   };

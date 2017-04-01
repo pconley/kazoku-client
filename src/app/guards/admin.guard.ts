@@ -12,16 +12,16 @@ export class AdminGuard implements CanActivate {
     //let url: string = state.url;
     //console.log("AdminGuard. url="+url);
     if( !this.authService.isAuthenticated ){
-        //console.error("AdminGuard. cannot activate because not authenticated");
+        //console.log("AdminGuard. cannot activate because not authenticated");
         return false; // deny access to the route
     }
     var profile = this.authService.profile;
     if( !profile ){
-        console.error("AdminGuard. cannot activate because no profile");
+        console.log("AdminGuard. cannot activate because no profile");
         return false; // deny access to the route
     }
     if( !profile.isUser && !profile.isAdmin ){
-        console.error("AdminGuard. cannot activate because invalid role",profile.isUser,profile.isAdmin);
+        console.log("AdminGuard. cannot activate because invalid role",profile.isUser,profile.isAdmin);
         return false; // deny access to the route
     }
     return true;

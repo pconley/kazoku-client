@@ -11,7 +11,7 @@ describe('event model', () => {
         expect(event.day).toBe(0);
         expect(event.year).toBe(0);
         expect(event.month).toBe(0);
-        expect(event.kind).toBe("error");
+        expect(event.kind).toBe("errorXXXX");
         expect(event.place).toBe(undefined);
     });
     it('should convert string values',() => {

@@ -38,8 +38,6 @@ export class MemberListComponent implements OnInit {
 
     ngOnInit(){ 
         console.log("*** MemberListComponent#OnInit")
-        //this.loader(false); // do not force re-load of members
-
         this.members = this.fms.members;
     }
 

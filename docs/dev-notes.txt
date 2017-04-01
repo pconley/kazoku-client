@@ -1,5 +1,7 @@
 
-npm start develop
+npm start develop (depricated to get the env set, see next)
+
+ng s --environment=test
 
 http://localhost:4200/
 
