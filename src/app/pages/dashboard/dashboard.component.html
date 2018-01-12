@@ -1,7 +1,7 @@
 <span id="kz-dashboard-page"></span>
 <md-card id="kz-dashcard-today">
     <h3>Today in Conley Family History</h3>
-    <div *ngFor='let item of itemsToday '>
+    <div class="kz-today-items" *ngFor='let item of itemsToday '>
         {{item.title | titleCase }} 
         {{item.event.kind == "birt" ? "born" : "died" }}  
         in {{item.event.year}}

@@ -142,7 +142,7 @@ export class DashboardComponent implements OnInit {
     // actions from the html component
     //
     setViewThisMonth(): void { 
-        var temp = new Date();
+        var temp = this.today;
         temp.setDate(1);
         this.viewDateSubject.next( temp );
         this.activeDayIsOpen = true;
